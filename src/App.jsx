@@ -1,7 +1,10 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import History from "./pages/History";
+import Error from "./pages/Error";
+import About from "./pages/About";
+import Scenario from "./pages/Scenario";
+import Auth from "./pages/Auth";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-
 import { useEffect } from "react";
 
 const gameHistoryData = [];
@@ -9,9 +12,25 @@ const gameHistoryData = [];
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <><Navbar /> <h1 className='font-bold text-red-500'>Testing TailwindCSS</h1></>,
     errorElement: <Error />
   },
+  {
+    path: "/auth",
+    element: <Auth />
+  },
+  {
+    path: "/scenario-creator",
+    element: <Scenario />
+  },
+  {
+    path: "/history",
+    element: <History data={gameHistoryData} />,
+  },
+  {
+    path: "/about",
+    element: <About />
+  }
 ])
 
 function App() {
