@@ -1,15 +1,15 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import History from "./pages/History";
 import Error from "./pages/Error";
 import About from "./pages/About";
 import Scenario from "./pages/Scenario";
 import Auth from "./pages/Auth";
+import Navbar from "./components/Navbar";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <h1 className='font-bold text-red-500'>Testing TailwindCSS</h1>,
+    element: <><Navbar /> <h1 className='font-bold text-red-500'>Testing TailwindCSS</h1></>,
     errorElement: <Error />
   },
   {
@@ -27,18 +27,20 @@ const router = createBrowserRouter([
   {
     path: "/about",
     element: <About />
+  },
+  {
+
   }
 ])
 
 function App() {
 
   return (
-    <>
-      <Navbar />
-      <div>
+    <div className="w-full h-screen flex items-center">
+      <div className="mx-auto max-w-[1500px] w-full h-screen">
         <RouterProvider router={router} />
       </div>
-    </>
+    </div>
   )
 }
 
