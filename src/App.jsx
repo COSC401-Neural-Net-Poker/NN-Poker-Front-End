@@ -5,6 +5,9 @@ import About from "./pages/About";
 import Scenario from "./pages/Scenario";
 import Auth from "./pages/Auth";
 import Navbar from "./components/Navbar";
+import { useEffect } from "react";
+
+const gameHistoryData = [];
 
 const router = createBrowserRouter([
   {
@@ -22,19 +25,20 @@ const router = createBrowserRouter([
   },
   {
     path: "/history",
-    element: <History />,
+    element: <History data={gameHistoryData} />,
   },
   {
     path: "/about",
     element: <About />
-  },
-  {
-
   }
 ])
 
 function App() {
 
+  useEffect(() => {
+    // Firebase pull history data from user if user exists
+  }, [])
+  
   return (
     <div className="w-full h-screen flex items-center">
       <div className="mx-auto max-w-[1500px] w-full h-screen">

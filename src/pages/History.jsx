@@ -1,8 +1,8 @@
 import Navbar from '../components/Navbar';
 
-const History = () => {
+const History = ({data}) => {
 return (
-    <div className='w-full h-screen bg-[#d3b9e8] pt-[70px]'>
+    <div className='w-full h-screen bg-[#4B4B4B] pt-[70px]'>
       <Navbar />
       <h1>History Page</h1>
     </div>
