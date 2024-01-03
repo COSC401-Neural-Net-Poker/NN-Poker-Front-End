@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebase';
+import { signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from '../firebase';
 import { useNavigate } from "react-router-dom";
 
 const Login = ({reg}) => {
@@ -29,14 +29,20 @@ const Login = ({reg}) => {
     setPassword("");
   }
 
+  const handleGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+    .catch((error) => alert(error));
+  }
+
   return (
     <div className="bg-gray-300 w-1/2 h-1/2">
       <form onSubmit={(e) => handleLogin(e)}>
         <input placeholder="Email" type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
         <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
         <button type="submit" className="bg-sky-400 py-1 px-2 rounded-xl">Login</button>
-        <h1 className="cursor-pointer text-slate-800" onClick={() => reg("Register")}>Don't have an account yet?</h1>
       </form>
+      <button onClick={() => handleGoogle()} className="bg-sky-400 py-1 px-2 rounded-xl">Sign in with google</button>
+      <h1 className="cursor-pointer text-slate-800" onClick={() => reg("Register")}>Don't have an account yet?</h1>
     </div>
   )
 }

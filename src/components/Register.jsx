@@ -35,8 +35,8 @@ const Register = ({login}) => {
         <input placeholder="Email" type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
         <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
         <button type="submit" className="bg-sky-400 py-1 px-2 rounded-xl">Register</button>
-        <h1 className="cursor-pointer text-slate-800" onClick={() => login("Login")}>Already have an account?</h1>
       </form>
+      <h1 className="cursor-pointer text-slate-800" onClick={() => login("Login")}>Already have an account?</h1>
     </div>
   )
 }
