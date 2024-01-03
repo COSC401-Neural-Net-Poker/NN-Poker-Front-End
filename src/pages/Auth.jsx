@@ -21,13 +21,8 @@ const Auth = () => {
 
   const [loginStatus, setLoginStatus] = useState("Login");
 
-  const regState = (state) => {
-    setLoginStatus(state);
-  }
-
-  const logState = (state) => {
-    setLoginStatus(state);
-  }
+  const regState = (state) => setLoginStatus(state);
+  const logState = (state) => setLoginStatus(state);
 
   return (
     <div className='w-full h-screen bg-[#4B4B4B] pt-[70px] flex justify-center items-center'>

@@ -4,7 +4,11 @@ import { useState, useEffect } from 'react';
 import Logo from './Logo.png';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) setLoginStatus("Sign Out")
@@ -31,6 +35,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     signOut(auth);
+    navigate("/");
   }
 
   return (
