@@ -1,10 +1,23 @@
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Logo from './Logo.png';
-
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../firebase';
 const Navbar = () => {
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) setLoginStatus("Sign Out")
+      else setLoginStatus("Sign In")
+    });
+
+    return () => {
+      listen();
+    }
+  }, []);
+
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [loginStatus, setLoginStatus] = useState("Sign In");
 
   const openMobileMenu = () => {
     document.body.classList.add('overflow-y-hidden');
@@ -15,6 +28,10 @@ const Navbar = () => {
     document.body.classList.remove('overflow-y-hidden');
     setMobileMenu(!mobileMenu)
   };
+
+  const handleLogout = () => {
+    signOut(auth);
+  }
 
   return (
     <>
@@ -29,7 +46,9 @@ const Navbar = () => {
             <Link to="/scenario-creator"><h1>Scenario</h1></Link>
             <Link to="/history"><h1>Game History</h1></Link>
             <Link to="/about"><h1>About Project</h1></Link>
-            <Link to="/auth"><h1>Login/Register</h1></Link>
+            {loginStatus === "Sign In" ? <Link to="/auth"><h1>Login</h1></Link> :
+            <h1 className="cursor-pointer" onClick={() => handleLogout()}>Logout</h1>}
+            
           </div>
           {mobileMenu ? 
           <div className='md:hidden text-[30px] px-5 cursor-pointer' onClick={closeMobileMenu}>
