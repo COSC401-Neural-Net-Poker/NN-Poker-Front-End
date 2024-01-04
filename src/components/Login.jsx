@@ -50,7 +50,7 @@ const Login = ({reg}) => {
       <button onClick={() => handleGoogle()} className="bg-white mb-5 w-2/3 md:w-1/2 duration-150 font-semibold hover:bg-[#FF8200] hover:text-white flex justify-center items-center py-1 px-2 rounded-md">
         <Icon className="mr-3 text-[25px]" icon="flat-color-icons:google" />Sign in with Google
       </button>
-      <h1 className="cursor-pointer text-slate-800" onClick={() => reg("Register")}>Don't have an account yet?</h1>
+      <h1 className="cursor-pointer text-slate-800 hover:text-[#FF8200] duration-150" onClick={() => reg("Register")}>Don't have an account yet?</h1>
     </div>
   )
 }
