@@ -25,7 +25,7 @@ const Auth = () => {
   const logState = (state) => setLoginStatus(state);
 
   return (
-    <div className='w-full h-screen pt-[70px] flex justify-center items-center'>
+    <div className='w-full h-screen md:pt-[70px] pt-[60px] flex justify-center items-center'>
         <Navbar />
         {loginStatus === "Login" ? <Login reg={regState} /> : <Register login={logState} />}
     </div>

@@ -36,18 +36,18 @@ const Login = ({reg}) => {
   }
 
   return (
-    <div className="bg-gray-300 w-1/2 h-1/2 flex justify-center flex-col items-center text-[#4B4B4B] rounded-xl">
-      <div className="flex justify-center items-center drop-shadow-md border-b-2 w-1/2 border-[#adb0ae]">
+    <div className="bg-[#e2e0df] md:w-1/2 md:h-1/2 flex w-full h-full justify-center flex-col items-center text-[#4B4B4B] rounded-xl">
+      <div className="flex justify-center items-center drop-shadow-md border-b-2 md:w-1/2 w-2/3 border-[#adb0ae]">
         <Icon className="text-[45px]" icon="ph:user-fill" />
         <h1 className="text-[40px] font-bold">Login</h1>
       </div>
 
-      <form className="mt-2 flex flex-col items-center w-1/2" onSubmit={(e) => handleLogin(e)}>
+      <form className="mt-2 flex flex-col items-center w-2/3 md:w-1/2" onSubmit={(e) => handleLogin(e)}>
         <input className="placeholder-gray-500 placeholder-opacity-50 mb-4 w-full rounded-md pl-1 text-[20px]" placeholder="Email" type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
         <input className="placeholder-gray-500 placeholder-opacity-50 mb-4 w-full rounded-md pl-1 text-[20px]" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
         <button className="mb-4 rounded-md w-full py-1 font-semibold bg-[#4B4B4B] duration-150 hover:bg-[#FF8200] hover:text text-white" type="submit">Login</button>
       </form>
-      <button onClick={() => handleGoogle()} className="bg-white mb-5 w-1/2 duration-150 hover:bg-[#FF8200] hover:text-white flex justify-center items-center py-1 px-2 rounded-md">
+      <button onClick={() => handleGoogle()} className="bg-white mb-5 w-2/3 md:w-1/2 duration-150 font-semibold hover:bg-[#FF8200] hover:text-white flex justify-center items-center py-1 px-2 rounded-md">
         <Icon className="mr-3 text-[25px]" icon="flat-color-icons:google" />Sign in with Google
       </button>
       <h1 className="cursor-pointer text-slate-800" onClick={() => reg("Register")}>Don't have an account yet?</h1>
