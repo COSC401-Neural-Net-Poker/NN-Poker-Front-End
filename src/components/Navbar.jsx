@@ -51,8 +51,10 @@ const Navbar = () => {
             <Link to="/scenario-creator"><h1>Scenario</h1></Link>
             <Link to="/history"><h1>Game History</h1></Link>
             <Link to="/about"><h1>About Project</h1></Link>
-            {loginStatus === "Sign In" ? <Link to="/auth"><h1>Login</h1></Link> :
-            <h1 className="cursor-pointer" onClick={() => handleLogout()}>Logout</h1>}
+            {loginStatus === "Sign In" ? <Link to="/auth"><h1 className='bg-[#4B4B4B] hover:bg-[#ffffff] hover:text-[#4B4B4B] duration-150 px-3 py-1 rounded-md'>Login</h1></Link> :
+            <h1 className="cursor-pointer hover:bg-[#4B4B4B] bg-[#ffffff] text-[#4B4B4B] hover:text-white duration-150 px-3 py-1 rounded-md" onClick={() => handleLogout()}>
+              Logout
+            </h1>}
             
           </div>
           {mobileMenu ? 
