@@ -1,23 +1,31 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+
+import { useEffect } from "react";
+
+const gameHistoryData = [];
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <h1 className='font-bold text-red-500'>Testing TailwindCSS</h1>,
-    errorElement: <h1 className="text-3xl font-bold text-red-400">Page Does Not Exist</h1>
+    element: <Home />,
+    errorElement: <Error />
   },
 ])
 
 function App() {
 
+  useEffect(() => {
+    // Firebase pull history data from user if user exists
+  }, [])
+  
   return (
-    <>
-      <Navbar />
-      <div>
+    <div className="w-full h-screen flex items-center">
+      <div className="mx-auto max-w-[1500px] w-full h-screen">
         <RouterProvider router={router} />
       </div>
-    </>
+    </div>
   )
 }
 
