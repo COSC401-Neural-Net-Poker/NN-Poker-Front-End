@@ -56,25 +56,19 @@ const Home = () => {
 
   let temp;
   let temp2;
-  let opp1 = cardImageImport[0];
-  let opp2 = cardImageImport[0];
-  let mid1 = cardImageImport[0];
-  let mid2 = cardImageImport[0];
-  let mid3 = cardImageImport[0];
-  let mid4 = cardImageImport[0];
-  let mid5 = cardImageImport[0];
-  let user1 = cardImageImport[0];
-  let user2 = cardImageImport[0];
+  let opp = [cardImageImport[0], cardImageImport[0]];
+  let mid = [cardImageImport[0], cardImageImport[0], cardImageImport[0] ,cardImageImport[0], cardImageImport[0]];
+  let user = [cardImageImport[0], cardImageImport[0]];
 
-  const [imageOpp1, setImageOpp1] = useState(opp1);
-  const [imageOpp2, setImageOpp2] = useState(opp2);
-  const [imageMid1, setImageMid1] = useState(mid1);
-  const [imageMid2, setImageMid2] = useState(mid2);
-  const [imageMid3, setImageMid3] = useState(mid3);
-  const [imageMid4, setImageMid4] = useState(mid4);
-  const [imageMid5, setImageMid5] = useState(mid5);
-  const [imageUser1, setImageUser1] = useState(user1);
-  const [imageUser2, setImageUser2] = useState(user2);
+  const [imageOpp1, setImageOpp1] = useState(opp[0]);
+  const [imageOpp2, setImageOpp2] = useState(opp[1]);
+  const [imageMid1, setImageMid1] = useState(mid[0]);
+  const [imageMid2, setImageMid2] = useState(mid[1]);
+  const [imageMid3, setImageMid3] = useState(mid[2]);
+  const [imageMid4, setImageMid4] = useState(mid[3]);
+  const [imageMid5, setImageMid5] = useState(mid[4]);
+  const [imageUser1, setImageUser1] = useState(user[0]);
+  const [imageUser2, setImageUser2] = useState(user[1]);
   const [displayOpp, setDisplayOpp] = useState("Oppents (word for money) " + oppMon);
   const [displayPot, setDisplayPot] = useState("Amount in pot " + pot);
   const [displayUser, setDisplayUser] = useState("Mesa munies " + userMon);
@@ -108,15 +102,15 @@ const Home = () => {
 
   function shuffleDeck() {
     // alert(Math.floor(Math.random() * (52 - 1 + 1)) + 1);
-    opp1 = cardImageImport[0];
-    opp2 = cardImageImport[0];
-    mid1 = cardImageImport[0];
-    mid2 = cardImageImport[0];
-    mid3 = cardImageImport[0];
-    mid4 = cardImageImport[0];
-    mid5 = cardImageImport[0];
-    user1 = cardImageImport[0];
-    user2 = cardImageImport[0];
+    opp[0] = cardImageImport[0];
+    opp[1] = cardImageImport[0];
+    mid[0] = cardImageImport[0];
+    mid[1] = cardImageImport[0];
+    mid[2] = cardImageImport[0];
+    mid[3] = cardImageImport[0];
+    mid[4] = cardImageImport[0];
+    user[0] = cardImageImport[0];
+    user[1] = cardImageImport[0];
 
     for (let i = cardImageImport.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (52 - 1 + 1)) + 1;
@@ -125,7 +119,7 @@ const Home = () => {
       cardImageImport[i] = cardImageImport[j];
       cardImageImport[j] = temp;
       cardRankings[i] = cardRankings[j];
-      cardRankings[j] = cardRankings[i];
+      cardRankings[j] = temp2;
     }
   }
   
@@ -222,6 +216,7 @@ const Home = () => {
     }else{
       setImageUser1(cardImageImport[2]);
       setImageUser2(cardImageImport[4]);
+      console.log("User not dealer");
     }
   }
 
@@ -298,7 +293,7 @@ const Home = () => {
         setDisplayRightButton("Fold");
         button1 = false;
       //Right of or may be changed to own else if because (bet 10) may need to be (raise 10)
-      }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && mid1 == cardImageImport[0])){
+      }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && mid[0] == cardImageImport[0])){
         setDisplayLeftButton("Check");
         setDisplayMiddleButton("Bet 10");
         button1 = true;
@@ -312,37 +307,309 @@ const Home = () => {
   }
 
   function winCheck() {
-    let userRoyalFlush = false;
-    let userStraightFlush = false;
-    let userFlush = false;
-    let user4Kind = false;
-    let userFullHouse = false;
-    let userStraight = false;
-    let user3Kind = false;
-    let user2Pair = false;
-    let userPair = false;
-    let compRoyalFlush = false;
-    let compStraightFlush = false;
-    let compFlush = false;
-    let comp4Kind = false;
-    let compFullHouse = false;
-    let compStraight = false;
-    let comp3Kind = false;
-    let comp2Pair = false;
-    let compPair = false;
+    //let userRoyalFlush = false;     // 9
+    //let userStraightFlush = false;  // 8
+    //let user4Kind = false;          // 7
+    //let userFullHouse = false;      // 6
+    //let userFlush = false;          // 5
+    //let userStraight = false;       // 4
+    //let user3Kind = false;          // 3
+    //let user2Pair = false;          // 2
+    //let userPair = false;           // 1
+    //let compRoyalFlush = false;     // 9
+    //let compStraightFlush = false;  // 8
+    //let compFlush = false;          // 7
+    //let comp4Kind = false;          // 6
+    //let compFullHouse = false;      // 5
+    //let compStraight = false;       // 4
+    //let comp3Kind = false;          // 3
+    //let comp2Pair = false;          // 2
+    //let compPair = false;           // 1
+    let userClub = 0;
+    let userHeart = 0;
+    let userSpade = 0;
+    let userDia = 0;
+    let compClub = 0;
+    let compHeart = 0;
+    let compSpade = 0;
+    let compDia = 0;
+    let userFlush = -1;
+    let compFlush = -1;
+    let userStraight = -1;
+    let compStraight = -1;
+    let comp4 = false;
+    let user4 = false;
+    let comp3 = false;
+    let user3 = false;
+    let userPair = 0;
+    let compPair = 0;
+    let user1 = -1;
+    let user2 = -1;
+    let comp1 = -1;
+    let comp2 = -1;
+    let userList = [];
+    let compList = [];
+    let userListShort = [];
+    let compListShort = [];
+    let userHigh = -1;
+    let compHigh = -1;
+    let straight = [[2, 3, 4, 5 ,6], [3, 4, 5, 6, 7] ,[4, 5, 6, 7, 8], [5, 6, 7, 8, 9], [6, 7, 8, 9, 10], 
+      [7, 8, 9, 10, 11], [8, 9, 10, 11, 12], [9, 10, 11, 12, 13], [10, 11, 12, 13, 14]];
+    let straight1 = [2, 3, 4, 5 ,6];
+    let straight2 = [3, 4, 5, 6, 7];
+    let straight3 = [4, 5, 6, 7, 8];
+    let straight4 = [5, 6, 7, 8, 9];
+    let straight5 = [6, 7, 8, 9, 10];
+    let straight6 = [7, 8, 9, 10, 11];
+    let straight7 = [8, 9, 10, 11, 12];
+    let straight8 = [9, 10, 11, 12, 13];
+    let straight9 = [10, 11, 12, 13, 14];
 
-      //Flush check
+    //Change this later is bad
+    //Could condesnse by using dealer in math
+    //Flush
+    for(let i = 0; i < 2; i++){
+        if(dealer){
+          if(cardRankings[(i*2) + 1][0] == 'club'){
+            userClub++;
+          }else if(cardRankings[(i*2) + 1][0] == 'dia'){
+            userDia++;
+          }else if(cardRankings[(i*2) + 1][0] == 'heart'){
+            userHeart++;
+          }else{
+            userSpade++;
+          }
+          user1 = cardRankings[1][1];
+          user2 = cardRankings[3][1];
+        }else{
+          if(cardRankings[(i*2) + 2][0] == 'club'){
+            userClub++;
+          }else if(cardRankings[(i*2) + 2][0] == 'dia'){
+            userDia++;
+          }else if(cardRankings[(i*2) + 2][0] == 'heart'){
+            userHeart++;
+          }else{
+            userSpade++;
+          }
+          user1 = cardRankings[2][1];
+          user2 = cardRankings[4][1];
+        }
+    }
+    for(let i = 0; i < 2; i++){
+      if(dealer){
+        if(cardRankings[(i*2) + 2][0] == 'club'){
+          compClubClub++;
+        }else if(cardRankings[(i*2) + 2][0] == 'dia'){
+          compDia++;
+        }else if(cardRankings[(i*2) + 2][0] == 'heart'){
+          compHeart++;
+        }else{
+          compSpade++;
+        }
+        comp1 = cardRankings[2][1];
+        comp2 = cardRankings[4][1];
+      }else{
+        if(cardRankings[(i*2) + 1][0] == 'club'){
+          compClub++;
+        }else if(cardRankings[(i*2) + 1][0] == 'dia'){
+          compDia++;
+        }else if(cardRankings[(i*2) + 1][0] == 'heart'){
+          compHeart++;
+        }else{
+          compSpade++;
+        }
+        comp1 = cardRankings[1][1];
+        comp2 = cardRankings[3][1];
+      }
+    }
+    for(let i = 5; i < 10; i++){
+      if(cardRankings[i][0] == 'club'){
+        compClubClub++;
+        userClub++;
+      }else if(cardRankings[(i) + 2][0] == 'dia'){
+        compDia++;
+        userDia++;
+      }else if(cardRankings[(i) + 2][0] == 'heart'){
+       compHeart++;
+       userHeart++;
+      }else{
+        compSpade++;
+        userSpade++;
+      }
+    }
 
+    userList.push(user1);
+    userList.push(user2);
+    userList.push(cardRankings[5][1]);
+    userList.push(cardRankings[6][1]);
+    userList.push(cardRankings[7][1]);
+    userList.push(cardRankings[8][1]);
+    userList.push(cardRankings[9][1]);
+
+    compList.push(comp1);
+    compList.push(comp2);
+    compList.push(cardRankings[5][1]);
+    compList.push(cardRankings[6][1]);
+    compList.push(cardRankings[7][1]);
+    compList.push(cardRankings[8][1]);
+    compList.push(cardRankings[9][1]);
+
+    userList = userList.sort(function (a, b) {  return a - b;  });
+    compList = compList.sort(function (a, b) {  return a - b;  });
+
+    userListShort = userList.concat();
+    compListShort = compList.concat();
+
+    for(let i = 0; i < userListShort.length - 1; i++){
+      if(userListShort[i] == userListShort[i + 1]){
+        userListShort.splice(i, 1);
+      }
+    }
+    for(let i = 0; i < compListShort.length - 1; i++){
+      if(compListShort[i] == compListShort[i + 1]){
+        compListShort.splice(i, 1);
+      }
+    }
+
+
+    console.log(compList + " Computer " + compListShort);
+    console.log(userList + " user short " + userListShort);
+
+    //Flush check
+    if(userClub >= 5 || userDia >= 5 || userSpade >= 5 || userHeart >= 5){
+      userFlush = true;
+    }
+    if(compClub >= 5 || compDia >= 5 || compSpade >= 5 || compHeart >= 5){
+      compFlush = true;
+    }
+    //Straight check
+    for(let i = 0; i < (userListShort-4); i++){
+      for(let j = 0; j < 9; j++){
+        if(userListShort.slice(i, i+5) == straight[j]){
+          userStraight = true;
+        }
+      }
+    }
+    for(let i = 0; i < (compListShort-4); i++){
+      for(let j = 0; j < 9; j++){
+        if(compListShort.slice(i, i+5) == straight[j]){
+          compStraight = true;
+        }
+      }
+    }
+    if(userList[6] == 14 && userList.slice(0, 4) == [2, 3, 4, 5]){
+      userStraight = true;
+    }
+    if(compList[6] == 14 && compList.slice(0, 4) == [2, 3, 4, 5]){
+      compStraight = true;
+    }
         //Royal flush check
+    if((userStraight && userFlush) && !(compStraight && compFlush)){
+      //User wins
+    }
+    if(!(userStraight && userFlush) && (compStraight && compFlush)){
+      //Comp wins
+    }
+    if((userStraight && userFlush) && (compStraight && compFlush)){
+      //Tiebreaker needed
+    }
         //Straight Flush check
       //4 of kind
+    if(userList[0] == userList[3] || userList[1] == userList[4] || userList[2] == userList[5] || userList[3] == userList[6] || userList[4] == userList[7]){
+      user4 = true;
+    }
+    if(compList[0] == compList[3] || compList[1] == compList[4] || compList[2] == compList[5] || compList[3] == compList[6] || compList[4] == compList[7]){
+      comp4 = true;
+    }
+    if(user4 && !comp4){
+      //User wins
+    }
+    if(!user4 && comp4){
+      //Comp wins
+    }
+    if(user4 && comp4){
+      //Tiebreaker needed
+    }
       //Full house
+    if(userList[0] == userList[2] || userList[1] == userList[3] || userList[2] == userList[4] || userList[3] == userList[5] || userList[4] == userList[6] || userList[5] == userList[7]){
+      user3 = true;
+    }
+    if(compList[0] == compList[2] || compList[1] == compList[3] || compList[2] == compList[4] || compList[3] == compList[5] || compList[4] == compList[6] || compList[5] == compList[7]){
+      comp3 = true;
+    }
+
+    for(let i = 0; i < 6; i++){
+      if(userList[i] == userList[i+1]){
+        userPair++;
+      }
+    }
+    for(let i = 0; i < 6; i++){
+      if(compList[i] == compList[i+1]){
+        compPair++;
+      }
+    }
+
+    if((user3 && (userPair > 0)) && !((compPair > 0) && comp3)){
+      //User wins
+    }
+    if(!(user3 && (userPair > 0)) && ((compPair > 0) && comp3)){
+      //Comp wins
+    }
+    if((user3 && (userPair > 0)) && ((compPair > 0) && comp3)){
+      //Tie Breaker
+    }
       //flush
+    if(userFlush && !compFlush){
+      //User wins
+    }
+    if(!userFlush && compFlush){
+      //Comp wins
+    }
+    if(userFlush && compFlush){
+      //Tie breaker
+    }
       //Straight
+      if(userStraight && !compStraight){
+        //User wins
+      }
+      if(!userStraight && compStraight){
+        //Comp wins
+      }
+      if(userStraight && compStraight){
+        //Tie breaker
+      }
       //Three of kind
+      if(user3 && !comp3){
+        //User wins
+      }
+      if(!user3 && comp3){
+        //Comp wins
+      }
+      if(user3 && comp3){
+        //Tie breaker
+      }
       //Two pair
+      if((userPair > 1) && !(compPair > 1)){
+        //User wins
+      }
+      if(!(userPair > 1) && (compPair > 1)){
+        //Comp wins
+      }
+      if((userPair > 1) && (compPair > 1)){
+        //Tie breaker
+      }
       //One pair
+      if((userPair == 1) && !(compPair == 1)){
+        //User wins
+      }
+      if(!(userPair == 1) && (compPair == 1)){
+        //Comp wins
+      }
+      if((userPair == 1) && (compPair == 1)){
+        //Tie breaker
+      }
       //High card
+      //Tie breaker logic
   }
 
   function handStart() {
@@ -350,7 +617,7 @@ const Home = () => {
     //Blinds - Dealer has the big blind
     //Not sure what to do if the player meant to big blind does not have enough 
     //https://boardgames.stackexchange.com/questions/39045/in-poker-what-happens-with-the-next-players-if-paying-the-big-blind-puts-a-play
-    if(dealer == 0){
+    if(dealer == 1){
       if(oppMon < 10){
         pot += oppMon;
         oppMon -= oppMon;
@@ -377,7 +644,7 @@ const Home = () => {
     revealHand();
     lastMove = "";
     dealChange = false;
-    turn = (dealer > 0) ? 0 : 1;
+    turn = (dealer > 0) ? 1 : 0;
     first = 1;
     postFlop = false;
     flop = false;
@@ -385,6 +652,10 @@ const Home = () => {
     river = false;
     setShowButtonLeft(true);
     setShowButtonCenter(true);
+
+    //Del later
+    winCheck();
+
     turnStart();
   }
 
