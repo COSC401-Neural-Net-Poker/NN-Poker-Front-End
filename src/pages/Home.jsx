@@ -344,7 +344,7 @@ async function test(){
         setDisplayRightButton("Fold");
         button1 = false;
       //Right of or may be changed to own else if because (bet 10) may need to be (raise 10)
-      }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && mid[0] == cardImageImport[0])){
+      }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
         setDisplayLeftButton("Check");
         setDisplayMiddleButton("Bet 10");
         button1 = true;
