@@ -69,9 +69,9 @@ const Home = () => {
   const [imageMid5, setImageMid5] = useState(mid[4]);
   const [imageUser1, setImageUser1] = useState(user[0]);
   const [imageUser2, setImageUser2] = useState(user[1]);
-  const [displayOpp, setDisplayOpp] = useState("Oppents (word for money) " + oppMon);
-  const [displayPot, setDisplayPot] = useState("Amount in pot " + pot);
-  const [displayUser, setDisplayUser] = useState("Mesa munies " + userMon);
+  const [displayOpp, setDisplayOpp] = useState("Computer Chip Amount: " + oppMon);
+  const [displayPot, setDisplayPot] = useState("Amount of Chips in the Pot: " + pot);
+  const [displayUser, setDisplayUser] = useState("User's Chip Amount: " + userMon);
   const [displayLeftButton, setDisplayLeftButton] = useState("Call");
   const [displayMiddleButton, setDisplayMiddleButton] = useState("Bet 10");
   const [displayRightButton, setDisplayRightButton] = useState("Start Game");
@@ -82,9 +82,9 @@ const Home = () => {
   //Update text for opponent's pot
   const updatePot = () => {
     // Update the state variable with a new text
-    setDisplayOpp("Oppents (word for money) " + oppMon);
-    setDisplayPot("Amount in pot " + pot);
-    setDisplayUser("Mesa munies " + userMon);
+    setDisplayOpp("Computer's Chip Amount: " + oppMon);
+    setDisplayPot("Amount of Chips in the Pot:  " + pot);
+    setDisplayUser("User's Chip Amount: " + userMon);
   };
 
   const changeImage = () => {
@@ -189,22 +189,45 @@ const Home = () => {
   function Check() {
     secondLastMove = lastMove;
     lastMove = "CH";
-    console.log("Check Please");
+    console.log("Check");
     turnStart();
   }
 
   function Fold(){
+    //Needs to account for dealer I think
     if(turn == 0){
-      userMon += pot;
-      pot = 0;
+      userWins();
       console.log("Fold by computer");
     }else{
-      oppMon += pot;
-      pot = 0;
+      computerWins();
       console.log("Fold by player");
     }
 
     handStart();
+  }
+
+  function userWins(){
+    userMon += pot;
+    pot = 0;
+  }
+
+  function computerWins(){
+    oppMon += pot;
+    pot = 0;
+  }
+
+  function gameTie(){
+    userMon += (pot/2);
+    oppMon += (pot/2);
+    if((pot % 2) == 1){
+      //Don't know what is right
+      if(dealer){
+        oppMon += 1;
+      }else{
+        userMon += 1;
+      }
+    }
+    pot = 0;
   }
 
   //Shows the user's hand
@@ -244,11 +267,38 @@ const Home = () => {
     }
   }
 
+  function hideFlop(){
+    setImageMid1(cardImageImport[0]);
+    setImageMid2(cardImageImport[0]);
+    setImageMid3(cardImageImport[0]);
+    setImageMid4(cardImageImport[0]);
+    setImageMid5(cardImageImport[0]);
+  }
+
+  function hideOpponent(){
+    setImageOpp1(cardImageImport[0]);
+    setImageOpp2(cardImageImport[0]);
+  }
+
+  function logNumbersToTenBillion() {
+    for (let i = 0; i <= 10000000000; i++) {
+      console.log(i);
+    }
+  }
+
+const delay = ms => new Promise(res => setTimeout(res, ms));
+async function test(){
+  winCheck();
+  revealOpponent();
+  await delay(4000);
+  //Maybe change to handStart while loop or another function while loop
+  handStart();
+}
   //Start of a turn for either bot or player
   function turnStart() {
     
     if((secondLastMove == "R" && lastMove == "CA") || (secondLastMove == "CH" && lastMove == "CH") || (secondLastMove == "CA" && lastMove == "CH")){
-      console.log("Flop thing");
+      console.log("Middle Reveal");
       if(flop == false){
         revealFlop();
         dealChange = true;
@@ -262,7 +312,8 @@ const Home = () => {
         dealChange = true;
         river = true
       }else{
-        winCheck();
+        test();
+        return;
       }
     }
 
@@ -307,42 +358,26 @@ const Home = () => {
   }
 
   function winCheck() {
-    //let userRoyalFlush = false;     // 9
-    //let userStraightFlush = false;  // 8
-    //let user4Kind = false;          // 7
-    //let userFullHouse = false;      // 6
-    //let userFlush = false;          // 5
-    //let userStraight = false;       // 4
-    //let user3Kind = false;          // 3
-    //let user2Pair = false;          // 2
-    //let userPair = false;           // 1
-    //let compRoyalFlush = false;     // 9
-    //let compStraightFlush = false;  // 8
-    //let compFlush = false;          // 7
-    //let comp4Kind = false;          // 6
-    //let compFullHouse = false;      // 5
-    //let compStraight = false;       // 4
-    //let comp3Kind = false;          // 3
-    //let comp2Pair = false;          // 2
-    //let compPair = false;           // 1
-    let userClub = 0;
-    let userHeart = 0;
-    let userSpade = 0;
-    let userDia = 0;
-    let compClub = 0;
-    let compHeart = 0;
-    let compSpade = 0;
-    let compDia = 0;
-    let userFlush = -1;
-    let compFlush = -1;
-    let userStraight = -1;
-    let compStraight = -1;
-    let comp4 = false;
-    let user4 = false;
-    let comp3 = false;
-    let user3 = false;
-    let userPair = 0;
-    let compPair = 0;
+    let userClub = [];
+    let userHeart = [];
+    let userSpade = [];
+    let userDia = [];
+    let compClub = [];
+    let compHeart = [];
+    let compSpade = [];
+    let compDia = [];
+    let userFlush = [];
+    let compFlush = [];
+    let userStraight = [];
+    let compStraight = [];
+    let userStraightFlush = 0;
+    let compStraightFlush = 0;
+    let comp4 = [];
+    let user4 = [];
+    let comp3 = [];
+    let user3 = [];
+    let userPair = [];
+    let compPair = [];
     let user1 = -1;
     let user2 = -1;
     let comp1 = -1;
@@ -371,25 +406,25 @@ const Home = () => {
     for(let i = 0; i < 2; i++){
         if(dealer){
           if(cardRankings[(i*2) + 1][0] == 'club'){
-            userClub++;
+            userClub.push(cardRankings[(i*2) + 1][1]);
           }else if(cardRankings[(i*2) + 1][0] == 'dia'){
-            userDia++;
+            userDia.push(cardRankings[(i*2) + 1][1]);
           }else if(cardRankings[(i*2) + 1][0] == 'heart'){
-            userHeart++;
+            userHeart.push(cardRankings[(i*2) + 1][1]);
           }else{
-            userSpade++;
+            userSpade.push(cardRankings[(i*2) + 1][1]);
           }
           user1 = cardRankings[1][1];
           user2 = cardRankings[3][1];
         }else{
           if(cardRankings[(i*2) + 2][0] == 'club'){
-            userClub++;
+            userClub.push(cardRankings[(i*2) + 2][1]);
           }else if(cardRankings[(i*2) + 2][0] == 'dia'){
-            userDia++;
+            userDia.push(cardRankings[(i*2) + 2][1]);
           }else if(cardRankings[(i*2) + 2][0] == 'heart'){
-            userHeart++;
+            userHeart.push(cardRankings[(i*2) + 2][1]);
           }else{
-            userSpade++;
+            userSpade.push(cardRankings[(i*2) + 2][1]);
           }
           user1 = cardRankings[2][1];
           user2 = cardRankings[4][1];
@@ -398,25 +433,25 @@ const Home = () => {
     for(let i = 0; i < 2; i++){
       if(dealer){
         if(cardRankings[(i*2) + 2][0] == 'club'){
-          compClubClub++;
+          compClub.push(cardRankings[(i*2) + 2][1]);
         }else if(cardRankings[(i*2) + 2][0] == 'dia'){
-          compDia++;
+          compDia.push(cardRankings[(i*2) + 2][1]);
         }else if(cardRankings[(i*2) + 2][0] == 'heart'){
-          compHeart++;
+          compHeart.push(cardRankings[(i*2) + 2][1]);
         }else{
-          compSpade++;
+          compSpade.push(cardRankings[(i*2) + 2][1]);
         }
         comp1 = cardRankings[2][1];
         comp2 = cardRankings[4][1];
       }else{
         if(cardRankings[(i*2) + 1][0] == 'club'){
-          compClub++;
+          compClub.push(cardRankings[(i*2) + 1][1]);
         }else if(cardRankings[(i*2) + 1][0] == 'dia'){
-          compDia++;
+          compDia.push(cardRankings[(i*2) + 1][1]);
         }else if(cardRankings[(i*2) + 1][0] == 'heart'){
-          compHeart++;
+          compHeart.push(cardRankings[(i*2) + 1][1]);
         }else{
-          compSpade++;
+          compSpade.push(cardRankings[(i*2) + 1][1]);
         }
         comp1 = cardRankings[1][1];
         comp2 = cardRankings[3][1];
@@ -424,17 +459,17 @@ const Home = () => {
     }
     for(let i = 5; i < 10; i++){
       if(cardRankings[i][0] == 'club'){
-        compClubClub++;
-        userClub++;
-      }else if(cardRankings[(i) + 2][0] == 'dia'){
-        compDia++;
-        userDia++;
-      }else if(cardRankings[(i) + 2][0] == 'heart'){
-       compHeart++;
-       userHeart++;
+        compClubClub.push(cardRankings[i][1]);
+        userClub.push(cardRankings[i][1]);
+      }else if(cardRankings[i][0] == 'dia'){
+        compDia.push(cardRankings[i][1]);
+        userDia.push(cardRankings[i][1]);
+      }else if(cardRankings[i][0] == 'heart'){
+       compHeart.push(cardRankings[i][1]);
+       userHeart.push(cardRankings[i][1]);
       }else{
-        compSpade++;
-        userSpade++;
+        compSpade.push(cardRankings[i][1]);
+        userSpade.push(cardRankings[i][1]);
       }
     }
 
@@ -473,146 +508,427 @@ const Home = () => {
 
 
     console.log(compList + " Computer " + compListShort);
-    console.log(userList + " user short " + userListShort);
+    console.log(userList + " User short " + userListShort);
 
     //Flush check
-    if(userClub >= 5 || userDia >= 5 || userSpade >= 5 || userHeart >= 5){
-      userFlush = true;
+    if(userClub.length >= 5){
+      userFlush = userClub;
+      console.log("Club");
+    }else if(userDia.length >= 5){
+      userFlush = userDia;
+      console.log("Dia");
+    }else if(userSpade.length >= 5){
+      userFlush = userSpade;
+      console.log("Spade");
+    }else if(userHeart.length >= 5){
+      userFlush = userHeart;
+      console.log("Heart");
     }
-    if(compClub >= 5 || compDia >= 5 || compSpade >= 5 || compHeart >= 5){
-      compFlush = true;
+    if(compClub.length >= 5){
+      compFlush = compClub;
+    }else if(compDia.length >= 5){
+      compFlush = compDia;
+    }else if(compSpade.length >= 5){
+      compFlush = compSpade;
+    }else if(compHeart.length >= 5){
+      compFlush = compHeart;
     }
+
     //Straight check
+    //WRONg START AT END FIRST AND STOP IF MATCHES FLUSH
     for(let i = 0; i < (userListShort-4); i++){
       for(let j = 0; j < 9; j++){
         if(userListShort.slice(i, i+5) == straight[j]){
-          userStraight = true;
+          userStraight = userListShort.slice(i, i+5);
         }
       }
     }
     for(let i = 0; i < (compListShort-4); i++){
       for(let j = 0; j < 9; j++){
         if(compListShort.slice(i, i+5) == straight[j]){
-          compStraight = true;
+          compStraight = compListShort.slice(i, i+5);
         }
       }
     }
     if(userList[6] == 14 && userList.slice(0, 4) == [2, 3, 4, 5]){
-      userStraight = true;
+      userStraight = (userList.slice(0, 4)).concat(userList[6]);
     }
     if(compList[6] == 14 && compList.slice(0, 4) == [2, 3, 4, 5]){
-      compStraight = true;
+      compStraight = (compList.slice(0, 4)).concat(compList[6]);
     }
-        //Royal flush check
-    if((userStraight && userFlush) && !(compStraight && compFlush)){
-      //User wins
-    }
-    if(!(userStraight && userFlush) && (compStraight && compFlush)){
-      //Comp wins
-    }
-    if((userStraight && userFlush) && (compStraight && compFlush)){
-      //Tiebreaker needed
-    }
+
+
+
+    //User wins yo 
+
+
+
         //Straight Flush check
+    //BROKEN NEEDS to BE FIXED
+
+    if((!userStraight.length && !userFlush.length) && !(!compStraight.length && !compFlush.length)){
+      userWins();
+      console.log("User wins by straight flush");
+      return;
+    }
+    if(!(!userStraight.length && !userFlush.length) && (!compStraight.length && !compFlush.length)){
+      computerWins();
+      console.log("Computer wins by srtaight flush");
+      return;
+    }
+    if((!userStraight.length && !userFlush.length) && (!compStraight.length && !compFlush.length)){
+      //Tie breaker
+      if(userList[4] > compList[4]){
+        userWins();
+        console.log("User wins by staight flush 2");
+        return;
+      }else if(userList[4] > compList[4]){
+        computerWins();
+        console.log("Computer wins by staight flush 2");
+        return;
+      }
+      //May need to add something for Royal straight vs weak Ace straight
+    }
+
       //4 of kind
-    if(userList[0] == userList[3] || userList[1] == userList[4] || userList[2] == userList[5] || userList[3] == userList[6] || userList[4] == userList[7]){
-      user4 = true;
+    if(userList[0] == userList[3]){
+      user4 = 0;
+    }else if(userList[1] == userList[4]){
+      user4 = 1;
+    }else if(userList[2] == userList[5]){
+      user4 = 2;
+    }else if(userList[3] == userList[6]){
+      user4 = 3;
+    }else if(userList[4] == userList[7]){
+      user4 = 4;
     }
-    if(compList[0] == compList[3] || compList[1] == compList[4] || compList[2] == compList[5] || compList[3] == compList[6] || compList[4] == compList[7]){
-      comp4 = true;
+
+    if(compList[0] == compList[3]){
+      comp4 = 0;
+    }else if(compList[1] == compList[4]){
+      comp4 = 1;
+    }else if(compList[2] == compList[5]){
+      comp4 = 2;
+    }else if(compList[3] == compList[6]){
+      comp4 = 3;
+    }else if(compList[4] == compList[7]){
+      comp4 = 4;
     }
+
     if(user4 && !comp4){
-      //User wins
+      userWins();
+      console.log("User wins by 4 of kind");
+      return;
     }
     if(!user4 && comp4){
-      //Comp wins
+      computerWins();
+      console.log("Computer wins by 4 of kind");
+      return;
     }
     if(user4 && comp4){
       //Tiebreaker needed
+      if(userList[user4] > compList[comp4]){
+        userWins();
+        console.log("User wins by 4 of kind 2");
+        return;
+      }else if(userList[user4] < compList[comp4]){
+        computerWins();
+        console.log("Computer wins by 4 of kind 2");
+        return;
+      }
     }
       //Full house
-    if(userList[0] == userList[2] || userList[1] == userList[3] || userList[2] == userList[4] || userList[3] == userList[5] || userList[4] == userList[6] || userList[5] == userList[7]){
-      user3 = true;
+    if(userList[0] == userList[2]){
+      user3.push[0];
+    }else if(userList[1] == userList[3]){
+      user3.push[1];
+    }else if(userList[2] == userList[4]){
+      user3.push[2];
+    }else if(userList[3] == userList[5]){
+      user3.push[3];
+    }else if(userList[4] == userList[6]){
+      user3.push[4];
+    }else if(userList[5] == userList[7]){
+      user3.push[5];
     }
-    if(compList[0] == compList[2] || compList[1] == compList[3] || compList[2] == compList[4] || compList[3] == compList[5] || compList[4] == compList[6] || compList[5] == compList[7]){
-      comp3 = true;
+
+    if(compList[0] == compList[2]){
+      comp3.push[0];
+    }else if(compList[1] == compList[3]){
+      comp3.push[1];
+    }else if(compList[2] == compList[4]){
+      comp3.push[2];
+    }else if(compList[3] == compList[5]){
+      comp3.push[3];
+    }else if(compList[4] == compList[6]){
+      comp3.push[4];
+    }else if(compList[5] == compList[7]){
+      comp3.push[5];
     }
 
     for(let i = 0; i < 6; i++){
       if(userList[i] == userList[i+1]){
-        userPair++;
+        userPair.push(i);
       }
     }
     for(let i = 0; i < 6; i++){
       if(compList[i] == compList[i+1]){
-        compPair++;
+        compPair.push(i);
       }
     }
 
-    if((user3 && (userPair > 0)) && !((compPair > 0) && comp3)){
-      //User wins
+    if((user3.length > 0 && (userPair.length > 0)) && !((compPair.length > 0) && comp3.length > 0)){
+      userWins();
+      console.log("User wins by Full house");
+      return;
     }
-    if(!(user3 && (userPair > 0)) && ((compPair > 0) && comp3)){
-      //Comp wins
+    if(!(user3.length > 0 && (userPair.length > 0)) && ((compPair.length > 0) && comp3.length > 0)){
+      computerWins();
+      console.log("Computer wins by Full house");
+      return;
     }
-    if((user3 && (userPair > 0)) && ((compPair > 0) && comp3)){
+    if((user3.length > 0 && (userPair.length > 0)) && ((compPair.length > 0) && comp3.length > 0)){
       //Tie Breaker
+      if(user3[0] > comp3[0]){
+        userWins();
+        console.log("User wins by Full house 2");
+        return;
+      }else if(user3[0] < comp3[0]){
+        computerWins();
+        console.log("Computer wins by Full house 2");
+        return;
+      }
     }
       //flush
-    if(userFlush && !compFlush){
-      //User wins
+    if(userFlush.length >= 5 && compFlush.length < 5){
+      userWins();
+      console.log("User wins by Flush");
+      return;
     }
-    if(!userFlush && compFlush){
-      //Comp wins
+    if(userFlush.length < 5 && compFlush.length >= 5){
+      computerWins();
+      console.log("Computer wins by Flush");
+      return;
     }
-    if(userFlush && compFlush){
+    if(userFlush.length >= 5 && compFlush.length >= 5){
       //Tie breaker
+      //Call the tie breaker function
+      for(let i = 4; i >= 0; i--){
+        if(userFlush[i] > compFlush[i]){
+          userWins();
+          console.log("User wins by Flush 2");
+          return;
+        }else if(compFlush[i] > userFlush[i]){
+          computerWins();
+          console.log("Computer wins by Flush 2");
+          return;
+        }
+      }
+
+      gameTie();
+      console.log("Game tie in Flush");
+      return;
     }
       //Straight
-      if(userStraight && !compStraight){
-        //User wins
+      if(userStraight.length == 5 && compStraight.length != 5){
+        userWins();
+        console.log("User wins by Straight " + userStraight.length);
+        return;
       }
-      if(!userStraight && compStraight){
-        //Comp wins
+      if(userStraight.length != 5 && compStraight.length == 5){
+        computerWins();
+        console.log("Computer wins by Straight");
+        return;
       }
-      if(userStraight && compStraight){
+      if(userStraight.length == 5 && compStraight.length == 5){
         //Tie breaker
+        if(userStraight[4] > compStraight[4]){
+          userWins();
+          console.log("User wins by Straight 2");
+          return;
+        }else if(userStraight[4] > compStraight[4]){
+          computerWins();
+          console.log("Computer wins by Straight 2");
+          return;
+        }else{
+          //Tie split pot
+          //May need to add something for Royal straight vs weak Ace straight'
+          gameTie()
+          console.log("Tie game in straight " + userStraight.length);
+          return;
+        }
       }
       //Three of kind
-      if(user3 && !comp3){
-        //User wins
+      if(user3.length > 0 && !comp3.length > 0){
+        userWins();
+        console.log("User wins by 3 kind");
+        return;
       }
-      if(!user3 && comp3){
-        //Comp wins
+      if(!user3.length > 0 && comp3.length > 0){
+        computerWins();
+        console.log("Computer wins by 3 kind");
+        return;
       }
-      if(user3 && comp3){
+      if(user3.length > 0 && comp3.length > 0){
         //Tie breaker
+        if(user3[0] > comp3[0]){
+          userWins();
+          console.log("User wins by 3 kind 2");
+          return;
+        }else if(user3[0] < comp3[0]){
+          computerWins();
+          console.log("Computer wins by 3 kind 2");
+          return;
+        }
+
+        temp = userList.indexOf(user3[0]);
+        userList.splice(temp, 3);
+        temp = compList.indexOf(comp3[0]);
+        compList.splice(temp, 3);
+        for(let i = 3; i > 1; i--){
+          if(userList[i] > compList[i]){
+            userWins();
+            console.log("User wins by 3 kind 3");
+            return;
+          }else if(userList[i] < compList[i]){
+            computerWins();
+            console.log("Computer wins by 3 kind 3");
+            return;
+          }
+        }
+        //Tie spilt pot
       }
       //Two pair
-      if((userPair > 1) && !(compPair > 1)){
-        //User wins
+      if((userPair.length > 1) && !(compPair.length > 1)){
+        userWins();
+        console.log("User wins by 2 2 kind");
+        return;
       }
-      if(!(userPair > 1) && (compPair > 1)){
-        //Comp wins
+      if(!(userPair.length > 1) && (compPair.length > 1)){
+        computerWins();
+        console.log("Computer wins by 2 2 kind");
+        return;
       }
-      if((userPair > 1) && (compPair > 1)){
+      if((userPair.length > 1) && (compPair.length > 1)){
         //Tie breaker
+        userPair = userList.sort(function (a, b) {  return a - b;  });
+        compPair = compList.sort(function (a, b) {  return a - b;  });
+        if(userPair[1] > compPair[1]){
+          userWins();
+          console.log("User wins by 2 2 kind 2");
+          return;
+        }else if(userPair[1] < compPair[1]){
+          computerWins();
+          console.log("Computer wins by 2 2 kind 2");
+          return;
+        }
+        if(userPair[0] > compPair[0]){
+          userWins();
+          console.log("User wins by 2 2 kind 3");
+          return;
+        }else if(userPair[0] < compPair[0]){
+          computerWins();
+          console.log("Computer wins by 2 2 kind 3");
+          return;
+        }
+        //Have to find highest card that is not apart of pair to break tie
+        temp = userList.indexOf(userPair[1]);
+        userList.splice(temp, 2);
+        temp = compList.indexOf(userPair[0]);
+        userList.splice(temp, 2);
+        temp = userList.indexOf(compPair[1]);
+        compList.splice(temp, 2);
+        temp = compList.indexOf(compPair[0]);
+        compList.splice(temp, 2);
+        if(userList[2] > compList[2]){
+          userWins();
+          console.log("User wins by 2 2 kind 4");
+          return;
+        }else if(userList[2] < compList[2]){
+          computerWins();
+          console.log("Computer wins by 2 2 kind 4");
+          return;
+        }else{
+          //Tie spilt pot
+          gameTie();
+          console.log("Tie in 2 pairs");
+          return;
+        }
       }
       //One pair
-      if((userPair == 1) && !(compPair == 1)){
-        //User wins
+      if((userPair.length == 1) && !(compPair.length == 1)){
+        userWins();
+        console.log("User wins by one pair");
+        return;
       }
-      if(!(userPair == 1) && (compPair == 1)){
-        //Comp wins
+      if(!(userPair.length == 1) && (compPair.length == 1)){
+        computerWins();
+        console.log("Computer wins by one pair");
+        return;
       }
-      if((userPair == 1) && (compPair == 1)){
+      if((userPair.length == 1) && (compPair.length == 1)){
         //Tie breaker
+        if(userPair[0] > compPair[0]){
+          userWins();
+          console.log("User wins by one pair 2");
+          return;
+        }else if(userPair[0] < compPair[0]){
+          computerWins();
+          console.log("Computer wins by one pair 2");
+          return;
+        }
+        temp = userList.indexOf(userPair[0]);
+        userList.splice(temp, 2);
+        temp = compList.indexOf(compPair[0]);
+        compList.splice(temp, 2);
+        //Tie Breaker is top 3 cards not in the pair
+        for(let i = 5; i > 2; i--){
+          if(userList[i] > compList[i]){
+            userWins();
+            console.log("User wins by one pair 3");
+            return;
+          }else if(userList[i] < compList[i]){
+            computerWins();
+            console.log("Computer wins by one pair 3");
+            return;
+          }
+        }
+        //Tie Spilt tie
+        gameTie();
+        console.log("Tie in pair");
+        return;
       }
       //High card
       //Tie breaker logic
+      if(userList.slice(2) == compList.slice(2)){
+        //Game is a tie
+        //Split pot
+        gameTie();
+        console.log("Tie in card high");
+        return;
+      }
+      for(let i = 6; i > 1; i--){
+        if(userList[i] > compList[i]){
+          userWins();
+          console.log("User wins by Card high");
+          return;
+        }else if(compList[i] > userList[i]){
+          computerWins();
+          console.log("Computer wins by Card High");
+          return;
+        }
+      }
   }
 
   function handStart() {
+   //While loop
+
+   if(userMon == 0){
+    alert("The computer has won the game");
+   }else if(oppMon == 0){
+    alert("The human has won the game");
+   }
+
     dealer = (dealer > 0) ? 0 : 1;
     //Blinds - Dealer has the big blind
     //Not sure what to do if the player meant to big blind does not have enough 
@@ -642,6 +958,8 @@ const Home = () => {
     updatePot();
     shuffleDeck();
     revealHand();
+    hideFlop();
+    hideOpponent();
     lastMove = "";
     dealChange = false;
     turn = (dealer > 0) ? 1 : 0;
@@ -654,7 +972,7 @@ const Home = () => {
     setShowButtonCenter(true);
 
     //Del later
-    winCheck();
+    //winCheck();
 
     turnStart();
   }
@@ -733,11 +1051,6 @@ const Home = () => {
         {/* Used as both Folding and start game button */}
           {showButtonRight && <Button theme="pink" onClick={start ? Fold : beginGame}>{displayRightButton}</Button>}
         </div>
-      </div>
-      <div className="amount">
-          <label>
-            Amount to Bet: <input name="myInput" />
-          </label>
       </div>
     </div>
   )

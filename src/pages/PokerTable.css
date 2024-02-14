@@ -57,22 +57,22 @@
     background-size: 50% 100%;
     overflow: hidden;
     object-fit: fill;
-    /*display: flex; */
+    display: flex;
     flex-direction: 'row';
     /*padding: 200px; */
     /*justify-content: space-around; */
     /*background-image: url(./cards/2_of_clubs.png);*/
-    /*background-repeat: no-repeat;*/
+    background-repeat: no-repeat;
   }
 
   .opponent-cards2 {
     width: 20%;
     height: 100%;
     background-size: 50% 100%;
-    /*display: flex; */
+    display: flex; 
     /*justify-content: space-around; */
     /*background-image: url(./cards/2_of_diamonds.png); */
-    /*background-repeat: no-repeat; */
+    background-repeat: no-repeat; 
   }
 
   .community-cards1 {
@@ -80,8 +80,8 @@
     height: 100%;
     background-size: 50% 100%;
     /*background-image: url(./cards/jack_of_clubs.png); */
-    /*background-repeat: no-repeat; */
-    /*display: flex; */
+    background-repeat: no-repeat;
+    display: flex;
     /*justify-content: space-around; */ 
   }
 
@@ -90,8 +90,8 @@
     height: 100%;
     background-size: 50% 100%;
     /*background-image: url(./cards/ace_of_clubs.png); */
-    /*background-repeat: no-repeat; */
-    /*display: flex; */
+    background-repeat: no-repeat;
+    display: flex;
     /*justify-content: space-around; */
   }
 
@@ -100,8 +100,8 @@
     height: 100%;
     background-size: 50% 100%;
     /*background-image: url(./cards/king_of_diamonds.png); */
-    /*background-repeat: no-repeat; */
-    /*display: flex; */
+    background-repeat: no-repeat;
+    display: flex;
     /*justify-content: space-around; */
   }
 
@@ -110,8 +110,8 @@
     height: 100%;
     background-size: 50% 100%;
     /*background-image: url(./cards/queen_of_spades.png); */
-    /*background-repeat: no-repeat; */
-    /*display: flex; */
+    background-repeat: no-repeat;
+    display: flex;
     /*justify-content: space-around; */
   }
 
@@ -120,13 +120,14 @@
     height: 100%;
     background-size: 50% 100%;
     /*background-image: url(./cards/4_of_hearts.png); */
-    /*background-repeat: no-repeat; */
-    /*display: flex; */
+    background-repeat: no-repeat;
+    display: flex;
     /*justify-content: space-around; */
   }
 
   .pot {
     background-color: #000764;
+    color: white;
     height: 5vh;
     width: 100%;
     display: flex;
@@ -138,8 +139,8 @@
     height: 100%;
     background-size: 50% 100%;
     /*background-image: url(./cards/7_of_hearts.png); */
-    /*background-repeat: no-repeat; */
-    /*display: flex; */
+    background-repeat: no-repeat; 
+    display: flex; 
     /*justify-content: space-around; */
   }
 
@@ -148,13 +149,14 @@
     height: 100%;
     background-size: 50% 100%;
     /*background-image: url(./cards/4_of_spades.png); */
-    /*background-repeat: no-repeat; */
-    /*display: flex; */
+    background-repeat: no-repeat;
+    display: flex;
     /*justify-content: space-around; */
   }
 
   .player-chips {
     background-color: #d9ff02;
+    /*color: white; */
     height: 5vh;
     width: 100%;
     display: flex;
@@ -183,7 +185,8 @@
   }
 
   .amount {
-    background-color: #02ccff;
+    background-color: gray;
+    color: white;
     height: 5vh;
     width: 100%;
     display: flex;
