@@ -700,35 +700,35 @@ async function test(){
       }
     }
       //flush
-    if(userFlush.length >= 5 && compFlush.length < 5){
-      userWins();
-      console.log("User wins by Flush");
-      return;
-    }
-    if(userFlush.length < 5 && compFlush.length >= 5){
-      computerWins();
-      console.log("Computer wins by Flush");
-      return;
-    }
-    if(userFlush.length >= 5 && compFlush.length >= 5){
-      //Tie breaker
-      //Call the tie breaker function
-      for(let i = 4; i >= 0; i--){
-        if(userFlush[i] > compFlush[i]){
-          userWins();
-          console.log("User wins by Flush 2");
-          return;
-        }else if(compFlush[i] > userFlush[i]){
-          computerWins();
-          console.log("Computer wins by Flush 2");
-          return;
-        }
-      }
+    // // if(userFlush.length >= 5 && compFlush.length < 5){
+    // //   userWins();
+    // //   console.log("User wins by Flush");
+    // //   return;
+    // // }
+    // // if(userFlush.length < 5 && compFlush.length >= 5){
+    // //   computerWins();
+    // //   console.log("Computer wins by Flush");
+    // //   return;
+    // // }
+    // // if(userFlush.length >= 5 && compFlush.length >= 5){
+    // //   //Tie breaker
+    // //   //Call the tie breaker function
+    // //   for(let i = 4; i >= 0; i--){
+    // //     if(userFlush[i] > compFlush[i]){
+    // //       userWins();
+    // //       console.log("User wins by Flush 2");
+    // //       return;
+    // //     }else if(compFlush[i] > userFlush[i]){
+    // //       computerWins();
+    // //       console.log("Computer wins by Flush 2");
+    // //       return;
+    // //     }
+    // //   }
 
-      gameTie();
-      console.log("Game tie in Flush");
-      return;
-    }
+    //   gameTie();
+    //   console.log("Game tie in Flush");
+    //   return;
+    // }
       //Straight
       if(userStraight.length == 5 && compStraight.length != 5){
         userWins();
