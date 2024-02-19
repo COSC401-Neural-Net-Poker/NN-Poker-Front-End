@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Scenario from "./pages/Scenario";
 import Auth from "./pages/Auth";
 import Navbar from "./components/Navbar";
+import Home from './pages/Home';
 import { useEffect } from "react";
 
 const gameHistoryData = [];
@@ -12,7 +13,7 @@ const gameHistoryData = [];
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <><Navbar /> <h1 className='font-bold text-red-500'>Testing TailwindCSS</h1></>,
+    element: <Home />,
     errorElement: <Error />
   },
   {
