@@ -100,7 +100,7 @@ const Navbar = () => {
       }
 
       {/* This is the half menu that looks better for medium screens */}
-      <div className={`${mobileMenu ? 'opacity-100' : 'opacity-0'} bg-[#4B4B4B] drop-shadow-xl text-white duration-200 transition-all md:h-screen md:w-[325px] lg:hidden hidden fixed top-0 z-10 right-0 overflow-y-hidden md:flex justify-center items-center`}>
+      <div className={`${mobileMenu ? 'right-0' : 'right-[-325px]'} bg-[#4B4B4B] drop-shadow-xl text-white duration-200 transition-all md:h-screen md:w-[325px] lg:hidden hidden fixed top-0 z-10 overflow-y-hidden md:flex justify-center items-center`}>
         <div className='px-3 flex flex-col justify-center items-center w-full h-full'>
           <Link onClick={() => mobileClose()} className='my-3' to="/"><h1>Play Game</h1></Link>
           <Link onClick={() => mobileClose()} className='my-3' to="/scenario-creator"><h1>Scenario</h1></Link>
