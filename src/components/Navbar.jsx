@@ -87,10 +87,10 @@ const Navbar = () => {
       {/* This is the mobile menu */}
       {mobileMenu ? 
       <div className='bg-[#4B4B4B] text-white text-3xl h-screen w-full md:hidden fixed top-0 z-10 left-0 overflow-y-hidden flex justify-center items-center flex-col'>
-        <Link className='my-4' to="/"><h1>Play Game</h1></Link>
-        <Link className='my-4' to="/scenario-creator"><h1>Scenario</h1></Link>
-        <Link className='my-4' to="/history"><h1>Game History</h1></Link>
-        <Link className='my-4' to="/about"><h1>About Project</h1></Link>
+        <Link onClick={() => mobileClose()} className='my-4' to="/"><h1>Play Game</h1></Link>
+        <Link onClick={() => mobileClose()} className='my-4' to="/scenario-creator"><h1>Scenario</h1></Link>
+        <Link onClick={() => mobileClose()} className='my-4' to="/history"><h1>Game History</h1></Link>
+        <Link onClick={() => mobileClose()} className='my-4' to="/about"><h1>About Project</h1></Link>
         {loginStatus === "Sign In" ? <Link onClick={() => mobileClose()} className='my-4' to="/auth"><h1 className='bg-[#FF8200] px-3 py-1 rounded-md'>Login</h1></Link> :
         <h1 className="cursor-pointer my-4  bg-[#ffffff] text-[#4B4B4B] px-3 py-1 rounded-md" onClick={() => handleLogout()}>
           Logout
