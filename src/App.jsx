@@ -41,8 +41,8 @@ function App() {
   }, [])
   
   return (
-    <div className="w-full h-screen flex items-center">
-      <div className="mx-auto max-w-[1500px] w-full h-screen">
+    <div className="w-full min-h-screen flex items-center h-auto">
+      <div className="mx-auto max-w-[1500px] w-full min-h-screen h-auto">
         <RouterProvider router={router} />
       </div>
     </div>

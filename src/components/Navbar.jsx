@@ -113,7 +113,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className={`${logoutWarning ? 'top-0 mt-[80px]' : 'top-[-300px] mt-0'} rounded-xl duration-500 flex justify-center items-center font-bold text-xl text-white ease-in-out transition-all absolute z-30 bg-[#FF8200] h-[75px] m-auto w-[350px]`}>
+      <div className={`${logoutWarning ? 'top-0 mt-[80px]' : 'top-[-300px] mt-0'} rounded-xl drop-shadow-xl duration-500 flex justify-center items-center font-bold text-xl text-white ease-in-out transition-all absolute z-30 bg-[#FF8200] h-[75px] m-auto w-[350px]`}>
           You have successfully logged out!
       </div>
     </>
