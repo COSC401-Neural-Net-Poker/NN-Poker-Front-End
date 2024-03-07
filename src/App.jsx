@@ -4,11 +4,8 @@ import Error from "./pages/Error";
 import About from "./pages/About";
 import Scenario from "./pages/Scenario";
 import Auth from "./pages/Auth";
-import Navbar from "./components/Navbar";
 import Home from './pages/Home';
 import { useEffect } from "react";
-
-const gameHistoryData = [];
 
 const router = createBrowserRouter([
   {
@@ -26,7 +23,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/history",
-    element: <History data={gameHistoryData} />,
+    element: <History />,
   },
   {
     path: "/about",

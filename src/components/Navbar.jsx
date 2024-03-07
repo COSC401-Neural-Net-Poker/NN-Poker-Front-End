@@ -41,7 +41,6 @@ const Navbar = () => {
 
     const timer = setTimeout(() => {
       setLogoutWarning(false)
-      console.log("here")
     }, 2500)
 
     navigate("/");
