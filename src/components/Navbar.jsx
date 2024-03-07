@@ -36,11 +36,9 @@ const Navbar = () => {
     signOut(auth);
     setMobileMenu(false);
     setLogoutWarning(true);
-    console.log("logged out")
 
     const timer = setTimeout(() => {
       setLogoutWarning(false)
-      console.log("here")
     }, 2500)
 
     return () => clearTimeout(timer);
