@@ -4,10 +4,8 @@ import { useState, useEffect } from 'react';
 import Logo from './Logo.png';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const navigate = useNavigate();
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -38,12 +36,12 @@ const Navbar = () => {
     signOut(auth);
     setMobileMenu(false);
     setLogoutWarning(true);
+    console.log("logged out")
 
     const timer = setTimeout(() => {
       setLogoutWarning(false)
+      console.log("here")
     }, 2500)
-
-    navigate("/");
 
     return () => clearTimeout(timer);
   }

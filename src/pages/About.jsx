@@ -2,7 +2,7 @@ import Navbar from '../components/Navbar';
 
 const About = () => {
   return (
-    <>
+    <div className='flex justify-center items-center'>
       <Navbar />
       <div className='pt-[60px] md:pt-[70px] flex justify-center flex-col items-center px-5 min-w-[300px] m-auto pb-[30px]'>
         <h1 className='pt-[20px] font-bold text-3xl'>About the Project</h1>
@@ -68,7 +68,7 @@ const About = () => {
         </div>
 
       </div>
-    </>
+    </div>
   )
 }
 
