@@ -2,10 +2,8 @@ import Navbar from '../components/Navbar';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase';
 import { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
 
 const History = () => {
-  const navigate = useNavigate();
   const [authorized, setAuthorized] = useState(false)
 
   useEffect(() => {
