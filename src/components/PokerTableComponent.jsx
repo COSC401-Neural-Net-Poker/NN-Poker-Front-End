@@ -133,25 +133,25 @@ const PokerTableComponent = () => {
     user[0] = cardImageImport[0];
     user[1] = cardImageImport[0];
 
-    cardRankings[1] = cardRankings[14];
-    cardRankings[2] = cardRankings[26];
+    cardRankings[1] = cardRankings[1];
+    cardRankings[2] = cardRankings[51];
     cardRankings[3] = cardRankings[3];
-    cardRankings[4] = cardRankings[5];
-    cardRankings[5] = cardRankings[19];
-    cardRankings[6] = cardRankings[46];
-    cardRankings[7] = cardRankings[47];
-    cardRankings[8] = cardRankings[50];
-    cardRankings[9] = cardRankings[51];
+    cardRankings[4] = cardRankings[50];
+    cardRankings[5] = cardRankings[15];
+    cardRankings[6] = cardRankings[17];
+    cardRankings[7] = cardRankings[21];
+    cardRankings[8] = cardRankings[29];
+    cardRankings[9] = cardRankings[39];
 
-    cardImageImport[1] = cardImageImport[14];
-    cardImageImport[2] = cardImageImport[26];
+    cardImageImport[1] = cardImageImport[1];
+    cardImageImport[2] = cardImageImport[51];
     cardImageImport[3] = cardImageImport[3];
-    cardImageImport[4] = cardImageImport[5];
-    cardImageImport[5] = cardImageImport[19];
-    cardImageImport[6] = cardImageImport[46];
-    cardImageImport[7] = cardImageImport[47];
-    cardImageImport[8] = cardImageImport[50];
-    cardImageImport[9] = cardImageImport[51];
+    cardImageImport[4] = cardImageImport[50];
+    cardImageImport[5] = cardImageImport[15];
+    cardImageImport[6] = cardImageImport[17];
+    cardImageImport[7] = cardImageImport[21];
+    cardImageImport[8] = cardImageImport[29];
+    cardImageImport[9] = cardImageImport[39];
   }
   
   function Bet() {
@@ -981,7 +981,7 @@ async function de(){
         temp = compList.indexOf(compPair[0]);
         compList.splice(temp, 2);
         //Tie Breaker is top 3 cards not in the pair
-        for(let i = 5; i > 2; i--){
+        for(let i = userList.length-1; i > userList.length-4; i--){
           if(userList[i] > compList[i]){
             userWins();
             console.log("User wins by one pair 3");
@@ -997,15 +997,8 @@ async function de(){
         console.log("Tie in pair");
         return;
       }
+
       //High card
-      //Tie breaker logic
-      if(userList.slice(2) == compList.slice(2)){
-        //Game is a tie
-        //Split pot
-        gameTie();
-        console.log("Tie in card high");
-        return;
-      }
       for(let i = 6; i > 1; i--){
         if(userList[i] > compList[i]){
           userWins();
@@ -1017,6 +1010,9 @@ async function de(){
           return;
         }
       }
+      gameTie();
+      console.log("Tie in card high");
+      return;
   }
 
   function handStart() {
