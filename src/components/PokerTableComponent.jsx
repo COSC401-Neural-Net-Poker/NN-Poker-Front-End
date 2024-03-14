@@ -121,6 +121,38 @@ const PokerTableComponent = () => {
       cardRankings[j] = temp2;
     }
   }
+
+  function playTest() {
+    opp[0] = cardImageImport[0];
+    opp[1] = cardImageImport[0];
+    mid[0] = cardImageImport[0];
+    mid[1] = cardImageImport[0];
+    mid[2] = cardImageImport[0];
+    mid[3] = cardImageImport[0];
+    mid[4] = cardImageImport[0];
+    user[0] = cardImageImport[0];
+    user[1] = cardImageImport[0];
+
+    cardRankings[1] = cardRankings[35];
+    cardRankings[2] = cardRankings[52];
+    cardRankings[3] = cardRankings[3];
+    cardRankings[4] = cardRankings[5];
+    cardRankings[5] = cardRankings[36];
+    cardRankings[6] = cardRankings[28];
+    cardRankings[7] = cardRankings[44];
+    cardRankings[8] = cardRankings[48];
+    cardRankings[9] = cardRankings[32];
+
+    cardImageImport[1] = cardImageImport[35];
+    cardImageImport[2] = cardImageImport[52];
+    cardImageImport[3] = cardImageImport[3];
+    cardImageImport[4] = cardImageImport[5];
+    cardImageImport[5] = cardImageImport[36];
+    cardImageImport[6] = cardImageImport[28];
+    cardImageImport[7] = cardImageImport[44];
+    cardImageImport[8] = cardImageImport[48];
+    cardImageImport[9] = cardImageImport[32];
+  }
   
   function Bet() {
     if(turn == 0) {
@@ -286,7 +318,7 @@ const PokerTableComponent = () => {
   }
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
-async function test(){
+async function de(){
   winCheck();
   revealOpponent();
   await delay(4000);
@@ -311,7 +343,7 @@ async function test(){
         dealChange = true;
         river = true
       }else{
-        test();
+        de();
         return;
       }
     }
@@ -369,8 +401,10 @@ async function test(){
     let compFlush = [];
     let userStraight = [];
     let compStraight = [];
-    let userStraightFlush = 0;
-    let compStraightFlush = 0;
+    let userSAll = [];
+    let compSAll = [];
+    let userStraightFlush = [];
+    let compStraightFlush = [];
     let comp4 = [];
     let user4 = [];
     let comp3 = [];
@@ -381,34 +415,25 @@ async function test(){
     let user2 = -1;
     let comp1 = -1;
     let comp2 = -1;
-    let userList = [];
+    let userList = []; //User cards + middle
     let compList = [];
-    let userListShort = [];
+    let userListShort = []; //User cards without
     let compListShort = [];
     let userHigh = -1;
     let compHigh = -1;
     let straight = [[2, 3, 4, 5 ,6], [3, 4, 5, 6, 7] ,[4, 5, 6, 7, 8], [5, 6, 7, 8, 9], [6, 7, 8, 9, 10], 
       [7, 8, 9, 10, 11], [8, 9, 10, 11, 12], [9, 10, 11, 12, 13], [10, 11, 12, 13, 14]];
-    let straight1 = [2, 3, 4, 5 ,6];
-    let straight2 = [3, 4, 5, 6, 7];
-    let straight3 = [4, 5, 6, 7, 8];
-    let straight4 = [5, 6, 7, 8, 9];
-    let straight5 = [6, 7, 8, 9, 10];
-    let straight6 = [7, 8, 9, 10, 11];
-    let straight7 = [8, 9, 10, 11, 12];
-    let straight8 = [9, 10, 11, 12, 13];
-    let straight9 = [10, 11, 12, 13, 14];
 
     //Change this later is bad
     //Could condesnse by using dealer in math
     //Flush
     for(let i = 0; i < 2; i++){
         if(dealer){
-          if(cardRankings[(i*2) + 1][0] == 'club'){
+          if(cardRankings[(i*2) + 1][0] == 'Club'){
             userClub.push(cardRankings[(i*2) + 1][1]);
-          }else if(cardRankings[(i*2) + 1][0] == 'dia'){
+          }else if(cardRankings[(i*2) + 1][0] == 'Dia'){
             userDia.push(cardRankings[(i*2) + 1][1]);
-          }else if(cardRankings[(i*2) + 1][0] == 'heart'){
+          }else if(cardRankings[(i*2) + 1][0] == 'Heart'){
             userHeart.push(cardRankings[(i*2) + 1][1]);
           }else{
             userSpade.push(cardRankings[(i*2) + 1][1]);
@@ -416,11 +441,11 @@ async function test(){
           user1 = cardRankings[1][1];
           user2 = cardRankings[3][1];
         }else{
-          if(cardRankings[(i*2) + 2][0] == 'club'){
+          if(cardRankings[(i*2) + 2][0] == 'Club'){
             userClub.push(cardRankings[(i*2) + 2][1]);
-          }else if(cardRankings[(i*2) + 2][0] == 'dia'){
+          }else if(cardRankings[(i*2) + 2][0] == 'Dia'){
             userDia.push(cardRankings[(i*2) + 2][1]);
-          }else if(cardRankings[(i*2) + 2][0] == 'heart'){
+          }else if(cardRankings[(i*2) + 2][0] == 'Heart'){
             userHeart.push(cardRankings[(i*2) + 2][1]);
           }else{
             userSpade.push(cardRankings[(i*2) + 2][1]);
@@ -431,11 +456,11 @@ async function test(){
     }
     for(let i = 0; i < 2; i++){
       if(dealer){
-        if(cardRankings[(i*2) + 2][0] == 'club'){
+        if(cardRankings[(i*2) + 2][0] == 'Club'){
           compClub.push(cardRankings[(i*2) + 2][1]);
-        }else if(cardRankings[(i*2) + 2][0] == 'dia'){
+        }else if(cardRankings[(i*2) + 2][0] == 'Dia'){
           compDia.push(cardRankings[(i*2) + 2][1]);
-        }else if(cardRankings[(i*2) + 2][0] == 'heart'){
+        }else if(cardRankings[(i*2) + 2][0] == 'Heart'){
           compHeart.push(cardRankings[(i*2) + 2][1]);
         }else{
           compSpade.push(cardRankings[(i*2) + 2][1]);
@@ -443,11 +468,11 @@ async function test(){
         comp1 = cardRankings[2][1];
         comp2 = cardRankings[4][1];
       }else{
-        if(cardRankings[(i*2) + 1][0] == 'club'){
+        if(cardRankings[(i*2) + 1][0] == 'Club'){
           compClub.push(cardRankings[(i*2) + 1][1]);
-        }else if(cardRankings[(i*2) + 1][0] == 'dia'){
+        }else if(cardRankings[(i*2) + 1][0] == 'Dia'){
           compDia.push(cardRankings[(i*2) + 1][1]);
-        }else if(cardRankings[(i*2) + 1][0] == 'heart'){
+        }else if(cardRankings[(i*2) + 1][0] == 'Heart'){
           compHeart.push(cardRankings[(i*2) + 1][1]);
         }else{
           compSpade.push(cardRankings[(i*2) + 1][1]);
@@ -457,13 +482,13 @@ async function test(){
       }
     }
     for(let i = 5; i < 10; i++){
-      if(cardRankings[i][0] == 'club'){
-        compClubClub.push(cardRankings[i][1]);
+      if(cardRankings[i][0] == 'Club'){
+        compClub.push(cardRankings[i][1]);
         userClub.push(cardRankings[i][1]);
-      }else if(cardRankings[i][0] == 'dia'){
+      }else if(cardRankings[i][0] == 'Dia'){
         compDia.push(cardRankings[i][1]);
         userDia.push(cardRankings[i][1]);
-      }else if(cardRankings[i][0] == 'heart'){
+      }else if(cardRankings[i][0] == 'Heart'){
        compHeart.push(cardRankings[i][1]);
        userHeart.push(cardRankings[i][1]);
       }else{
@@ -497,11 +522,13 @@ async function test(){
     for(let i = 0; i < userListShort.length - 1; i++){
       if(userListShort[i] == userListShort[i + 1]){
         userListShort.splice(i, 1);
+        i--;
       }
     }
     for(let i = 0; i < compListShort.length - 1; i++){
       if(compListShort[i] == compListShort[i + 1]){
         compListShort.splice(i, 1);
+        i--;
       }
     }
 
@@ -512,84 +539,122 @@ async function test(){
     //Flush check
     if(userClub.length >= 5){
       userFlush = userClub;
-      console.log("Club");
+      console.log("H-Club");
     }else if(userDia.length >= 5){
       userFlush = userDia;
-      console.log("Dia");
+      console.log("H-Dia " + userDia);
     }else if(userSpade.length >= 5){
       userFlush = userSpade;
-      console.log("Spade");
+      console.log("H-Spade " + userSpade);
     }else if(userHeart.length >= 5){
       userFlush = userHeart;
-      console.log("Heart");
+      console.log("H-Heart");
     }
     if(compClub.length >= 5){
       compFlush = compClub;
+      console.log("C-Club");
     }else if(compDia.length >= 5){
       compFlush = compDia;
+      console.log("C-Dia");
     }else if(compSpade.length >= 5){
       compFlush = compSpade;
+      console.log("C-Spade");
     }else if(compHeart.length >= 5){
       compFlush = compHeart;
+      console.log("C-Heart");
     }
+
+    userFlush = userFlush.sort(function (a, b) {  return a - b;  });
+    compFlush = compFlush.sort(function (a, b) {  return a - b;  });
 
     //Straight check
-    //WRONg START AT END FIRST AND STOP IF MATCHES FLUSH
-    for(let i = 0; i < (userListShort-4); i++){
+    for(let i = 0; i < (userListShort.length-4); i++){
       for(let j = 0; j < 9; j++){
-        if(userListShort.slice(i, i+5) == straight[j]){
+        if(userListShort.slice(i, i+5).every(function(element, index) {
+          return element === straight[j][index]; })){
           userStraight = userListShort.slice(i, i+5);
+          userSAll.push(userListShort.slice(i, i+5));
         }
       }
     }
-    for(let i = 0; i < (compListShort-4); i++){
+    for(let i = 0; i < (compListShort.length-4); i++){
       for(let j = 0; j < 9; j++){
-        if(compListShort.slice(i, i+5) == straight[j]){
+        if(compListShort.slice(i, i+5).every(function(element, index) {
+          return element === straight[j][index]; })){
           compStraight = compListShort.slice(i, i+5);
+          compSAll.push(compListShort.slice(i, i+5));
         }
       }
     }
-    if(userList[6] == 14 && userList.slice(0, 4) == [2, 3, 4, 5]){
-      userStraight = (userList.slice(0, 4)).concat(userList[6]);
+
+    //Check for weak ace straight
+    if(userList[6] == 14 && userListShort[0] == 2 && userListShort[1] == 3 && userListShort[2] == 4 && userListShort[3] == 5){
+      if(userStraight < 5  || (userStraight[4] != 14)){
+        userStraight = (userListShort.slice(0, 4)).concat(userList[6]);
+      }
+      userSAll.push((userListShort.slice(0, 4)).concat(userList[6]));
     }
-    if(compList[6] == 14 && compList.slice(0, 4) == [2, 3, 4, 5]){
-      compStraight = (compList.slice(0, 4)).concat(compList[6]);
+    if(compList[6] == 14 && compListShort.slice(0, 4) == [2, 3, 4, 5]){
+      if(compStraight < 5  || (compStraight[4] != 14)){
+        compStraight = (compListShort.slice(0, 4)).concat(compList[6]);
+      }
+      compSAll.push((compListShort.slice(0, 4)).concat(compList[6]));
     }
 
 
+    //Straight Flush Setup
+    if(userStraight.length >= 5 && userFlush.length >= 5){
+      for(let i = 0; i < (userFlush.length-4); i++){
+        for(let j = 0; j < userSAll.length; j++){
+          if(userFlush.slice(i, i+5).every(function(element, index) {
+            return element === userSAll[j][index]; })){
+              userStraightFlush = userFlush.slice(i, i+5)
+          }
+        }
+      }
+    }
+    if(compStraight.length >= 5 && compFlush.length >= 5){
+      for(let i = 0; i < (compFlush.length-4); i++){
+        for(let j = 0; j < compSAll.length; j++){
+          if(compFlush.slice(i, i+5).every(function(element, index) {
+            return element === compSAll[j][index]; })){
+              compStraightFlush = compFlush.slice(i, i+5)
+          }
+        }
+      }
+    }
 
-    //User wins yo 
-
-
-
-        //Straight Flush check
-    //BROKEN NEEDS to BE FIXED
-
-    if((!userStraight.length && !userFlush.length) && !(!compStraight.length && !compFlush.length)){
+    //Straight Flush Win Check
+    if(userStraightFlush.length >= 5 && !(compStraightFlush.length >= 5)){
       userWins();
       console.log("User wins by straight flush");
       return;
     }
-    if(!(!userStraight.length && !userFlush.length) && (!compStraight.length && !compFlush.length)){
+    if(!(userStraightFlush.length >= 5) && compStraightFlush.length >= 5 ){
       computerWins();
-      console.log("Computer wins by srtaight flush");
+      console.log("Computer wins by straight flush");
       return;
     }
-    if((!userStraight.length && !userFlush.length) && (!compStraight.length && !compFlush.length)){
+    if(userStraightFlush.length >= 5 && compStraightFlush.length >= 5){
       //Tie breaker
-      if(userList[4] > compList[4]){
-        userWins();
-        console.log("User wins by staight flush 2");
-        return;
-      }else if(userList[4] > compList[4]){
-        computerWins();
-        console.log("Computer wins by staight flush 2");
-        return;
+      for(let i = 4; i >= 0 ; i--){
+        if(userStraightFlush[i] > compStraightFlush[i]){
+          userWins();
+          console.log("User wins by straight flush 2");
+          return;
+        }else if(userStraightFlush[i] < compStraightFlush[i]){
+          computerWins();
+          console.log("Computer wins by straight flush 2");
+          return;
+        }
       }
+      console.log("Tie by straight flush 2");
+      gameTie();
+      return;
       //May need to add something for Royal straight vs weak Ace straight
     }
 
-      //4 of kind
+    //4 of kind
     if(userList[0] == userList[3]){
       user4 = 0;
     }else if(userList[1] == userList[4]){
@@ -699,63 +764,62 @@ async function test(){
       }
     }
       //flush
-    // // if(userFlush.length >= 5 && compFlush.length < 5){
-    // //   userWins();
-    // //   console.log("User wins by Flush");
-    // //   return;
-    // // }
-    // // if(userFlush.length < 5 && compFlush.length >= 5){
-    // //   computerWins();
-    // //   console.log("Computer wins by Flush");
-    // //   return;
-    // // }
-    // // if(userFlush.length >= 5 && compFlush.length >= 5){
-    // //   //Tie breaker
-    // //   //Call the tie breaker function
-    // //   for(let i = 4; i >= 0; i--){
-    // //     if(userFlush[i] > compFlush[i]){
-    // //       userWins();
-    // //       console.log("User wins by Flush 2");
-    // //       return;
-    // //     }else if(compFlush[i] > userFlush[i]){
-    // //       computerWins();
-    // //       console.log("Computer wins by Flush 2");
-    // //       return;
-    // //     }
-    // //   }
+    if(userFlush.length >= 5 && compFlush.length < 5){
+       userWins();
+       console.log("User wins by Flush");
+       return;
+     }
+     if(userFlush.length < 5 && compFlush.length >= 5){
+       computerWins();
+       console.log("Computer wins by Flush");
+       return;
+     }
+     if(userFlush.length >= 5 && compFlush.length >= 5){
+       //Tie breaker
+       for(let i = 0; i < 5; i--){
+         if(userFlush[userFlush.length - 1 - i] > compFlush[compFlush.length - 1 - i]){
+           userWins();
+           console.log("User wins by Flush 2");
+           return;
+         }else if(compFlush[compFlush.length - 1 - i] > userFlush[userFlush.length - 1 - i]){
+           computerWins();
+           console.log("Computer wins by Flush 2");
+           return;
+         }
+       }
+       gameTie();
+       console.log("Tie game in Flush")
+    }
 
-    //   gameTie();
-    //   console.log("Game tie in Flush");
-    //   return;
-    // }
       //Straight
       if(userStraight.length == 5 && compStraight.length != 5){
         userWins();
-        console.log("User wins by Straight " + userStraight.length);
+        console.log("User wins by Straight " + userStraight);
         return;
       }
       if(userStraight.length != 5 && compStraight.length == 5){
         computerWins();
-        console.log("Computer wins by Straight");
+        console.log("Computer wins by Straight " + compStraight);
         return;
       }
       if(userStraight.length == 5 && compStraight.length == 5){
         //Tie breaker
-        if(userStraight[4] > compStraight[4]){
-          userWins();
-          console.log("User wins by Straight 2");
-          return;
-        }else if(userStraight[4] > compStraight[4]){
-          computerWins();
-          console.log("Computer wins by Straight 2");
-          return;
-        }else{
-          //Tie split pot
-          //May need to add something for Royal straight vs weak Ace straight'
-          gameTie()
-          console.log("Tie game in straight " + userStraight.length);
-          return;
+        for(let i = 4; i >= 0; i--){
+          if(userStraight[i] > compStraight[i]){
+            userWins();
+            console.log("User wins by Straight 2 " + userStraight);
+            return;
+          }
+          if(compStraight[i] > userStraight[i]){
+            computerWins();
+            console.log("Computer wins by Straight 2 " + compStraight);
+            return;
+          }
         }
+        //Tie split pot
+        gameTie()
+        console.log("Tie game in double straight ");
+        return;
       }
       //Three of kind
       if(user3.length > 0 && !comp3.length > 0){
@@ -955,7 +1019,8 @@ async function test(){
     }
 
     updatePot();
-    shuffleDeck();
+    playTest();
+    //shuffleDeck();
     revealHand();
     hideFlop();
     hideOpponent();
