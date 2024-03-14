@@ -134,24 +134,24 @@ const PokerTableComponent = () => {
     user[1] = cardImageImport[0];
 
     cardRankings[1] = cardRankings[35];
-    cardRankings[2] = cardRankings[52];
+    cardRankings[2] = cardRankings[45];
     cardRankings[3] = cardRankings[3];
     cardRankings[4] = cardRankings[5];
     cardRankings[5] = cardRankings[36];
-    cardRankings[6] = cardRankings[28];
-    cardRankings[7] = cardRankings[44];
-    cardRankings[8] = cardRankings[48];
-    cardRankings[9] = cardRankings[32];
+    cardRankings[6] = cardRankings[52];
+    cardRankings[7] = cardRankings[49];
+    cardRankings[8] = cardRankings[50];
+    cardRankings[9] = cardRankings[51];
 
     cardImageImport[1] = cardImageImport[35];
-    cardImageImport[2] = cardImageImport[52];
+    cardImageImport[2] = cardImageImport[45];
     cardImageImport[3] = cardImageImport[3];
     cardImageImport[4] = cardImageImport[5];
     cardImageImport[5] = cardImageImport[36];
-    cardImageImport[6] = cardImageImport[28];
-    cardImageImport[7] = cardImageImport[44];
-    cardImageImport[8] = cardImageImport[48];
-    cardImageImport[9] = cardImageImport[32];
+    cardImageImport[6] = cardImageImport[52];
+    cardImageImport[7] = cardImageImport[49];
+    cardImageImport[8] = cardImageImport[50];
+    cardImageImport[9] = cardImageImport[51];
   }
   
   function Bet() {
@@ -405,8 +405,8 @@ async function de(){
     let compSAll = [];
     let userStraightFlush = [];
     let compStraightFlush = [];
-    let comp4 = [];
-    let user4 = [];
+    let comp4 = 0;
+    let user4 = 0;
     let comp3 = [];
     let user3 = [];
     let userPair = [];
@@ -654,31 +654,28 @@ async function de(){
       //May need to add something for Royal straight vs weak Ace straight
     }
 
-    //4 of kind
+    //4 of kind Set up
     if(userList[0] == userList[3]){
-      user4 = 0;
+      user4 = userList[0];
     }else if(userList[1] == userList[4]){
-      user4 = 1;
+      user4 = userList[1];
     }else if(userList[2] == userList[5]){
-      user4 = 2;
+      user4 = userList[2];
     }else if(userList[3] == userList[6]){
-      user4 = 3;
-    }else if(userList[4] == userList[7]){
-      user4 = 4;
+      user4 = userList[3];
     }
 
     if(compList[0] == compList[3]){
-      comp4 = 0;
+      comp4 = compList[0];
     }else if(compList[1] == compList[4]){
-      comp4 = 1;
+      comp4 = compList[1];
     }else if(compList[2] == compList[5]){
-      comp4 = 2;
+      comp4 = compList[2];
     }else if(compList[3] == compList[6]){
-      comp4 = 3;
-    }else if(compList[4] == compList[7]){
-      comp4 = 4;
+      comp4 = compList[3];
     }
 
+    //4 of kind Win Check
     if(user4 && !comp4){
       userWins();
       console.log("User wins by 4 of kind");
@@ -691,53 +688,74 @@ async function de(){
     }
     if(user4 && comp4){
       //Tiebreaker needed
-      if(userList[user4] > compList[comp4]){
+      if(user4 > comp4){
         userWins();
         console.log("User wins by 4 of kind 2");
         return;
-      }else if(userList[user4] < compList[comp4]){
+      }else if(user4 < comp4){
         computerWins();
         console.log("Computer wins by 4 of kind 2");
         return;
       }
+      temp = userList.indexOf(user4);
+      userList.splice(temp, 4);
+      temp = compList.indexOf(comp4);
+      compList.splice(temp, 4);
+      if(userList[userList.length-1] > compList[compList.length-1]){
+        userWins();
+        console.log("User wins by 4 of kind 3");
+        return;
+      }else if(userList[userList.length-1] < compList[compList.length-1]){
+        computerWins();
+        console.log("Computer wins by 4 of kind 3");
+        return;
+      }
     }
-      //Full house
+
+    //Full house
     if(userList[0] == userList[2]){
-      user3.push[0];
+      user3.push(userList[0]);
     }else if(userList[1] == userList[3]){
-      user3.push[1];
+      user3.push(userList[1]);
     }else if(userList[2] == userList[4]){
-      user3.push[2];
+      user3.push(userList[2]);
     }else if(userList[3] == userList[5]){
-      user3.push[3];
+      user3.push(userList[3]);
     }else if(userList[4] == userList[6]){
-      user3.push[4];
-    }else if(userList[5] == userList[7]){
-      user3.push[5];
+      user3.push(userList[4]);
     }
 
     if(compList[0] == compList[2]){
-      comp3.push[0];
+      comp3.push(compList[0]);
     }else if(compList[1] == compList[3]){
-      comp3.push[1];
+      comp3.push(compList[1]);
     }else if(compList[2] == compList[4]){
-      comp3.push[2];
+      comp3.push(compList[2]);
     }else if(compList[3] == compList[5]){
-      comp3.push[3];
+      comp3.push(compList[3]);
     }else if(compList[4] == compList[6]){
-      comp3.push[4];
-    }else if(compList[5] == compList[7]){
-      comp3.push[5];
+      comp3.push(compList[4]);
     }
 
-    for(let i = 0; i < 6; i++){
-      if(userList[i] == userList[i+1]){
-        userPair.push(i);
+    let tmp = userList.slice()
+    for(let i = 0; i < user3.length; i++){
+      temp = userList.indexOf(user3[i]);
+      tmp.splice(temp, 3);
+    }
+    let tmp2 = compList.slice()
+    for(let i = 0; i < comp3.length; i++){
+      temp = compList.indexOf(comp3[i]);
+      tmp2.splice(temp, 3);
+    }
+
+    for(let i = 0; i < tmp.length-1; i++){
+      if(tmp[i] == tmp[i+1]){
+        userPair.push(tmp[i]);
       }
     }
-    for(let i = 0; i < 6; i++){
-      if(compList[i] == compList[i+1]){
-        compPair.push(i);
+    for(let i = 0; i < tmp2.length-1; i++){
+      if(tmp2[i] == tmp2[i+1]){
+        compPair.push(tmp[i]);
       }
     }
 
@@ -753,17 +771,33 @@ async function de(){
     }
     if((user3.length > 0 && (userPair.length > 0)) && ((compPair.length > 0) && comp3.length > 0)){
       //Tie Breaker
-      if(user3[0] > comp3[0]){
+      if(user3[user3.length-1] > comp3[comp3.length-1]){
         userWins();
         console.log("User wins by Full house 2");
         return;
-      }else if(user3[0] < comp3[0]){
+      }else if(user3[user3.length-1] < comp3[comp3.length-1]){
         computerWins();
         console.log("Computer wins by Full house 2");
         return;
       }
+
+      if(userPair[userPair.length-1] > compPair[compPair.length-1]){
+        userWins();
+        console.log("User wins by Full house 3");
+        return;
+      }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
+        computerWins();
+        console.log("Computer wins by Full house 3");
+        return;
+      }
+
+      //Tie game
+      gameTie();
+      console.log("Tie game in Full house");
+      return;
     }
-      //flush
+
+    //Flush
     if(userFlush.length >= 5 && compFlush.length < 5){
        userWins();
        console.log("User wins by Flush");
@@ -834,11 +868,11 @@ async function de(){
       }
       if(user3.length > 0 && comp3.length > 0){
         //Tie breaker
-        if(user3[0] > comp3[0]){
+        if(user3[user3.length-1] > comp3[comp3.length-1]){
           userWins();
           console.log("User wins by 3 kind 2");
           return;
-        }else if(user3[0] < comp3[0]){
+        }else if(user3[user3.length-1] < comp3[comp3.length-1]){
           computerWins();
           console.log("Computer wins by 3 kind 2");
           return;
@@ -851,7 +885,7 @@ async function de(){
         for(let i = 3; i > 1; i--){
           if(userList[i] > compList[i]){
             userWins();
-            console.log("User wins by 3 kind 3");
+            console.log("User wins by 3 kind 3 " + userList[i]);
             return;
           }else if(userList[i] < compList[i]){
             computerWins();
@@ -860,6 +894,8 @@ async function de(){
           }
         }
         //Tie spilt pot
+        gameTie();
+        return;
       }
       //Two pair
       if((userPair.length > 1) && !(compPair.length > 1)){
