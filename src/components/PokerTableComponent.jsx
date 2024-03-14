@@ -133,23 +133,23 @@ const PokerTableComponent = () => {
     user[0] = cardImageImport[0];
     user[1] = cardImageImport[0];
 
-    cardRankings[1] = cardRankings[35];
-    cardRankings[2] = cardRankings[45];
+    cardRankings[1] = cardRankings[14];
+    cardRankings[2] = cardRankings[26];
     cardRankings[3] = cardRankings[3];
     cardRankings[4] = cardRankings[5];
-    cardRankings[5] = cardRankings[36];
-    cardRankings[6] = cardRankings[52];
-    cardRankings[7] = cardRankings[49];
+    cardRankings[5] = cardRankings[19];
+    cardRankings[6] = cardRankings[46];
+    cardRankings[7] = cardRankings[47];
     cardRankings[8] = cardRankings[50];
     cardRankings[9] = cardRankings[51];
 
-    cardImageImport[1] = cardImageImport[35];
-    cardImageImport[2] = cardImageImport[45];
+    cardImageImport[1] = cardImageImport[14];
+    cardImageImport[2] = cardImageImport[26];
     cardImageImport[3] = cardImageImport[3];
     cardImageImport[4] = cardImageImport[5];
-    cardImageImport[5] = cardImageImport[36];
-    cardImageImport[6] = cardImageImport[52];
-    cardImageImport[7] = cardImageImport[49];
+    cardImageImport[5] = cardImageImport[19];
+    cardImageImport[6] = cardImageImport[46];
+    cardImageImport[7] = cardImageImport[47];
     cardImageImport[8] = cardImageImport[50];
     cardImageImport[9] = cardImageImport[51];
   }
@@ -900,52 +900,52 @@ async function de(){
       //Two pair
       if((userPair.length > 1) && !(compPair.length > 1)){
         userWins();
-        console.log("User wins by 2 2 kind");
+        console.log("User wins by 2 Pair");
         return;
       }
       if(!(userPair.length > 1) && (compPair.length > 1)){
         computerWins();
-        console.log("Computer wins by 2 2 kind");
+        console.log("Computer wins by 2 Pair");
         return;
       }
       if((userPair.length > 1) && (compPair.length > 1)){
         //Tie breaker
-        userPair = userList.sort(function (a, b) {  return a - b;  });
-        compPair = compList.sort(function (a, b) {  return a - b;  });
-        if(userPair[1] > compPair[1]){
+        //userPair = userList.sort(function (a, b) {  return a - b;  });
+        //compPair = compList.sort(function (a, b) {  return a - b;  });
+        if(userPair[userPair.length-1] > compPair[compPair.length-1]){
           userWins();
-          console.log("User wins by 2 2 kind 2");
+          console.log("User wins by 2 Pair 2");
           return;
-        }else if(userPair[1] < compPair[1]){
+        }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
           computerWins();
-          console.log("Computer wins by 2 2 kind 2");
+          console.log("Computer wins by 2 Pair 2");
           return;
         }
-        if(userPair[0] > compPair[0]){
+        if(userPair[userPair.length-2] > compPair[compPair.length-2]){
           userWins();
-          console.log("User wins by 2 2 kind 3");
+          console.log("User wins by 2 Pair 3");
           return;
-        }else if(userPair[0] < compPair[0]){
+        }else if(userPair[userPair.length-2] < compPair[compPair.length-2]){
           computerWins();
-          console.log("Computer wins by 2 2 kind 3");
+          console.log("Computer wins by 2 Pair 3");
           return;
         }
         //Have to find highest card that is not apart of pair to break tie
-        temp = userList.indexOf(userPair[1]);
+        temp = userList.indexOf(userPair[userPair.length-1]);
         userList.splice(temp, 2);
-        temp = compList.indexOf(userPair[0]);
+        temp = userList.indexOf(userPair[userPair.length-2]);
         userList.splice(temp, 2);
-        temp = userList.indexOf(compPair[1]);
+        temp = compList.indexOf(compPair[compPair.length-1]);
         compList.splice(temp, 2);
-        temp = compList.indexOf(compPair[0]);
+        temp = compList.indexOf(compPair[compPair.length-2]);
         compList.splice(temp, 2);
-        if(userList[2] > compList[2]){
+        if(userList[userList.length-1] > compList[compList.length-1]){
           userWins();
-          console.log("User wins by 2 2 kind 4");
+          console.log("User wins by 2 Pair 4");
           return;
-        }else if(userList[2] < compList[2]){
+        }else if(userList[userList.length-1] < compList[compList.length-1]){
           computerWins();
-          console.log("Computer wins by 2 2 kind 4");
+          console.log("Computer wins by 2 Pair 4");
           return;
         }else{
           //Tie spilt pot
