@@ -3,6 +3,7 @@ import '../pages/PokerTable.css';
 import styled from 'styled-components';
 import cardImageImport from '../pages/cardImageImport';
 import cardRankings from '../pages/cardRankings';
+// import GameState from './GameState';
 
 let pot = 0;
 let oppMon = 500;
@@ -1148,6 +1149,7 @@ async function de(){
           {showButtonRight && <Button theme="pink" onClick={start ? Fold : beginGame}>{displayRightButton}</Button>}
         </div>
       </div>
+      {/* <GameState /> */}
     </div>
   )
 }
