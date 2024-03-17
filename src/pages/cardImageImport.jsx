@@ -1,4 +1,4 @@
-import back from './cards/back.png';
+import back from './cards/BackCard.svg';
 import club2 from './cards/2_of_clubs.svg';
 import dia2 from './cards/2_of_diamonds.svg';
 import heart2 from './cards/2_of_hearts.svg';

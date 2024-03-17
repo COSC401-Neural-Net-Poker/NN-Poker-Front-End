@@ -3,7 +3,9 @@ import '../pages/PokerTable.css';
 import styled from 'styled-components';
 import cardImageImport from '../pages/cardImageImport';
 import cardRankings from '../pages/cardRankings';
-// import GameState from './GameState';
+import GameState from './GameState';
+import BackFlip from "../pages/cards/BackFlip.svg";
+import DeckBruh from "../pages/cards/DeckBruh.svg";
 
 let pot = 0;
 let oppMon = 500;
@@ -78,6 +80,10 @@ const PokerTableComponent = () => {
   const [showButtonLeft, setShowButtonLeft] = useState(false);
   const [showButtonCenter, setShowButtonCenter] = useState(false);
   const [showButtonRight, setShowButtonRight] = useState(true);
+  const [cssReveal, setCssReveal] = useState("")
+  const [firstThreeMiddle, setFirstThreeMiddle] = useState("")
+  const [fourthMiddle, setFourthMiddle] = useState("")
+  const [lastMiddle, setLastMiddle] = useState("")
 
   //Update text for opponent's pot
   const updatePot = () => {
@@ -264,28 +270,58 @@ const PokerTableComponent = () => {
 
   //Shows the user's hand
   //The order the cards are dealt is based on who is the dealer
-  function revealHand() {
+  async function revealHand() {
     if(dealer){
+      setImageUser1(cardImageImport[0])
+      setImageUser2(cardImageImport[0])
+      setCssReveal("d")
+      await delay(600)
+      setImageUser1(cardImageImport[0])
+      setImageUser2(cardImageImport[0])
+      await delay(300)
       setImageUser1(cardImageImport[1]);
       setImageUser2(cardImageImport[3]);
+      setCssReveal("")
+
     }else{
+      setImageUser1(cardImageImport[0])
+      setImageUser2(cardImageImport[0])
+      setCssReveal("d")
+      await delay(600)
+      setImageUser1(cardImageImport[0])
+      setImageUser2(cardImageImport[0])
+      await delay(300)
       setImageUser1(cardImageImport[2]);
       setImageUser2(cardImageImport[4]);
+      setCssReveal("")
       console.log("User not dealer");
     }
   }
 
-  function revealFlop() {
+  async function revealFlop() {
+    setFirstThreeMiddle("scale-[150%]")
+    await delay(100)
+    setFirstThreeMiddle("")
+    await delay(100)
+    setFirstThreeMiddle("scale-[150%]")
+    await delay(100)
+    setFirstThreeMiddle("")
     setImageMid1(cardImageImport[5]);
     setImageMid2(cardImageImport[6]);
     setImageMid3(cardImageImport[7]);
   }
 
-  function revealTurn() {
+  async function revealTurn() {
+    setFourthMiddle("scale-[150%]")
+    await delay(700)
+    setFourthMiddle("")
     setImageMid4(cardImageImport[8]);
   }
 
-  function revealRiver() {
+  async function revealRiver() {
+    setLastMiddle("scale-[150%]")
+    await delay(700)
+    setLastMiddle("")
     setImageMid5(cardImageImport[9]);
   }
 
@@ -1097,23 +1133,23 @@ async function de(){
       </div>
       <div className="table-middle">
         <div className="community-cards1">
-          <img src={imageMid1} alt="Current Card" />
+          <img className={`${firstThreeMiddle}`} src={imageMid1} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="community-cards2">
-          <img src={imageMid2} alt="Current Card" />
+          <img className={`${firstThreeMiddle}`} src={imageMid2} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="community-cards3">
-          <img src={imageMid3} alt="Current Card" />
+          <img className={`${firstThreeMiddle}`} src={imageMid3} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="community-cards4">
-          <img src={imageMid4} alt="Current Card" />
+          <img className={`${fourthMiddle}`} src={imageMid4} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="community-cards5">
-          <img src={imageMid5} alt="Current Card" />
+          <img className={`${lastMiddle}`} src={imageMid5} alt="Current Card" />
           {/* Display community cards here */}
         </div>
       </div>
@@ -1121,11 +1157,18 @@ async function de(){
           {displayPot}
       </div>
       <div className="table-bottom">
-        <div className="player-card1">
-          <img src={imageUser1} alt="Current Card" />
+        <div className={`${cssReveal === "" ? 'right-[200vw] bottom-[200vh]' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[40%] -translate-y-[47%]'} absolute transition-all duration-300 ease-in-out`}>
+          <img className={`${cssReveal}`} src={imageUser1} alt="Current Card" />
+        </div>
+        <div className={`${cssReveal === "" ? 'right-[200vw] bottom-[200vh]' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[45%] -translate-y-[50%]'} absolute transition-all duration-300 ease-in-out`}>
+          <img className={`${cssReveal}`} src={imageUser1} alt="Current Card" />
+        </div>
+        <div className={`${cssReveal === "" ? 'player-card1' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[53%]'} transition-all duration-300 ease-in-out`}>
+          <img className={`${cssReveal}`} src={imageUser1} alt="Current Card" />
           {/* Display player cards and information here */}
         </div>
-        <div className="player-card2">
+        {}
+        <div className={`${cssReveal === "" ? 'player-card2' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[55%] -translate-y-[56%]'} transition-all duration-300 ease-in-out`}>
          <img src={imageUser2} alt="Current Card" />
          {/* Display player cards and information here */}
         </div>
@@ -1149,7 +1192,7 @@ async function de(){
           {showButtonRight && <Button theme="pink" onClick={start ? Fold : beginGame}>{displayRightButton}</Button>}
         </div>
       </div>
-      {/* <GameState /> */}
+      <GameState />
     </div>
   )
 }
