@@ -22,6 +22,8 @@ let postFlop = false;
 let flop = false;
 let theTurn = false;
 let river = false;
+let round = [0, 0, 0, 0]
+let roundNumber = 0;
 
 const theme = {
   blue: {
@@ -183,7 +185,6 @@ const PokerTableComponent = () => {
         console.log("Bet of 10 by user");
       }
     }
-
     turn = (turn > 0) ? 0 : 1; 
     updatePot();
     first = 0;
@@ -193,7 +194,7 @@ const PokerTableComponent = () => {
   }
 
   function Raise() {
-
+    //Condense to final player variable which says whos turn it is
     if(turn == 0) {
       if(first == 1){
         oppMon -= 15;
@@ -202,7 +203,7 @@ const PokerTableComponent = () => {
       }else{
         oppMon -= 20;
         pot += 20;
-        console.log("Raise of 20 by computer");
+        console.log("Raise of 20 by computer " + round[roundNumber]);
       }
     }else{
       if(first == 1){
@@ -212,10 +213,11 @@ const PokerTableComponent = () => {
       }else{
         userMon -= 20;
         pot += 20;
-        console.log("Raise of 20 by player");
+        console.log("Raise of 20 by player + " + round[roundNumber]);
       }
     }
 
+    round[roundNumber] += 1;
     turn = (turn > 0) ? 0 : 1;
     updatePot();
     first = 0;
@@ -362,67 +364,132 @@ async function de(){
   //Maybe change to handStart while loop or another function while loop
   handStart();
 }
-  //Start of a turn for either bot or player
-  function turnStart() {
-    
-    if((secondLastMove == "R" && lastMove == "CA") || (secondLastMove == "CH" && lastMove == "CH") || (secondLastMove == "CA" && lastMove == "CH")){
-      console.log("Middle Reveal");
-      if(flop == false){
-        revealFlop();
-        dealChange = true;
-        flop = true;
-      }else if(theTurn == false){
-        revealTurn();
-        dealChange = true;
-        theTurn = true;
-      }else if(river == false){
-        revealRiver();
-        dealChange = true;
-        river = true
-      }else{
-        de();
-        return;
-      }
-    }
 
-    //Big Blind Goes First After the Flop
-    if(dealChange == true){
-      turn = (dealer > 0) ? 1 : 0;
-      dealChange = false;
-      postFlop = true;
-      lastMove = "";
-      secondLastMove = "";
+//Start of a turn for either bot or player
+function turnStart() {
+  if((secondLastMove == "R" && lastMove == "CA") || (secondLastMove == "CH" && lastMove == "CH") || (secondLastMove == "CA" && lastMove == "CH")){
+    console.log("Middle Reveal");
+    setShowButtonLeft(true);
+    if(flop == false){
+      revealFlop();
+      dealChange = true;
+      flop = true;
+      roundNumber = 1;
+    }else if(theTurn == false){
+      revealTurn();
+      dealChange = true;
+      theTurn = true;
+      roundNumber = 2;
+    }else if(river == false){
+      revealRiver();
+      dealChange = true;
+      river = true
+      roundNumber = 3;
+    }else{
+      de();
+      return;
     }
+  }
 
-    //if(turn == 1){
-      //Call function to make fen string
-      //Call api
-      //Do what api says
-    //}
-    //If player
-    //else{
-      //No money means you can't bet
-      if(userMon == 0 || oppMon == 0){
-        setDisplayMiddleButton(false);
-        //In the future have an auto advance function
-      }
-      if(first == 1){
-        setDisplayMiddleButton("Bet 5");
-        setDisplayLeftButton("Raise 15");
-        setDisplayRightButton("Fold");
-        button1 = false;
-      //Right of or may be changed to own else if because (bet 10) may need to be (raise 10)
-      }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
-        setDisplayLeftButton("Check");
-        setDisplayMiddleButton("Bet 10");
-        button1 = true;
-      }else{
-        setDisplayMiddleButton("Bet 10");
-        setDisplayLeftButton("Raise 20");
-        setDisplayRightButton("Fold");
-        button1 = false;
-      }
-    //}
+  //Big Blind Goes First After the Flop
+  if(dealChange == true){
+    turn = (dealer > 0) ? 1 : 0;
+    dealChange = false;
+    postFlop = true;
+    lastMove = "";
+    secondLastMove = "";
+  }
+
+  //if(turn == 1){
+  //  let che = 0;
+  //  let be = 0;
+  //  let rai = 0;
+  //  let fo = 0;
+  //  //Call comBinaryConvert()
+  //  //Set actions avaiable
+  //  if(oppMon == 0){
+  //    //Maybe nothing
+  //    che = 1;
+  //  }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
+  //    che = 1;
+  //    be = 1;
+  //  }else{
+  //    be = 1;
+  //    rai = 1;
+  //    fo = 1;
+  //  }
+  //  let ava = [be, rai, fo, che];
+    //Call api
+    //Do what api says
+  //}
+  //If player
+  //else{
+    //No money means you can't bet
+    if(userMon == 0 || oppMon == 0){
+      setDisplayMiddleButton(false);
+      //In the future have an auto advance function
+    }
+    if(first == 1){
+      setDisplayLeftButton("Raise 15");
+      setDisplayMiddleButton("Bet 5");
+      setDisplayRightButton("Fold");
+      button1 = false;
+    //Right of or may be changed to own else if because (bet 10) may need to be (raise 10)
+    }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
+      setDisplayLeftButton("Check");
+      setDisplayMiddleButton("Bet 10");
+      setDisplayRightButton("Fold");
+      button1 = true;
+    }else if(round[roundNumber] == 4){
+      //May need to be 3?
+      console.log("Three raise rule")
+      setShowButtonLeft(false);
+      setDisplayMiddleButton("Bet 10");
+      setDisplayRightButton("Fold");
+      //This is wrong
+    }else{
+      setDisplayMiddleButton("Bet 10");
+      setDisplayLeftButton("Raise 20");
+      setDisplayRightButton("Fold");
+      button1 = false;
+    }
+  }
+
+  function comBinaryConvert(){
+    comBin = Array(72).fill(0);
+    var suit = {
+      Spade: 0,
+      Heart: 13,
+      Dia: 26,
+      Club: 39
+    };
+    cardConvert = array[-1, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0];
+    //Get just computer's cards
+    if(dealer){
+      comBin[cardConvert[cardRankings[2][1]] + suit[cardRankings[2][0]]] = 1;
+      comBin[cardConvert[cardRankings[4][1]] + suit[cardRankings[4][0]]] = 1;
+    }else{
+      comBin[cardConvert[cardRankings[1][1]] + suit[cardRankings[1][0]]] = 1;
+      comBin[cardConvert[cardRankings[3][1]] + suit[cardRankings[3][0]]] = 1;
+    }
+    //Get flop's cards
+    if(flop){
+      comBin[cardConvert[cardRankings[5][1]] + suit[cardRankings[5][0]]] = 1;
+      comBin[cardConvert[cardRankings[6][1]] + suit[cardRankings[6][0]]] = 1;
+      comBin[cardConvert[cardRankings[7][1]] + suit[cardRankings[7][0]]] = 1;
+    }
+    //Get the turn's cards
+    if(theTurn){
+      comBin[cardConvert[cardRankings[8][1]] + suit[cardRankings[8][0]]] = 1;
+    }
+    //Get the river's cards
+    if(river){
+      comBin[cardConvert[cardRankings[9][1]] + suit[cardRankings[9][0]]] = 1;
+    }
+    //Set the raise number
+    //Don't understand raising set
+
+    return comBin;
   }
 
   function winCheck() {
@@ -1053,7 +1120,7 @@ async function de(){
   }
 
   function handStart() {
-   //While loop
+   //While loop maybe
 
    if(userMon == 0){
     alert("The computer has won the game");
@@ -1088,8 +1155,8 @@ async function de(){
     }
 
     updatePot();
-    playTest();
-    //shuffleDeck();
+    shuffleDeck();
+    //playTest();
     revealHand();
     hideFlop();
     hideOpponent();
@@ -1101,12 +1168,9 @@ async function de(){
     flop = false;
     theTurn = false;
     river = false;
+    roundNumber = 0;
     setShowButtonLeft(true);
     setShowButtonCenter(true);
-
-    //Del later
-    //winCheck();
-
     turnStart();
   }
 
