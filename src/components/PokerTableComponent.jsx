@@ -140,6 +140,13 @@ const PokerTableComponent = () => {
     }
   }
 
+  const resetBoard = async () => {
+    console.log("resetting poker table")
+    // reset the poker table, setup the new game
+    // I don't know how to do this (BRANDON BUDDY)
+  }
+
+
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
     // (BRANDON BUDDY)
@@ -1316,10 +1323,10 @@ function turnStart() {
           {showButtonRight && <Button theme="pink" onClick={start ? Fold : beginGame}>{displayRightButton}</Button>}
         </div>
       </div>
-      <GameState startGame={gameStart} gameState={gameState} />
+      <GameState startGame={gameStart} gameState={gameState} endGame={resetBoard} />
       <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
       {/* This below is for testing the saveHistory() implementation */}
-      <button onClick={() => saveHistory()}>Save History</button>
+      {/* <button onClick={() => saveHistory()}>Save History</button> */}
     </div>
   )
 }
