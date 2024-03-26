@@ -95,6 +95,8 @@ const PokerTableComponent = () => {
   const [userInstance, setUserInstance] = useState(null)
 
   // Wherever the game is at an ending point, we need to do setGameState("over")
+  // and we also need to run saveHistory() and either pass in our game data or just track it for each
+  // new game with state.
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -108,8 +110,8 @@ const PokerTableComponent = () => {
     return () => listen()
   }, []);
 
-  // handle the end to a game
-  const gameEnd = async () => {
+  // (BRANDON BUDDY) Whenever the game comes to a close, we need to call this function to save the game history automatically
+  const saveHistory = async () => {
     // This will save the game data to the users history array
     if (loggedIn) {
       // this currentGame variable will be populated from state during our game
@@ -133,17 +135,21 @@ const PokerTableComponent = () => {
         )
       }
       catch(error) {
-          console.log(error)
+        console.log(error)
       }
     }
+  }
+
+  const resetBoard = async () => {
     console.log("resetting poker table")
     // reset the poker table, setup the new game
+    // I don't know how to do this (BRANDON BUDDY)
   }
 
 
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-
+    // (BRANDON BUDDY)
     // We can now make our API call to the backend, and then wait for 
     // a response to be returned with the gameState
   }
@@ -1317,8 +1323,10 @@ function turnStart() {
           {showButtonRight && <Button theme="pink" onClick={start ? Fold : beginGame}>{displayRightButton}</Button>}
         </div>
       </div>
-      <GameState startGame={gameStart} gameState={gameState} endGame={gameEnd} />
+      <GameState startGame={gameStart} gameState={gameState} endGame={resetBoard} />
       <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
+      {/* This below is for testing the saveHistory() implementation */}
+      {/* <button onClick={() => saveHistory()}>Save History</button> */}
     </div>
   )
 }
