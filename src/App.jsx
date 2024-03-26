@@ -32,7 +32,6 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  
   useEffect(() => {
     // Firebase pull history data from user if user exists
   }, [])
