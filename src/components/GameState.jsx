@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const GameState = ({gameState = "start", startGame, endGame}) => {
+const GameState = ({gameState = "start", startGame}) => {
   const [visibility, setVisbility] = useState(true)
   const handleClick = (gs) => {
     if (gs === "start") {
@@ -10,7 +10,7 @@ const GameState = ({gameState = "start", startGame, endGame}) => {
     else {
       setVisbility(false)
       console.log("deleting modal")
-      endGame()
+      startGame(true)
     }
   }
   return (
