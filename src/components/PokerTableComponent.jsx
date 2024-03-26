@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../pages/PokerTable.css';
 import styled from 'styled-components';
 import cardImageImport from '../pages/cardImageImport';
@@ -6,6 +6,8 @@ import cardRankings from '../pages/cardRankings';
 import GameState from './GameState';
 import BackFlip from "../pages/cards/BackFlip.svg";
 import DeckBruh from "../pages/cards/DeckBruh.svg";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from '../firebase';
 
 let pot = 0;
 let oppMon = 500;
@@ -57,7 +59,6 @@ const Button = styled.button`
 `;
 
 const PokerTableComponent = () => {
-
   let temp;
   let temp2;
   let opp = [cardImageImport[0], cardImageImport[0]];
@@ -86,6 +87,38 @@ const PokerTableComponent = () => {
   const [firstThreeMiddle, setFirstThreeMiddle] = useState("")
   const [fourthMiddle, setFourthMiddle] = useState("")
   const [lastMiddle, setLastMiddle] = useState("")
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [isGameStarted, setIsGameStarted] = useState(false)
+  const [gameState, setGameState] = useState("start")
+
+  // Wherever the game is at an ending point, we need to do setGameState("over")
+
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) setLoggedIn(true)
+      else setLoggedIn(false)
+    });
+
+    return () => listen()
+  }, []);
+
+  // handle the end to a game
+  const gameEnd = async () => {
+    if (loggedIn) {
+      // we need to send this data to firebase users collection
+      console.log("logged in, saving data")
+    }
+    console.log("resetting poker table")
+    // reset the poker table, setup the new game
+  }
+
+
+  const gameStart = async (cond) => {
+    setIsGameStarted(cond)
+
+    // We can now make our API call to the backend, and then wait for 
+    // a response to be returned with the gameState
+  }
 
   //Update text for opponent's pot
   const updatePot = () => {
@@ -1256,7 +1289,8 @@ function turnStart() {
           {showButtonRight && <Button theme="pink" onClick={start ? Fold : beginGame}>{displayRightButton}</Button>}
         </div>
       </div>
-      <GameState />
+      <GameState startGame={gameStart} gameState={gameState} endGame={gameEnd} />
+      <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
     </div>
   )
 }

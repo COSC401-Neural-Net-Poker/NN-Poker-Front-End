@@ -1,9 +1,17 @@
 import { useState } from "react"
 
-const GameState = ({gameState} = "start") => {
+const GameState = ({gameState = "start", startGame, endGame}) => {
   const [visibility, setVisbility] = useState(true)
-  const handleClick = () => {
-    setVisbility(false)
+  const handleClick = (gs) => {
+    if (gs === "start") {
+      setVisbility(false)
+      startGame(true)
+    }
+    else {
+      setVisbility(false)
+      console.log("deleting modal")
+      endGame()
+    }
   }
   return (
     <>
@@ -13,8 +21,8 @@ const GameState = ({gameState} = "start") => {
               <h1>{gameState === "over" ? 'Game Over, Wanna Play Again?' : 'Ready To Play?'}</h1>
               <div>
                   {gameState === "over" ?
-                  <button>Play Again!</button> : 
-                  <button onClick={() => handleClick()}>Start Game!</button>}
+                  <button onClick={() => handleClick(gameState)}>Play Again!</button> : 
+                  <button onClick={() => handleClick(gameState)}>Start Game!</button>}
               </div>
           </div>
       </div> :
