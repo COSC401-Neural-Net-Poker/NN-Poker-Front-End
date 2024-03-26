@@ -6,12 +6,16 @@
 ### Setup
 1.) Git clone with SSH
 ``` git clone git@github.com:COSC401-Neural-Net-Poker/NN-Poker-Front-End.git```
+
 2.) Enter the directory
 ```cd NN-Poker-Front-End```
+
 3.) Add secret environmental variables
 ```.env```
+
 4.) Install dependencies
 ```npm install```
+
 5.) Run locally
 ```npm run dev```
 
