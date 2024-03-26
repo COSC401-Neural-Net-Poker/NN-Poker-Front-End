@@ -4,7 +4,7 @@ const ListOfResults = ({history = []}) => {
         {history.map((game, ind) => {
             return(
                 <div key={ind} className="w-full mb-3 text-white flex justify-between items-center h-[30px] bg-slate-500">
-                    <h1>{game.result}</h1>
+                    <h1>{game.date}</h1>
                 </div>
             )
         })}
