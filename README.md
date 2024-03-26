@@ -1,8 +1,19 @@
-# React + Vite
+# NN Poker Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Prerequisites
+- Install latest version of Node and NPM
 
-Currently, two official plugins are available:
+### Setup
+1.) Git clone with SSH
+``` git clone git@github.com:COSC401-Neural-Net-Poker/NN-Poker-Front-End.git```
+2.) Enter the directory
+```cd NN-Poker-Front-End```
+3.) Add secret environmental variables
+```.env```
+4.) Install dependencies
+```npm install```
+5.) Run locally
+```npm run dev```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### IMPORTANT:
+To run this locally, you must be given the secret environmental variables mentioned in **step 3**. If you do not have access to these, you may request access via email **jshoffn3@vols.utk.edu**. Otherwise, you can experience this project [here](https://bluff-buddy.web.app/).
