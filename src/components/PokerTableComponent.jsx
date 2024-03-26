@@ -7,7 +7,8 @@ import GameState from './GameState';
 import BackFlip from "../pages/cards/BackFlip.svg";
 import DeckBruh from "../pages/cards/DeckBruh.svg";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 let pot = 0;
 let oppMon = 500;
@@ -90,12 +91,17 @@ const PokerTableComponent = () => {
   const [loggedIn, setLoggedIn] = useState(false)
   const [isGameStarted, setIsGameStarted] = useState(false)
   const [gameState, setGameState] = useState("start")
+  const [gameHistory, setGameHistory] = useState([])
+  const [userInstance, setUserInstance] = useState(null)
 
   // Wherever the game is at an ending point, we need to do setGameState("over")
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
-      if (user) setLoggedIn(true)
+      if (user) {
+        setLoggedIn(true)
+        setUserInstance(user)
+      }
       else setLoggedIn(false)
     });
 
@@ -104,9 +110,31 @@ const PokerTableComponent = () => {
 
   // handle the end to a game
   const gameEnd = async () => {
+    // This will save the game data to the users history array
     if (loggedIn) {
-      // we need to send this data to firebase users collection
-      console.log("logged in, saving data")
+      // this currentGame variable will be populated from state during our game
+      // hard-coded for the time-being
+      let currentGame = {
+        result: "win",
+        date: "03-26-2024",
+        rounds: 3
+      }
+      try {
+        const userRef = doc(db, "users", userInstance?.uid)
+        const docSnap = await getDoc(userRef)
+        const userData = docSnap.data()
+        let pastGames = userData?.history || []
+        await setDoc(
+            userRef,
+            {
+              history: [...pastGames, currentGame]
+            },
+            { merge: true }
+        )
+      }
+      catch(error) {
+          console.log(error)
+      }
     }
     console.log("resetting poker table")
     // reset the poker table, setup the new game
