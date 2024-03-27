@@ -118,8 +118,30 @@ const PokerTableComponent = () => {
       // hard-coded for the time-being
       let currentGame = {
         result: "win",
-        date: "03-26-2024",
-        rounds: 3
+        date: "3-27-2024",
+        numOfHands: 13,
+        handHistory: [
+          {
+            totalPotAmount: 50,
+            computerBetAmount: 25,
+            playerBetAmount: 25,
+            cards: ["Club3", "Dia3", "Heart12", "Spade14", "Club2", "Heart6", "Dia10", "Dia11", "Heart7"],
+            winCondition: "fold",
+            foldRound: 3,
+            winner: "computer",
+            winningHand: null
+          },
+          {
+            totalPotAmount: 75,
+            computerBetAmount: 25,
+            playerBetAmount: 50,
+            cards: ["Club6", "Heart3", "Heart12", "Spade4", "Club2", "Heart6", "Dia10", "Club11", "Heart7"],
+            winCondition: "completed",
+            foldRound: null,
+            winner: "player",
+            winningHand: ["Club14", "Club13", "Club12", "Club11", "Club10"]
+          },
+        ]
       }
       try {
         const userRef = doc(db, "users", userInstance?.uid)
@@ -1326,7 +1348,7 @@ function turnStart() {
       <GameState startGame={gameStart} gameState={gameState} endGame={resetBoard} />
       <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
       {/* This below is for testing the saveHistory() implementation */}
-      {/* <button onClick={() => saveHistory()}>Save History</button> */}
+      <button onClick={() => saveHistory()}>Save History</button>
     </div>
   )
 }
