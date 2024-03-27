@@ -34,4 +34,4 @@
 
 
 ### IMPORTANT:
-To run this locally, you must be given the secret environmental variables mentioned in **step 3**. If you do not have access to these, you may request access via email **jshoffn3@vols.utk.edu**. Otherwise, you can experience this project [here](https://bluff-buddy.web.app/).
+To run this locally, you must be given the secret environmental variables mentioned in **step 3**. If you do not have access to these, you may request access via email **jshoffn3@vols.utk.edu**.
