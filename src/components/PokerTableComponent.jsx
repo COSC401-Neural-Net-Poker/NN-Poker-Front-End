@@ -14,7 +14,6 @@ let pot = 0;
 let oppMon = 500;
 let userMon = 500;
 let turn;
-let start = 0;
 let dealer = 1;
 let secondLastMove = "";
 let lastMove = "";
@@ -83,7 +82,7 @@ const PokerTableComponent = () => {
   const [displayRightButton, setDisplayRightButton] = useState("Start Game");
   const [showButtonLeft, setShowButtonLeft] = useState(false);
   const [showButtonCenter, setShowButtonCenter] = useState(false);
-  const [showButtonRight, setShowButtonRight] = useState(true);
+  const [showButtonRight, setShowButtonRight] = useState(false);
   const [cssReveal, setCssReveal] = useState("")
   const [firstThreeMiddle, setFirstThreeMiddle] = useState("")
   const [fourthMiddle, setFourthMiddle] = useState("")
@@ -140,11 +139,12 @@ const PokerTableComponent = () => {
     }
   }
 
-  const gameStart = async (cond) => {
+  //Starts the game
+  const gameStart = (cond) => {
     setIsGameStarted(cond)
-    // (BRANDON BUDDY)
-    // We can now make our API call to the backend, and then wait for 
-    // a response to be returned with the gameState
+    userMon = 500
+    oppMon = 500
+    handStart()
   }
 
   //Update text for opponent's pot
@@ -426,7 +426,8 @@ async function de(){
 }
 
 //Start of a turn for either bot or player
-function turnStart() {
+async function turnStart() {
+  //Flip cards
   if((secondLastMove == "R" && lastMove == "CA") || (secondLastMove == "CH" && lastMove == "CH") || (secondLastMove == "CA" && lastMove == "CH")){
     console.log("Middle Reveal");
     setShowButtonLeft(true);
@@ -1179,15 +1180,21 @@ function turnStart() {
       return;
   }
 
+  //Used at the start of each hand
   function handStart() {
-   //While loop maybe
 
-   if(userMon == 0){
-    alert("The computer has won the game");
-   }else if(oppMon == 0){
-    alert("The human has won the game");
-   }
+    //Game is over
+    if(userMon == 0){
+      alert("The computer has won the game");
+      saveHistory()
+      gameStart()
+    }else if(oppMon == 0){
+      alert("The human has won the game");
+      saveHistory()
+      gameStart()
+    }
 
+  
     dealer = (dealer > 0) ? 0 : 1;
     //Blinds - Dealer has the big blind
     //Not sure what to do if the player meant to big blind does not have enough 
@@ -1231,13 +1238,8 @@ function turnStart() {
     roundNumber = 0;
     setShowButtonLeft(true);
     setShowButtonCenter(true);
+    setShowButtonRight(true);
     turnStart();
-  }
-
-  function beginGame() {
-    setDisplayMiddleButton("Bet 10");
-    handStart();
-    start = 1;
   }
 
   return (
@@ -1313,7 +1315,7 @@ function turnStart() {
         </div>
         <div className="fold">
         {/* Used as both Folding and start game button */}
-          {showButtonRight && <Button theme="pink" onClick={start ? Fold : beginGame}>{displayRightButton}</Button>}
+          {showButtonRight && <Button theme="pink" onClick={Fold}>{displayRightButton}</Button>}
         </div>
       </div>
       <GameState startGame={gameStart} gameState={gameState} />
