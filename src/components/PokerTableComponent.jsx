@@ -117,8 +117,30 @@ const PokerTableComponent = () => {
       // hard-coded for the time-being
       let currentGame = {
         result: "win",
-        date: "03-26-2024",
-        rounds: 3
+        date: "3-27-2024",
+        numOfHands: 13,
+        handHistory: [
+          {
+            totalPotAmount: 50,
+            computerBetAmount: 25,
+            playerBetAmount: 25,
+            cards: ["Club3", "Dia3", "Heart12", "Spade14", "Club2", "Heart6", "Dia10", "Dia11", "Heart7"],
+            winCondition: "fold",
+            foldRound: 3,
+            winner: "computer",
+            winningHand: null
+          },
+          {
+            totalPotAmount: 75,
+            computerBetAmount: 25,
+            playerBetAmount: 50,
+            cards: ["Club6", "Heart3", "Heart12", "Spade4", "Club2", "Heart6", "Dia10", "Club11", "Heart7"],
+            winCondition: "completed",
+            foldRound: null,
+            winner: "player",
+            winningHand: ["Club14", "Club13", "Club12", "Club11", "Club10"]
+          },
+        ]
       }
       try {
         const userRef = doc(db, "users", userInstance?.uid)
@@ -139,8 +161,14 @@ const PokerTableComponent = () => {
     }
   }
 
-  //Starts the game
-  const gameStart = (cond) => {
+  const resetBoard = async () => {
+    console.log("resetting poker table")
+    // reset the poker table, setup the new game
+    // I don't know how to do this (BRANDON BUDDY)
+  }
+
+
+  const gameStart = async (cond) => {
     setIsGameStarted(cond)
     userMon = 500
     oppMon = 500
@@ -1318,7 +1346,7 @@ async function turnStart() {
           {showButtonRight && <Button theme="pink" onClick={Fold}>{displayRightButton}</Button>}
         </div>
       </div>
-      <GameState startGame={gameStart} gameState={gameState} />
+      <GameState startGame={gameStart} gameState={gameState} endGame={resetBoard} />
       <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
       {/* This below is for testing the saveHistory() implementation */}
       <button onClick={() => saveHistory()}>Save History</button>
