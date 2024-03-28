@@ -182,17 +182,17 @@ const Round = ({roundData = {}}) => {
         <div className="bg-green-800 p-4 justify-center items-center rounded-lg z-20 md:w-[600px] md:h-[700px] w-full h-[60%] flex flex-col fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="w-full h-1/3 flex justify-center items-center">
             {topCards.map((card, ind) => {
-              return(<img key={ind} className="md:w-1/6 mx-1 w-[100px]" src={card} />)
+            return(<img key={ind} className="md:w-1/6 mx-1 w-1/5" src={card} />)
             })}
           </div>
           <div className="w-full h-1/3 flex justify-around items-center">
             {middleCards.map((card, ind) => {
-              return(<img key={ind} className="md:w-1/6 mx-1 w-[100px]" src={card} />)
+              return(<img key={ind} className="md:w-1/6 mx-1 w-1/5" src={card} />)
             })}
           </div>
           <div className="w-full h-1/3 flex justify-center items-center">
             {bottomCards.map((card, ind) => {
-              return(<img key={ind} className="md:w-1/6 mx-1 w-[100px]" src={card} />)
+              return(<img key={ind} className="md:w-1/6 mx-1 w-1/5" src={card} />)
             })}
           </div>
         </div>
