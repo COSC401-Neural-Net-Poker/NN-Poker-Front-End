@@ -22,22 +22,22 @@ const Game = ({historyData = []}) => {
   return (
     <div className='w-full h-screen pt-[70px] px-5 flex justify-center items-center'>
       <Navbar />
-      <div className="flex w-full items-center h-full flex-col bg-red-200">
-        <div className='flex justify-around text-3xl md:flex-row flex-col'>
+      <div className="flex w-full items-center h-full flex-col">
+        <div className='flex md:justify-around items-center text-3xl md:flex-row flex-col'>
             <h1 className='px-3'><span className='font-bold'>Result:</span> {historyData[id]?.result}</h1>
             <h1 className='px-3'><span className='font-bold'>Date:</span> {historyData[id]?.date}</h1>
             <h1 className='px-3'><span className='font-bold'># of Hands:</span> {historyData[id]?.numOfHands}</h1> 
         </div>
         <h1 className='pt-[20px] font-bold text-3xl'>Hands</h1>
-        <div className='mt-[20px] w-1/2 bg-slate-600 h-auto'>
+        <div className='mt-[20px] w-1/2 h-auto'>
           {historyData[id]?.handHistory.map((round, ind) => {
               return(
-                  <Round key={ind} roundData={round} />
+                <Round key={ind} roundData={round} roundNum={ind} />
               )
           })}
         </div>
       </div>
-      <Link to="/history" className="fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-[60px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 text-lg rounded">Go Back</Link>            
+      <Link to="/history" className="fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-[60px] bg-[#FF8200] hover:text-[#FF8200] hover:bg-white duration-150 ease-in-out transition-all text-white font-bold py-3 px-6 text-lg rounded-lg">Go Back</Link>            
     </div>
   )
 }

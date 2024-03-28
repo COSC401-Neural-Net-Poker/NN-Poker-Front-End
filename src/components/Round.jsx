@@ -163,7 +163,7 @@ const cardMapper = {
   "Spade14": cardImages[52]
 }
 
-const Round = ({roundData = {}}) => {
+const Round = ({roundData = {}, roundNum = 1}) => {
   const [modalOpen, setModalOpen] = useState(false)
 
   let topCards = roundData?.cards.slice(0, 2)
@@ -178,7 +178,7 @@ const Round = ({roundData = {}}) => {
     <>
       {modalOpen ? 
       <>
-        <div onClick={() => setModalOpen(false)} className="z-10 w-full h-screen absolute top-0 left-0 bg-black/50"></div>
+        <div onClick={() => setModalOpen(false)} className="z-10 w-full h-screen absolute top-0 left-0 bg-black/70"></div>
         <div className="bg-green-800 p-4 justify-center items-center rounded-lg z-20 md:w-[600px] md:h-[700px] w-full h-[60%] flex flex-col fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="w-full h-1/3 flex justify-center items-center">
             {topCards.map((card, ind) => {
@@ -202,8 +202,8 @@ const Round = ({roundData = {}}) => {
       }
 
 
-      <div onClick={() => setModalOpen(true)}>
-          {roundData.totalPotAmount}
+      <div className="my-3 w-full cursor-pointer bg-[#cbcfcc] hover:bg-[#4B4B4B] hover:text-[#cbcfcc] duration-150 ease-in-out transition-all text-[#4B4B4B] flex justify-center items-center text-3xl font-bold" onClick={() => setModalOpen(true)}>
+          {roundNum + 1}
       </div>
     </>
   )
