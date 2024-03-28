@@ -116,15 +116,15 @@ const PokerTableComponent = () => {
       // this currentGame variable will be populated from state during our game
       // hard-coded for the time-being
       let currentGame = {
-        result: "win",
-        date: "3-27-2024",
-        numOfHands: 13,
+        result: "loss",
+        date: "3-28-2024",
+        numOfHands: 2,
         handHistory: [
           {
-            totalPotAmount: 50,
-            computerBetAmount: 25,
-            playerBetAmount: 25,
-            cards: ["Club3", "Dia3", "Heart12", "Spade14", "Club2", "Heart6", "Dia10", "Dia11", "Heart7"],
+            totalPotAmount: 125,
+            computerBetAmount: 75,
+            playerBetAmount: 50,
+            cards: ["Club11", "Spade14", "Heart8", "Heart3", "Heart14", "Spade11", "Dia10", "Dia13", "Dia2"],
             winCondition: "fold",
             foldRound: 3,
             winner: "computer",
@@ -134,7 +134,7 @@ const PokerTableComponent = () => {
             totalPotAmount: 75,
             computerBetAmount: 25,
             playerBetAmount: 50,
-            cards: ["Club6", "Heart3", "Heart12", "Spade4", "Club2", "Heart6", "Dia10", "Club11", "Heart7"],
+            cards: ["Dia5", "Club10", "Heart10", "Spade14", "Club4", "Heart4", "Spade4", "Dia4", "Club6"],
             winCondition: "completed",
             foldRound: null,
             winner: "player",

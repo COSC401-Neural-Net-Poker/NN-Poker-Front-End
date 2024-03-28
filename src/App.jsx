@@ -9,7 +9,7 @@ import Game from "./components/Game";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from './firebase';
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
 
 function App() {
   const [historyData, setHistoryData] = useState([])
@@ -18,10 +18,22 @@ function App() {
     const listen = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const docRef = doc(db, "users", user.uid)
-        const unsubscribeDoc = onSnapshot(docRef, (docSnapshot) => {
+        const unsubscribeDoc = onSnapshot(docRef, async (docSnapshot) => {
           if (docSnapshot.exists()) {
             const userData = docSnapshot.data()
-            setHistoryData(userData.history)
+            let pastGames = userData?.history || []
+            if (pastGames?.length > 50) {
+              let indicesToRemove = pastGames?.length - 50
+              pastGames = pastGames.slice(indicesToRemove)
+              await setDoc(
+                docRef,
+                {
+                  history: [...pastGames]
+                },
+                { merge: true }
+              )
+            }
+            setHistoryData(userData?.history)
           }
         })
         return () => unsubscribeDoc()
