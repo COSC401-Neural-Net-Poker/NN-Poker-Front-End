@@ -51,7 +51,7 @@ const Navbar = () => {
   return (
     <>
       {/* This is the main desktop navigation UI */}
-      <div className="fixed w-full top-0 left-0 bg-[#FF8200] text-lg font-semibold text-[#ffffff] h-[60px] md:h-[70px] flex z-30 items-center">
+      <div className="fixed w-full top-0 left-0 bg-[#FF8200] text-lg font-semibold text-[#ffffff] h-[60px] md:h-[70px] flex z-40 items-center">
         <div className='flex justify-between items-center w-full max-w-[1500px] mx-auto'>
           <Link onClick={() => mobileClose()} to="/" className='flex items-center pl-5 whitespace-nowrap'>
             <img alt="AI Poker Logo" src={Logo} rel="noreferrer" />
@@ -81,7 +81,7 @@ const Navbar = () => {
 
       {/* This is the mobile menu */}
       {mobileMenu ? 
-      <div className='bg-[#4B4B4B] text-white text-3xl h-screen w-full md:hidden fixed top-0 z-20 left-0 overflow-y-hidden flex justify-center items-center flex-col'>
+      <div className='bg-[#4B4B4B] text-white text-3xl h-screen w-full md:hidden fixed top-0 z-30 left-0 overflow-y-hidden flex justify-center items-center flex-col'>
         <Link onClick={() => mobileClose()} className='my-4' to="/"><h1>Play Game</h1></Link>
         <Link onClick={() => mobileClose()} className='my-4' to="/scenario-creator"><h1>Scenario</h1></Link>
         <Link onClick={() => mobileClose()} className='my-4' to="/history"><h1>Game History</h1></Link>
@@ -95,7 +95,7 @@ const Navbar = () => {
       }
 
       {/* This is the half menu that looks better for medium screens */}
-      <div className={`${mobileMenu ? 'right-0' : 'right-[-325px]'} bg-[#4B4B4B] drop-shadow-xl text-white duration-200 transition-all md:h-screen md:w-[325px] lg:hidden hidden fixed top-0 z-20 overflow-y-hidden md:flex justify-center items-center`}>
+      <div className={`${mobileMenu ? 'right-0' : 'right-[-325px]'} bg-[#4B4B4B] drop-shadow-xl text-white duration-200 transition-all md:h-screen md:w-[325px] lg:hidden hidden fixed top-0 z-30 overflow-y-hidden md:flex justify-center items-center`}>
         <div className='px-3 flex flex-col justify-center items-center w-full h-full'>
           <Link onClick={() => mobileClose()} className='my-3' to="/"><h1>Play Game</h1></Link>
           <Link onClick={() => mobileClose()} className='my-3' to="/scenario-creator"><h1>Scenario</h1></Link>
@@ -108,7 +108,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className={`${logoutWarning ? 'top-0 mt-[80px]' : 'top-[-300px] mt-0'} rounded-xl drop-shadow-xl duration-500 flex justify-center items-center font-bold text-xl text-white ease-in-out transition-all absolute z-30 bg-[#FF8200] h-[75px] m-auto w-[350px]`}>
+      <div className={`${logoutWarning ? 'top-0 mt-[80px]' : 'top-[-300px] mt-0'} rounded-xl drop-shadow-xl duration-500 flex justify-center items-center font-bold text-xl text-white ease-in-out transition-all absolute z-40 bg-[#FF8200] h-[75px] m-auto w-[350px]`}>
           You have successfully logged out!
       </div>
     </>

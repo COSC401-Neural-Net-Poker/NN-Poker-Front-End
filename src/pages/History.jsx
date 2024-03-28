@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from '../firebase';
+import { auth } from '../firebase';
 import ListOfResults from '../components/ListOfResults';
 
 const History = ({historyData}) => {
