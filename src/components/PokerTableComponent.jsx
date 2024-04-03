@@ -1321,7 +1321,6 @@ async function turnStart() {
           <img className={`${cssReveal}`} src={imageUser1} alt="Current Card" />
           {/* Display player cards and information here */}
         </div>
-        {}
         <div className={`${cssReveal === "" ? 'player-card2' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[55%] -translate-y-[56%]'} transition-all duration-300 ease-in-out`}>
          <img src={imageUser2} alt="Current Card" />
          {/* Display player cards and information here */}
