@@ -1372,9 +1372,8 @@ async function turnStart() {
         </div>
       </div>
       <GameState startGame={gameStart} gameState={gameState} endGame={resetBoard} />
-      <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
-      {/* This below is for testing the saveHistory() implementation */}
-      <button onClick={() => saveHistory()}>Save History</button>
+      {/* <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
+      <button onClick={() => saveHistory()}>Save History</button> */}
     </div>
   )
 }
