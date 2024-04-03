@@ -576,7 +576,10 @@ async function turnStart() {
       comBin[cardConvert[cardRankings[9][1]] + suit[cardRankings[9][0]]] = 1;
     }
     //Set the raise number
-    //Don't understand raising set
+    comBin[52+roundNumber[0]] = 1;
+    comBin[52+roundNumber[1]] = 1;
+    comBin[52+roundNumber[2]] = 1;
+    comBin[52+roundNumber[3]] = 1;
 
     return comBin;
   }
