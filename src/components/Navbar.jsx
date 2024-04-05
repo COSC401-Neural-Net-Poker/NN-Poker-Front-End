@@ -57,9 +57,8 @@ const Navbar = () => {
             <img alt="AI Poker Logo" src={Logo} rel="noreferrer" />
             <h1>The Bluff Buddy</h1>
           </Link>
-          <div className='lg:flex justify-between items-center w-2/5 whitespace-nowrap min-w-[600px] hidden px-5'>
+          <div className='lg:flex justify-between items-center w-[30%] whitespace-nowrap min-w-[500px] hidden px-5'>
             <Link to="/"><h1>Play Game</h1></Link>
-            <Link to="/scenario-creator"><h1>Scenario</h1></Link>
             <Link to="/history"><h1>Game History</h1></Link>
             <Link to="/about"><h1>About Project</h1></Link>
             {loginStatus === "Sign In" ? <Link to="/auth"><h1 className='bg-[#4B4B4B] hover:bg-[#ffffff] hover:text-[#4B4B4B] duration-150 px-3 py-1 rounded-md'>Login</h1></Link> :
@@ -83,7 +82,6 @@ const Navbar = () => {
       {mobileMenu ? 
       <div className='bg-[#4B4B4B] text-white text-3xl h-screen w-full md:hidden fixed top-0 z-30 left-0 overflow-y-hidden flex justify-center items-center flex-col'>
         <Link onClick={() => mobileClose()} className='my-4' to="/"><h1>Play Game</h1></Link>
-        <Link onClick={() => mobileClose()} className='my-4' to="/scenario-creator"><h1>Scenario</h1></Link>
         <Link onClick={() => mobileClose()} className='my-4' to="/history"><h1>Game History</h1></Link>
         <Link onClick={() => mobileClose()} className='my-4' to="/about"><h1>About Project</h1></Link>
         {loginStatus === "Sign In" ? <Link onClick={() => mobileClose()} className='my-4' to="/auth"><h1 className='bg-[#FF8200] px-3 py-1 rounded-md'>Login</h1></Link> :

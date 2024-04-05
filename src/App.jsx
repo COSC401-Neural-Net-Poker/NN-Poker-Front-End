@@ -2,7 +2,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import History from "./pages/History";
 import Error from "./pages/Error";
 import About from "./pages/About";
-import Scenario from "./pages/Scenario";
 import Auth from "./pages/Auth";
 import Home from './pages/Home';
 import Game from "./components/Game";
@@ -52,10 +51,6 @@ function App() {
     {
       path: "/auth",
       element: <Auth />
-    },
-    {
-      path: "/scenario-creator",
-      element: <Scenario />
     },
     {
       path: "/history",

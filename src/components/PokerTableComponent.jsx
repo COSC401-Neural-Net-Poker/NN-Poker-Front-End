@@ -99,6 +99,7 @@ const PokerTableComponent = () => {
   const [firstThreeMiddle, setFirstThreeMiddle] = useState("")
   const [fourthMiddle, setFourthMiddle] = useState("")
   const [lastMiddle, setLastMiddle] = useState("")
+  const [allTop, setAllTop] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
   const [isGameStarted, setIsGameStarted] = useState(false)
   const [gameState, setGameState] = useState("start")
@@ -426,11 +427,11 @@ const PokerTableComponent = () => {
   }
 
   async function revealFlop() {
-    setFirstThreeMiddle("scale-[150%]")
-    await delay(100)
+    setFirstThreeMiddle("scale-[120%]")
+    await delay(300)
     setFirstThreeMiddle("")
-    await delay(100)
-    setFirstThreeMiddle("scale-[150%]")
+    await delay(300)
+    setFirstThreeMiddle("scale-[120%]")
     await delay(100)
     setFirstThreeMiddle("")
     setImageMid1(cardImageImport[5]);
@@ -439,24 +440,46 @@ const PokerTableComponent = () => {
   }
 
   async function revealTurn() {
-    setFourthMiddle("scale-[150%]")
-    await delay(700)
+    setFourthMiddle("scale-[120%]")
+    await delay(300)
+    setFourthMiddle("")
+    await delay(300)
+    setFourthMiddle("scale-[120%]")
+    await delay(100)
     setFourthMiddle("")
     setImageMid4(cardImageImport[8]);
   }
 
   async function revealRiver() {
-    setLastMiddle("scale-[150%]")
-    await delay(700)
+    setLastMiddle("scale-[120%]")
+    await delay(300)
+    setLastMiddle("")
+    await delay(300)
+    setLastMiddle("scale-[120%]")
+    await delay(100)
     setLastMiddle("")
     setImageMid5(cardImageImport[9]);
   }
 
-  function revealOpponent() {
+  async function revealOpponent() {
     if(dealer){
+      setAllTop("scale-[120%]")
+      await delay(300)
+      setAllTop("")
+      await delay(300)
+      setAllTop("scale-[120%]")
+      await delay(100)
+      setAllTop("")
       setImageOpp1(cardImageImport[2]);
       setImageOpp2(cardImageImport[4]);
     }else{
+      setAllTop("scale-[120%]")
+      await delay(300)
+      setAllTop("")
+      await delay(300)
+      setAllTop("scale-[120%]")
+      await delay(100)
+      setAllTop("")
       setImageOpp1(cardImageImport[1]);
       setImageOpp2(cardImageImport[3]);
     }
@@ -1396,11 +1419,11 @@ function comBinaryConvert(){
     <div className="poker-table">
       <div className="table-top">
         <div className="opponent-cards1">
-          <img src={imageOpp1} alt="Current Card" />
+          <img className={`${allTop}`} src={imageOpp1} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="opponent-cards2">
-          <img src={imageOpp2} alt="Current Card" />
+          <img className={`${allTop}`} src={imageOpp2} alt="Current Card" />
           {/* Display community cards here */}
         </div>
       </div>
@@ -1443,7 +1466,6 @@ function comBinaryConvert(){
           <img className={`${cssReveal}`} src={imageUser1} alt="Current Card" />
           {/* Display player cards and information here */}
         </div>
-        {}
         <div className={`${cssReveal === "" ? 'player-card2' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[55%] -translate-y-[56%]'} transition-all duration-300 ease-in-out`}>
          <img src={imageUser2} alt="Current Card" />
          {/* Display player cards and information here */}
@@ -1469,9 +1491,8 @@ function comBinaryConvert(){
         </div>
       </div>
       <GameState startGame={gameStart} gameState={gameState} endGame={resetBoard} />
-      <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
-      {/* This below is for testing the saveHistory() implementation */}
-      <button onClick={() => saveHistory()}>Save History</button>
+      {/* <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
+      <button onClick={() => saveHistory()}>Save History</button> */}
     </div>
   )
 }
