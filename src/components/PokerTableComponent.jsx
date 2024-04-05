@@ -566,7 +566,7 @@ async function turnStart() {
       Raise();
     }else if(modelOutput == 2){
       Fold();
-    }else(modelOutput == 3){
+    }else if (modelOutput == 3){
       Check();
     }
 
