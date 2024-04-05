@@ -237,7 +237,7 @@ const PokerTableComponent = () => {
     cardImageImport[9] = cardImageImport[39];
   }
   
-  function Bet() {
+  async function Bet() {
     if(turn == 0) {
       if(first == 1){
         oppMon -= 5;
@@ -272,10 +272,10 @@ const PokerTableComponent = () => {
     first = 0;
     secondLastMove = lastMove;
     lastMove = "CA";
-    turnStart();
+    await turnStart();
   }
 
-  function Raise() {
+  async function Raise() {
     //Condense to final player variable which says whos turn it is
     if(turn == 0) {
       if(first == 1){
@@ -313,14 +313,14 @@ const PokerTableComponent = () => {
     first = 0;
     secondLastMove = lastMove;
     lastMove = "R";
-    turnStart();
+    await turnStart();
   }
 
-  function Check() {
+  async function Check() {
     secondLastMove = lastMove;
     lastMove = "CH";
     console.log("Check");
-    turnStart();
+    await turnStart();
   }
 
   function Fold(){
@@ -558,15 +558,18 @@ async function turnStart() {
       rawAva.push('fold')
     }
     console.log("Calling model");
-    modelOutput = callModel(bin, ava, rawAva);
+    let modelOutput = {}
+    modelOutput = await callModel(bin, ava, rawAva);
     modelOutput = Number(modelOutput.output);
-    if(modelOutput == 0){
+    console.log("MODEL OUTPUT", modelOutput)
+
+    if(modelOutput === 0){
       Bet();
-    }else if(modelOutput == 1){
+    }else if(modelOutput === 1){
       Raise();
-    }else if(modelOutput == 2){
+    }else if(modelOutput === 2){
       Fold();
-    }else if (modelOutput == 3){
+    }else if (modelOutput === 3){
       Check();
     }
 
@@ -607,21 +610,17 @@ async function turnStart() {
   }
 }
 
-function callModel(binOutput, legal, rawLegal){
+async function callModel(binOutput, legal, rawLegal){
   let bodyObj = {
     "obs": binOutput,
     "legal_actions": legal,
     "raw_legal_actions": rawLegal
   }
-  
-  const url = "http://35.202.107.161:8080/model";
-  const body = {
-    input_string: bodyObj
-  };
-  console.log("Sending to model: " + JSON.stringify(bodyObj))
+  let returnData = {}
 
-  
-  fetch(url, {
+  const url = "http://104.198.49.198:8080/model";
+
+  await fetch(url, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -630,10 +629,10 @@ function callModel(binOutput, legal, rawLegal){
     body: JSON.stringify(bodyObj)
   })
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => returnData = data)
   .catch(error => console.error('Error:', error));
 
-  return data;
+  return returnData;
 }
 
 function comBinaryConvert(){
@@ -1303,7 +1302,7 @@ function comBinaryConvert(){
   }
 
   //Used at the start of each hand
-  function handStart() {
+  async function handStart() {
 
     //Game is over
     if(userMon == 0){
@@ -1380,7 +1379,7 @@ function comBinaryConvert(){
     setShowButtonLeft(true);
     setShowButtonCenter(true);
     setShowButtonRight(true);
-    turnStart();
+    await turnStart();
   }
 
   return (
