@@ -14,7 +14,7 @@ let pot = 0;
 let oppMon = 500;
 let userMon = 500;
 let turn;
-let dealer = 1;
+let dealer;
 let secondLastMove = "";
 let lastMove = "";
 let button1 = 0;
@@ -26,6 +26,17 @@ let theTurn = false;
 let river = false;
 let round = [0, 0, 0, 0]
 let roundNumber = 0;
+let endResult;
+let numHands;
+const hand = {
+  totalBet: 0,
+  compBet: 0,
+  userBet: 0,
+  winCondition: "",
+  foldRound: null,
+  winner: "",
+  winningHand: null
+}
 
 const PokerTableComponent = () => {
   let temp;
@@ -48,7 +59,7 @@ const PokerTableComponent = () => {
   const [displayUser, setDisplayUser] = useState(userMon);
   const [displayLeftButton, setDisplayLeftButton] = useState("Call");
   const [displayMiddleButton, setDisplayMiddleButton] = useState("Call 10");
-  const [displayRightButton, setDisplayRightButton] = useState("Start Game");
+  const [displayRightButton, setDisplayRightButton] = useState("Fold");
   const [showButtonLeft, setShowButtonLeft] = useState(false);
   const [showButtonCenter, setShowButtonCenter] = useState(false);
   const [showButtonRight, setShowButtonRight] = useState(false);
@@ -82,13 +93,17 @@ const PokerTableComponent = () => {
   // (BRANDON BUDDY) Whenever the game comes to a close, we need to call this function to save the game history automatically
   const saveHistory = async () => {
     // This will save the game data to the users history array
+    today = new Date()
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
     if (loggedIn) {
       // this currentGame variable will be populated from state during our game
       // hard-coded for the time-being
       let currentGame = {
-        result: "loss",
-        date: "3-28-2024",
-        numOfHands: 2,
+        result: endResult,
+        date: mm + '-' + dd + '-' + yyyy,
+        numOfHands: numHands,
         handHistory: [
           {
             totalPotAmount: 125,
@@ -142,6 +157,7 @@ const PokerTableComponent = () => {
     setIsGameStarted(cond)
     userMon = 500
     oppMon = 500
+    dealer = 1;
     handStart()
   }
 
@@ -226,20 +242,28 @@ const PokerTableComponent = () => {
       if(first == 1){
         oppMon -= 5;
         pot += 5;
+        hand.totalBet += 5;
+        hand.compBet += 5
         console.log("Bet of 5 by computer");
       }else{
         oppMon -= 10;
         pot += 10;
+        hand.compBet += 10;
+        hand.totalBet += 10;
         console.log("Bet of 10 by computer");
       }
     }else{
       if(first == 1){
         userMon -= 5;
         pot += 5;
+        hand.userBet += 5
+        hand.totalBet += 5
         console.log("Bet of 5 by user");
       }else{
         userMon -= 10;
         pot += 10;
+        hand.userBet += 10;
+        hand.totalBet += 10;
         console.log("Bet of 10 by user");
       }
     }
@@ -257,20 +281,28 @@ const PokerTableComponent = () => {
       if(first == 1){
         oppMon -= 15;
         pot += 15;
+        hand.compBet += 15;
+        hand.totalBet += 15;
         console.log("Raise of 15 by computer");
       }else{
         oppMon -= 20;
         pot += 20;
+        hand.compBet += 20;
+        hand.totalBet += 20;
         console.log("Raise of 20 by computer " + round[roundNumber]);
       }
     }else{
       if(first == 1){
         userMon -= 15;
         pot += 15;
+        hand.userBet += 15;
+        hand.totalBet += 15;
         console.log("Raise of 15 by player");
       }else{
         userMon -= 20;
         pot += 20;
+        hand.userBet += 20;
+        hand.totalBet += 20;
         console.log("Raise of 20 by player + " + round[roundNumber]);
       }
     }
@@ -300,6 +332,8 @@ const PokerTableComponent = () => {
       computerWins();
       console.log("Fold by player");
     }
+    hand.winCondition = "fold";
+    hand.winningHand = null;
 
     handStart();
   }
@@ -307,11 +341,13 @@ const PokerTableComponent = () => {
   function userWins(){
     userMon += pot;
     pot = 0;
+    hand.winner = "user"
   }
 
   function computerWins(){
     oppMon += pot;
     pot = 0;
+    hand.winner = "computer"
   }
 
   function gameTie(){
@@ -481,30 +517,64 @@ async function turnStart() {
     secondLastMove = "";
   }
 
-  //if(turn == 1){
-  //  let che = 0;
-  //  let be = 0;
-  //  let rai = 0;
-  //  let fo = 0;
-  //  //Call comBinaryConvert()
-  //  //Set actions avaiable
-  //  if(oppMon == 0){
-  //    //Maybe nothing
-  //    che = 1;
-  //  }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
-  //    che = 1;
-  //    be = 1;
-  //  }else{
-  //    be = 1;
-  //    rai = 1;
-  //    fo = 1;
-  //  }
-  //  let ava = [be, rai, fo, che];
-    //Call api
-    //Do what api says
-  //}
-  //If player
-  //else{
+ if(turn == 0){
+    let che = 0;
+    let be = 0;
+    let rai = 0;
+    let fo = 0;
+    //let ava = {};
+    let ava = []
+    let rawAva = [];
+    let bin = comBinaryConvert();
+    //Set actions avaiable
+    if(oppMon == 0){
+      //Maybe nothing
+      che = 1;
+    }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
+      //ra = 1;
+      //ava[1] = null
+      ava.push([1, null])
+      rawAva.push('raise');
+      //fo = 1;
+      ava.push([2, null])
+      //ava[2] = null
+      rawAva.push('fold')
+      //che = 1;
+      //ava[3] = null
+      ava.push([3, null])
+      rawAva.push('check')
+    }else{
+      //be = 1;
+      //ava[0] = null
+      ava.push([0, null])
+      rawAva.push('call');
+      //rai = 1;
+      //ava[1] = null
+      ava.push([1, null])
+      rawAva.push('raise');
+      //fo = 1;
+      //ava[2] = null
+      ava.push([2, null])
+      rawAva.push('fold')
+    }
+    console.log("Calling model");
+    modelOutput = callModel(bin, ava, rawAva);
+    modelOutput = Number(modelOutput.output);
+    if(modelOutput == 0){
+      Bet();
+    }else if(modelOutput == 1){
+      Raise();
+    }else if(modelOutput == 2){
+      Fold();
+    }else(modelOutput == 3){
+      Check();
+    }
+
+   //Call api
+   //Do what api says
+ }
+ //////If player
+ else{
     //No money means you can't bet
     if(userMon == 0 || oppMon == 0){
       setDisplayMiddleButton(false);
@@ -535,46 +605,75 @@ async function turnStart() {
       button1 = false;
     }
   }
+}
 
-  function comBinaryConvert(){
-    comBin = Array(72).fill(0);
-    var suit = {
-      Spade: 0,
-      Heart: 13,
-      Dia: 26,
-      Club: 39
-    };
-    cardConvert = array[-1, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0];
-    //Get just computer's cards
-    if(dealer){
-      comBin[cardConvert[cardRankings[2][1]] + suit[cardRankings[2][0]]] = 1;
-      comBin[cardConvert[cardRankings[4][1]] + suit[cardRankings[4][0]]] = 1;
-    }else{
-      comBin[cardConvert[cardRankings[1][1]] + suit[cardRankings[1][0]]] = 1;
-      comBin[cardConvert[cardRankings[3][1]] + suit[cardRankings[3][0]]] = 1;
-    }
-    //Get flop's cards
-    if(flop){
-      comBin[cardConvert[cardRankings[5][1]] + suit[cardRankings[5][0]]] = 1;
-      comBin[cardConvert[cardRankings[6][1]] + suit[cardRankings[6][0]]] = 1;
-      comBin[cardConvert[cardRankings[7][1]] + suit[cardRankings[7][0]]] = 1;
-    }
-    //Get the turn's cards
-    if(theTurn){
-      comBin[cardConvert[cardRankings[8][1]] + suit[cardRankings[8][0]]] = 1;
-    }
-    //Get the river's cards
-    if(river){
-      comBin[cardConvert[cardRankings[9][1]] + suit[cardRankings[9][0]]] = 1;
-    }
-    //Set the raise number
-    comBin[52+roundNumber[0]] = 1;
-    comBin[52+roundNumber[1]] = 1;
-    comBin[52+roundNumber[2]] = 1;
-    comBin[52+roundNumber[3]] = 1;
-
-    return comBin;
+function callModel(binOutput, legal, rawLegal){
+  let bodyObj = {
+    "obs": binOutput,
+    "legal_actions": legal,
+    "raw_legal_actions": rawLegal
   }
+  
+  const url = "http://35.202.107.161:8080/model";
+  const body = {
+    input_string: bodyObj
+  };
+  console.log("Sending to model: " + JSON.stringify(bodyObj))
+
+  
+  fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*',
+    },
+    body: JSON.stringify(bodyObj)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+
+  return data;
+}
+
+function comBinaryConvert(){
+  let comBin = Array(72).fill(0);
+  var suit = {
+    Spade: 0,
+    Heart: 13,
+    Dia: 26,
+    Club: 39
+  };
+  let cardConvert = [-1, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0];
+  //Get just computer's cards
+  if(dealer){
+    comBin[cardConvert[cardRankings[2][1]] + suit[cardRankings[2][0]]] = 1;
+    comBin[cardConvert[cardRankings[4][1]] + suit[cardRankings[4][0]]] = 1;
+  }else{
+    comBin[cardConvert[cardRankings[1][1]] + suit[cardRankings[1][0]]] = 1;
+    comBin[cardConvert[cardRankings[3][1]] + suit[cardRankings[3][0]]] = 1;
+  }
+  //Get flop's cards
+  if(flop){
+    comBin[cardConvert[cardRankings[5][1]] + suit[cardRankings[5][0]]] = 1;
+    comBin[cardConvert[cardRankings[6][1]] + suit[cardRankings[6][0]]] = 1;
+    comBin[cardConvert[cardRankings[7][1]] + suit[cardRankings[7][0]]] = 1;
+  }
+  //Get the turn's cards
+  if(theTurn){
+    comBin[cardConvert[cardRankings[8][1]] + suit[cardRankings[8][0]]] = 1;
+  }
+  //Get the river's cards
+  if(river){
+    comBin[cardConvert[cardRankings[9][1]] + suit[cardRankings[9][0]]] = 1;
+  }
+  //Set the raise number
+  comBin[52+roundNumber[0]] = 1;
+  comBin[52+roundNumber[1]] = 1;
+  comBin[52+roundNumber[2]] = 1;
+  comBin[52+roundNumber[3]] = 1;
+  return comBin;
+}
 
   function winCheck() {
     let userClub = [];
@@ -1209,15 +1308,21 @@ async function turnStart() {
     //Game is over
     if(userMon == 0){
       alert("The computer has won the game");
+      endResult = "computer"
       saveHistory()
       gameStart()
     }else if(oppMon == 0){
       alert("The human has won the game");
+      endResult = "user"
       saveHistory()
       gameStart()
     }
 
-  
+    numHands += 1;
+    hand.totalBet = 0;
+    hand.compBet = 0;
+    hand.userBet = 0
+
     dealer = (dealer > 0) ? 0 : 1;
     //Blinds - Dealer has the big blind
     //Not sure what to do if the player meant to big blind does not have enough 
@@ -1225,21 +1330,34 @@ async function turnStart() {
     if(dealer == 1){
       if(oppMon < 10){
         pot += oppMon;
+        hand.totalBet += oppMon;
+        hand.compBet += oppMon;
         oppMon -= oppMon;
       }else{
+        hand.totalBet += 10;
+        hand.compBet += 10;
         pot += 10;
         oppMon -= 10;
       }
+      hand.totalBet += 5;
+      hand.userBet += 5;
       userMon -= 5;
       pot += 5;
     }else{
+      //console.log(userMon)
       if(userMon < 10){
         pot += userMon
+        hand.totalBet += userMon
+        hand.userBet += userMon
         userMon -= userMon;
       }else{
-      pot += 10;
-      userMon -= 10;
+        hand.totalBet += 10
+        hand.userBet += 10
+        pot += 10;
+        userMon -= 10;
       }
+      hand.totalBet += 5;
+      hand.compBet += 5;
       pot += 5;
       oppMon -= 5;
     }
