@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import '../pages/PokerTable.css';
-import styled from 'styled-components';
 import cardImageImport from '../pages/cardImageImport';
 import cardRankings from '../pages/cardRankings';
 import GameState from './GameState';
@@ -9,6 +8,7 @@ import DeckBruh from "../pages/cards/DeckBruh.svg";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from '../firebase';
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { Icon } from '@iconify/react';
 
 let pot = 0;
 let oppMon = 500;
@@ -27,37 +27,6 @@ let river = false;
 let round = [0, 0, 0, 0]
 let roundNumber = 0;
 
-const theme = {
-  blue: {
-    default: "#3f51b5",
-    hover: "#283593",
-  },
-  pink: {
-    default: "#e91e63",
-    hover: "#ad1457",
-  },
-};
-
-const Button = styled.button`
-  background-color: ${(props) => theme[props.theme].default};
-  color: white;
-  padding: 5px 15px;
-  border-radius: 5px;
-  outline: 0;
-  text-transform: uppercase;
-  margin: 10px 0px;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
-  &:hover {
-    background-color: ${(props) => theme[props.theme].hover};
-  }
-  &:disabled {
-    cursor: default;
-    opacity: 0.7;
-  }
-`;
-
 const PokerTableComponent = () => {
   let temp;
   let temp2;
@@ -74,11 +43,11 @@ const PokerTableComponent = () => {
   const [imageMid5, setImageMid5] = useState(mid[4]);
   const [imageUser1, setImageUser1] = useState(user[0]);
   const [imageUser2, setImageUser2] = useState(user[1]);
-  const [displayOpp, setDisplayOpp] = useState("Computer Chip Amount: " + oppMon);
-  const [displayPot, setDisplayPot] = useState("Amount of Chips in the Pot: " + pot);
-  const [displayUser, setDisplayUser] = useState("User's Chip Amount: " + userMon);
+  const [displayOpp, setDisplayOpp] = useState(oppMon);
+  const [displayPot, setDisplayPot] = useState(pot);
+  const [displayUser, setDisplayUser] = useState(userMon);
   const [displayLeftButton, setDisplayLeftButton] = useState("Call");
-  const [displayMiddleButton, setDisplayMiddleButton] = useState("Bet 10");
+  const [displayMiddleButton, setDisplayMiddleButton] = useState("Call 10");
   const [displayRightButton, setDisplayRightButton] = useState("Start Game");
   const [showButtonLeft, setShowButtonLeft] = useState(false);
   const [showButtonCenter, setShowButtonCenter] = useState(false);
@@ -179,9 +148,9 @@ const PokerTableComponent = () => {
   //Update text for opponent's pot
   const updatePot = () => {
     // Update the state variable with a new text
-    setDisplayOpp("Computer's Chip Amount: " + oppMon);
-    setDisplayPot("Amount of Chips in the Pot:  " + pot);
-    setDisplayUser("User's Chip Amount: " + userMon);
+    setDisplayOpp(oppMon);
+    setDisplayPot(pot);
+    setDisplayUser(userMon);
   };
 
   const changeImage = () => {
@@ -543,24 +512,24 @@ async function turnStart() {
     }
     if(first == 1){
       setDisplayLeftButton("Raise 15");
-      setDisplayMiddleButton("Bet 5");
+      setDisplayMiddleButton("Call 5");
       setDisplayRightButton("Fold");
       button1 = false;
     //Right of or may be changed to own else if because (bet 10) may need to be (raise 10)
     }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
       setDisplayLeftButton("Check");
-      setDisplayMiddleButton("Bet 10");
+      setDisplayMiddleButton("Call 10");
       setDisplayRightButton("Fold");
       button1 = true;
     }else if(round[roundNumber] == 4){
       //May need to be 3?
       console.log("Three raise rule")
       setShowButtonLeft(false);
-      setDisplayMiddleButton("Bet 10");
+      setDisplayMiddleButton("Call 10");
       setDisplayRightButton("Fold");
       //This is wrong
     }else{
-      setDisplayMiddleButton("Bet 10");
+      setDisplayMiddleButton("Call 10");
       setDisplayLeftButton("Raise 20");
       setDisplayRightButton("Fold");
       button1 = false;
@@ -1300,76 +1269,70 @@ async function turnStart() {
     <div className="poker-table">
       <div className="table-top">
         <div className="opponent-cards1">
-          <img className={`${allTop}`} src={imageOpp1} alt="Current Card" />
+          <img className={`${allTop} md:drop-shadow-[0_0_0.55rem_black]`} src={imageOpp1} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="opponent-cards2">
-          <img className={`${allTop}`} src={imageOpp2} alt="Current Card" />
+          <img className={`${allTop} md:drop-shadow-[0_0_0.55rem_black]`} src={imageOpp2} alt="Current Card" />
           {/* Display community cards here */}
         </div>
       </div>
       <div className="amount">
-          {displayOpp}
+        <span className='margin-top: 10px'>Computer:</span>&nbsp;{displayOpp}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
       </div>
       <div className="table-middle">
         <div className="community-cards1">
-          <img className={`${firstThreeMiddle}`} src={imageMid1} alt="Current Card" />
+          <img className={`${firstThreeMiddle} md:drop-shadow-[0_0_0.55rem_black]`} src={imageMid1} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="community-cards2">
-          <img className={`${firstThreeMiddle}`} src={imageMid2} alt="Current Card" />
+          <img className={`${firstThreeMiddle} md:drop-shadow-[0_0_0.55rem_black]`} src={imageMid2} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="community-cards3">
-          <img className={`${firstThreeMiddle}`} src={imageMid3} alt="Current Card" />
+          <img className={`${firstThreeMiddle} md:drop-shadow-[0_0_0.55rem_black]`} src={imageMid3} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="community-cards4">
-          <img className={`${fourthMiddle}`} src={imageMid4} alt="Current Card" />
+          <img className={`${fourthMiddle} md:drop-shadow-[0_0_0.55rem_black]`} src={imageMid4} alt="Current Card" />
           {/* Display community cards here */}
         </div>
         <div className="community-cards5">
-          <img className={`${lastMiddle}`} src={imageMid5} alt="Current Card" />
+          <img className={`${lastMiddle} md:drop-shadow-[0_0_0.55rem_black]`} src={imageMid5} alt="Current Card" />
           {/* Display community cards here */}
         </div>
       </div>
       <div className="pot">
-          {displayPot}
+          <span className='margin-top: 10px'>Total Pot:</span>&nbsp;{displayPot}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
       </div>
       <div className="table-bottom">
-        <div className={`${cssReveal === "" ? 'right-[200vw] bottom-[200vh]' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[40%] -translate-y-[47%]'} absolute transition-all duration-300 ease-in-out`}>
+        <div className={`${cssReveal === "" ? 'right-[200vw] bottom-[200vh]' : 'md:drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[40%] -translate-y-[47%]'} z-[16] absolute transition-all duration-300 ease-in-out`}>
           <img className={`${cssReveal}`} src={imageUser1} alt="Current Card" />
         </div>
-        <div className={`${cssReveal === "" ? 'right-[200vw] bottom-[200vh]' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[45%] -translate-y-[50%]'} absolute transition-all duration-300 ease-in-out`}>
+        <div className={`${cssReveal === "" ? 'right-[200vw] bottom-[200vh]' : 'md:drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[45%] -translate-y-[50%]'} z-[16] absolute transition-all duration-300 ease-in-out`}>
           <img className={`${cssReveal}`} src={imageUser1} alt="Current Card" />
         </div>
-        <div className={`${cssReveal === "" ? 'player-card1' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[53%]'} transition-all duration-300 ease-in-out`}>
-          <img className={`${cssReveal}`} src={imageUser1} alt="Current Card" />
+        <div className={`${cssReveal === "" ? 'player-card1' : 'md:drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[53%]'} z-[16] transition-all duration-300 ease-in-out`}>
+          <img className={`${cssReveal} md:drop-shadow-[0_0_0.55rem_black]`} src={imageUser1} alt="Current Card" />
           {/* Display player cards and information here */}
         </div>
-        <div className={`${cssReveal === "" ? 'player-card2' : 'drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[55%] -translate-y-[56%]'} transition-all duration-300 ease-in-out`}>
-         <img src={imageUser2} alt="Current Card" />
+        <div className={`${cssReveal === "" ? 'player-card2' : 'md:drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[55%] -translate-y-[56%]'} z-[16] transition-all duration-300 ease-in-out`}>
+         <img className='md:drop-shadow-[0_0_0.55rem_black]' src={imageUser2} alt="Current Card" />
          {/* Display player cards and information here */}
         </div>
       </div>
       <div className="player-chips">
-          {displayUser}
+        <span className='margin-top: 10px'>User:</span>&nbsp;{displayUser}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
       </div>
-      <div className="buttons">
+      <div className="buttons md:font-bold md:text-3xl font-semibold text-xl">
         {/* Used as both Raising and Checking */}
-        <div className="call">
-          {showButtonLeft && <Button theme="pink" onClick={button1 ? Check : Raise}>{displayLeftButton}</Button>}
-        </div>
+        {showButtonLeft && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={button1 ? Check : Raise}>{displayLeftButton}</button>}
+        
         {/* Used as betting */}
-        <div className="bet">
-          {showButtonCenter && <Button theme="pink" onClick={Bet}>
-            {displayMiddleButton}
-          </Button>}
-        </div>
-        <div className="fold">
+        {showButtonCenter && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Bet}>{displayMiddleButton}</button>}
+
         {/* Used as both Folding and start game button */}
-          {showButtonRight && <Button theme="pink" onClick={Fold}>{displayRightButton}</Button>}
-        </div>
+        {showButtonRight && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Fold}>{displayRightButton}</button>}
       </div>
       <GameState startGame={gameStart} gameState={gameState} endGame={resetBoard} />
       {/* <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
