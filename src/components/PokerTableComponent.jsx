@@ -75,7 +75,7 @@ const PokerTableComponent = () => {
   const [gameState, setGameState] = useState("start")
   const [gameHistory, setGameHistory] = useState([])
   const [userInstance, setUserInstance] = useState(null)
-
+  
   // Wherever the game is at an ending point, we need to do setGameState("over")
   // and we also need to run saveHistory() and either pass in our game data or just track it for each
   // new game with state.
@@ -127,13 +127,6 @@ const PokerTableComponent = () => {
       }
     }
   }
-
-  const resetBoard = async () => {
-    console.log("resetting poker table")
-    // reset the poker table, setup the new game
-    // I don't know how to do this (BRANDON BUDDY)
-  }
-
 
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
@@ -2079,16 +2072,18 @@ function comBinaryConvert(){
   async function handStart() {
 
     //Game is over
-    if(userMon == 0){
-      alert("The computer has won the game");
+    if(userMon <= 0){
+      setGameState("over")
       endResult = "computer"
       saveHistory()
       gameStart()
-    }else if(oppMon == 0){
-      alert("The human has won the game");
+      return
+    }else if(oppMon <= 0){
+      setGameState("over")
       endResult = "user"
       saveHistory()
       gameStart()
+      return
     }
 
     numHands += 1;
@@ -2225,9 +2220,7 @@ function comBinaryConvert(){
         {/* Used as both Folding and start game button */}
         {showButtonRight && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Fold}>{displayRightButton}</button>}
       </div>
-      <GameState startGame={gameStart} gameState={gameState} endGame={resetBoard} />
-      {/* <h1 className='text-3xl text-black font-bold z-20'>{isGameStarted ? "We can now start game (connect to backend)" : 'GAME IS NOT STARTED YET'}</h1>
-      <button onClick={() => saveHistory()}>Save History</button> */}
+      {gameState === "over" ? <GameState startGame={gameStart} gameState="over" /> : <GameState startGame={gameStart} gameState="start" />}
     </div>
   )
 }
