@@ -29,14 +29,16 @@ let roundNumber = 0;
 let endResult;
 let numHands;
 const hand = {
-  totalBet: 0,
-  compBet: 0,
-  userBet: 0,
+  totalPotAmount: 0,
+  computerBetAmount: 0,
+  playerBetAmount: 0,
+  cards: ["", "", "", "", "", "", "", "", ""],
   winCondition: "",
   foldRound: null,
   winner: "",
-  winningHand: null
+  winningHand: ["", "", "", "", ""]
 }
+let handList = [];
 
 const PokerTableComponent = () => {
   let temp;
@@ -93,10 +95,11 @@ const PokerTableComponent = () => {
   // (BRANDON BUDDY) Whenever the game comes to a close, we need to call this function to save the game history automatically
   const saveHistory = async () => {
     // This will save the game data to the users history array
-    today = new Date()
+    const  today = new Date()
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
+    console.log(hand.cards)
     if (loggedIn) {
       // this currentGame variable will be populated from state during our game
       // hard-coded for the time-being
@@ -104,28 +107,7 @@ const PokerTableComponent = () => {
         result: endResult,
         date: mm + '-' + dd + '-' + yyyy,
         numOfHands: numHands,
-        handHistory: [
-          {
-            totalPotAmount: 125,
-            computerBetAmount: 75,
-            playerBetAmount: 50,
-            cards: ["Club11", "Spade14", "Heart8", "Heart3", "Heart14", "Spade11", "Dia10", "Dia13", "Dia2"],
-            winCondition: "fold",
-            foldRound: 3,
-            winner: "computer",
-            winningHand: null
-          },
-          {
-            totalPotAmount: 75,
-            computerBetAmount: 25,
-            playerBetAmount: 50,
-            cards: ["Dia5", "Club10", "Heart10", "Spade14", "Club4", "Heart4", "Spade4", "Dia4", "Club6"],
-            winCondition: "completed",
-            foldRound: null,
-            winner: "player",
-            winningHand: ["Club14", "Club13", "Club12", "Club11", "Club10"]
-          },
-        ]
+        handHistory: handList
       }
       try {
         const userRef = doc(db, "users", userInstance?.uid)
@@ -155,9 +137,10 @@ const PokerTableComponent = () => {
 
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 500
-    oppMon = 500
+    userMon = 20;
+    oppMon = 500;
     dealer = 1;
+    numHands = 0;
     handStart()
   }
 
@@ -216,54 +199,54 @@ const PokerTableComponent = () => {
     user[0] = cardImageImport[0];
     user[1] = cardImageImport[0];
 
-    cardRankings[1] = cardRankings[1];
-    cardRankings[2] = cardRankings[51];
-    cardRankings[3] = cardRankings[3];
-    cardRankings[4] = cardRankings[50];
-    cardRankings[5] = cardRankings[15];
-    cardRankings[6] = cardRankings[17];
-    cardRankings[7] = cardRankings[21];
-    cardRankings[8] = cardRankings[29];
-    cardRankings[9] = cardRankings[39];
-
-    cardImageImport[1] = cardImageImport[1];
-    cardImageImport[2] = cardImageImport[51];
-    cardImageImport[3] = cardImageImport[3];
-    cardImageImport[4] = cardImageImport[50];
-    cardImageImport[5] = cardImageImport[15];
-    cardImageImport[6] = cardImageImport[17];
-    cardImageImport[7] = cardImageImport[21];
-    cardImageImport[8] = cardImageImport[29];
-    cardImageImport[9] = cardImageImport[39];
-  }
+  cardRankings[1] = cardRankings[52];
+  cardRankings[2] = cardRankings[19];
+  cardRankings[3] = cardRankings[21];
+  cardRankings[4] = cardRankings[9];
+  cardRankings[5] = cardRankings[44];
+  cardRankings[6] = cardRankings[40];
+  cardRankings[7] = cardRankings[36];
+  cardRankings[8] = cardRankings[29];
+  cardRankings[9] = cardRankings[14];
+//Card High Comp Test
+  cardImageImport[1] = cardImageImport[52];
+  cardImageImport[2] = cardImageImport[19];
+  cardImageImport[3] = cardImageImport[21];
+  cardImageImport[4] = cardImageImport[9];
+  cardImageImport[5] = cardImageImport[44];
+  cardImageImport[6] = cardImageImport[40];
+  cardImageImport[7] = cardImageImport[36];
+  cardImageImport[8] = cardImageImport[29];
+  cardImageImport[9] = cardImageImport[14];
+}
   
   async function Bet() {
     if(turn == 0) {
       if(first == 1){
         oppMon -= 5;
         pot += 5;
-        hand.totalBet += 5;
-        hand.compBet += 5
+        hand.totalPotAmount += 5;
+        hand.computerBetAmount += 5
         console.log("Bet of 5 by computer");
       }else{
         oppMon -= 10;
         pot += 10;
-        hand.compBet += 10;
-        hand.totalBet += 10;
+        hand.computerBetAmount += 10;
+        hand.totalPotAmount += 10;
         console.log("Bet of 10 by computer");
       }
     }else{
       if(first == 1){
         userMon -= 5;
         pot += 5;
-        hand.userBet += 5
-        hand.totalBet += 5
+        hand.playerBetAmount += 5
+        hand.totalPotAmount += 5
         console.log("Bet of 5 by user");
       }else{
         userMon -= 10;
         pot += 10;
-        hand.userBet += 10;
-        hand.totalBet += 10;
+        hand.playerBetAmount += 10;
+        hand.totalPotAmount += 10;
         console.log("Bet of 10 by user");
       }
     }
@@ -281,28 +264,28 @@ const PokerTableComponent = () => {
       if(first == 1){
         oppMon -= 15;
         pot += 15;
-        hand.compBet += 15;
-        hand.totalBet += 15;
+        hand.computerBetAmount += 15;
+        hand.totalPotAmount += 15;
         console.log("Raise of 15 by computer");
       }else{
         oppMon -= 20;
         pot += 20;
-        hand.compBet += 20;
-        hand.totalBet += 20;
+        hand.computerBetAmount += 20;
+        hand.totalPotAmount += 20;
         console.log("Raise of 20 by computer " + round[roundNumber]);
       }
     }else{
       if(first == 1){
         userMon -= 15;
         pot += 15;
-        hand.userBet += 15;
-        hand.totalBet += 15;
+        hand.playerBetAmount += 15;
+        hand.totalPotAmount += 15;
         console.log("Raise of 15 by player");
       }else{
         userMon -= 20;
         pot += 20;
-        hand.userBet += 20;
-        hand.totalBet += 20;
+        hand.playerBetAmount += 20;
+        hand.totalPotAmount += 20;
         console.log("Raise of 20 by player + " + round[roundNumber]);
       }
     }
@@ -334,6 +317,7 @@ const PokerTableComponent = () => {
     }
     hand.winCondition = "fold";
     hand.winningHand = null;
+    hand.foldRound = roundNumber;
 
     handStart();
   }
@@ -476,6 +460,14 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 async function de(){
   winCheck();
   revealOpponent();
+  console.log(hand.cards);
+  console.log(hand.winningHand);
+  handList.push(structuredClone(hand));
+  console.log(handList);
+  //Testing
+  //if(numHands == 2){
+    //saveHistory();
+  //}
   await delay(4000);
   //Maybe change to handStart while loop or another function while loop
   handStart();
@@ -517,67 +509,67 @@ async function turnStart() {
     secondLastMove = "";
   }
 
- if(turn == 0){
-    let che = 0;
-    let be = 0;
-    let rai = 0;
-    let fo = 0;
-    //let ava = {};
-    let ava = []
-    let rawAva = [];
-    let bin = comBinaryConvert();
-    //Set actions avaiable
-    if(oppMon == 0){
-      //Maybe nothing
-      che = 1;
-    }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
-      //ra = 1;
-      //ava[1] = null
-      ava.push([1, null])
-      rawAva.push('raise');
-      //fo = 1;
-      ava.push([2, null])
-      //ava[2] = null
-      rawAva.push('fold')
-      //che = 1;
-      //ava[3] = null
-      ava.push([3, null])
-      rawAva.push('check')
-    }else{
-      //be = 1;
-      //ava[0] = null
-      ava.push([0, null])
-      rawAva.push('call');
-      //rai = 1;
-      //ava[1] = null
-      ava.push([1, null])
-      rawAva.push('raise');
-      //fo = 1;
-      //ava[2] = null
-      ava.push([2, null])
-      rawAva.push('fold')
-    }
-    console.log("Calling model");
-    let modelOutput = {}
-    modelOutput = await callModel(bin, ava, rawAva);
-    modelOutput = Number(modelOutput.output);
-    console.log("MODEL OUTPUT", modelOutput)
-
-    if(modelOutput === 0){
-      Bet();
-    }else if(modelOutput === 1){
-      Raise();
-    }else if(modelOutput === 2){
-      Fold();
-    }else if (modelOutput === 3){
-      Check();
-    }
-
-   //Call api
-   //Do what api says
- }
+ //if(turn == 0){
+ //   let che = 0;
+ //   let be = 0;
+ //   let rai = 0;
+ //   let fo = 0;
+ //   //let ava = {};
+ //   let ava = []
+ //   let rawAva = [];
+ //   let bin = comBinaryConvert();
+ //   //Set actions avaiable
+ //   if(oppMon == 0){
+ //     //Maybe nothing
+ //     che = 1;
+ //   }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
+ //     //ra = 1;
+ //     //ava[1] = null
+ //     ava.push([1, null])
+ //     rawAva.push('raise');
+ //     //fo = 1;
+ //     ava.push([2, null])
+ //     //ava[2] = null
+ //     rawAva.push('fold')
+ //     //che = 1;
+ //     //ava[3] = null
+ //     ava.push([3, null])
+ //     rawAva.push('check')
+ //   }else{
+ //     //be = 1;
+ //     //ava[0] = null
+ //     ava.push([0, null])
+ //     rawAva.push('call');
+ //     //rai = 1;
+ //     //ava[1] = null
+ //     ava.push([1, null])
+ //     rawAva.push('raise');
+ //     //fo = 1;
+ //     //ava[2] = null
+ //     ava.push([2, null])
+ //     rawAva.push('fold')
+ //   }
+ //   console.log("Calling model");
+ //   let modelOutput = {}
+ //   modelOutput = await callModel(bin, ava, rawAva);
+ //   modelOutput = Number(modelOutput.output);
+ //   console.log("MODEL OUTPUT", modelOutput)
+//
+ //   if(modelOutput === 0){
+ //     Bet();
+ //   }else if(modelOutput === 1){
+ //     Raise();
+ //   }else if(modelOutput === 2){
+ //     Fold();
+ //   }else if (modelOutput === 3){
+ //     Check();
+ //   }
+//
+ //  //Call api
+ //  //Do what api says
+ //}
  //////If player
- else{
+ //else{
     //No money means you can't bet
     if(userMon == 0 || oppMon == 0){
       setDisplayMiddleButton(false);
@@ -607,7 +599,7 @@ async function turnStart() {
       setDisplayRightButton("Fold");
       button1 = false;
     }
-  }
+  //}
 }
 
 async function callModel(binOutput, legal, rawLegal){
@@ -685,6 +677,8 @@ function comBinaryConvert(){
     let compDia = [];
     let userFlush = [];
     let compFlush = [];
+    let uType = "";
+    let cType = "";
     let userStraight = [];
     let compStraight = [];
     let userSAll = [];
@@ -705,8 +699,7 @@ function comBinaryConvert(){
     let compList = [];
     let userListShort = []; //User cards without
     let compListShort = [];
-    let userHigh = -1;
-    let compHigh = -1;
+    let Comp = ['', '' ,'' ,'' ,'' ,'' ,'', '', ''];
     let straight = [[2, 3, 4, 5 ,6], [3, 4, 5, 6, 7] ,[4, 5, 6, 7, 8], [5, 6, 7, 8, 9], [6, 7, 8, 9, 10], 
       [7, 8, 9, 10, 11], [8, 9, 10, 11, 12], [9, 10, 11, 12, 13], [10, 11, 12, 13, 14]];
 
@@ -725,7 +718,11 @@ function comBinaryConvert(){
             userSpade.push(cardRankings[(i*2) + 1][1]);
           }
           user1 = cardRankings[1][1];
+          Comp[7] = cardRankings[1]; 
+          hand.cards[7] = cardRankings[1][0] + cardRankings[1][1].toString()
           user2 = cardRankings[3][1];
+          Comp[8] = cardRankings[3]; 
+          hand.cards[8] = cardRankings[3][0] + cardRankings[3][1].toString()
         }else{
           if(cardRankings[(i*2) + 2][0] == 'Club'){
             userClub.push(cardRankings[(i*2) + 2][1]);
@@ -737,7 +734,11 @@ function comBinaryConvert(){
             userSpade.push(cardRankings[(i*2) + 2][1]);
           }
           user1 = cardRankings[2][1];
+          Comp[7] = cardRankings[2];
+          hand.cards[7] = cardRankings[2][0] + cardRankings[2][1].toString()
           user2 = cardRankings[4][1];
+          Comp[8] = cardRankings[4];
+          hand.cards[8] = cardRankings[4][0] + cardRankings[4][1].toString()
         }
     }
     for(let i = 0; i < 2; i++){
@@ -752,7 +753,11 @@ function comBinaryConvert(){
           compSpade.push(cardRankings[(i*2) + 2][1]);
         }
         comp1 = cardRankings[2][1];
+        Comp[0] = cardRankings[2];
+        hand.cards[0] = cardRankings[2][0] + cardRankings[2][1].toString()
         comp2 = cardRankings[4][1];
+        Comp[1] = cardRankings[4];
+        hand.cards[1] = cardRankings[4][0] + cardRankings[4][1].toString()
       }else{
         if(cardRankings[(i*2) + 1][0] == 'Club'){
           compClub.push(cardRankings[(i*2) + 1][1]);
@@ -764,7 +769,11 @@ function comBinaryConvert(){
           compSpade.push(cardRankings[(i*2) + 1][1]);
         }
         comp1 = cardRankings[1][1];
+        Comp[0] = cardRankings[1];
+        hand.cards[0] = cardRankings[1][0] + cardRankings[1][1].toString()
         comp2 = cardRankings[3][1];
+        Comp[1] = cardRankings[3];
+        hand.cards[1] = cardRankings[3][0] + cardRankings[3][1].toString()
       }
     }
     for(let i = 5; i < 10; i++){
@@ -781,6 +790,8 @@ function comBinaryConvert(){
         compSpade.push(cardRankings[i][1]);
         userSpade.push(cardRankings[i][1]);
       }
+      hand.cards[i-3] = cardRankings[i][0] + cardRankings[i][1].toString()
+      Comp[i-3] = cardRankings[i];
     }
 
     userList.push(user1);
@@ -825,28 +836,36 @@ function comBinaryConvert(){
     //Flush check
     if(userClub.length >= 5){
       userFlush = userClub;
+      uType = "Club";
       console.log("H-Club");
     }else if(userDia.length >= 5){
       userFlush = userDia;
+      uType = "Dia";
       console.log("H-Dia " + userDia);
     }else if(userSpade.length >= 5){
       userFlush = userSpade;
+      uType = "Spade";
       console.log("H-Spade " + userSpade);
     }else if(userHeart.length >= 5){
       userFlush = userHeart;
+      uType = "Heart";
       console.log("H-Heart");
     }
     if(compClub.length >= 5){
       compFlush = compClub;
+      cType = "Club";
       console.log("C-Club");
     }else if(compDia.length >= 5){
       compFlush = compDia;
+      cType = "Dia";
       console.log("C-Dia");
     }else if(compSpade.length >= 5){
       compFlush = compSpade;
+      cType = "Spade";
       console.log("C-Spade");
     }else if(compHeart.length >= 5){
       compFlush = compHeart;
+      cType = "Heart";
       console.log("C-Heart");
     }
 
@@ -913,12 +932,24 @@ function comBinaryConvert(){
     //Straight Flush Win Check
     if(userStraightFlush.length >= 5 && !(compStraightFlush.length >= 5)){
       userWins();
-      console.log("User wins by straight flush");
+      console.log("User wins by straight flush " + userStraightFlush);
+      hand.winningHand[0] = uType + userStraightFlush[userStraightFlush.length - 1].toString();
+      hand.winningHand[1] = uType + userStraightFlush[userStraightFlush.length - 2].toString();
+      hand.winningHand[2] = uType + userStraightFlush[userStraightFlush.length - 3].toString();
+      hand.winningHand[3] = uType + userStraightFlush[userStraightFlush.length - 4].toString();
+      hand.winningHand[4] = uType + userStraightFlush[userStraightFlush.length - 5].toString();
+      hand.winCondition = "completed";
       return;
     }
     if(!(userStraightFlush.length >= 5) && compStraightFlush.length >= 5 ){
       computerWins();
       console.log("Computer wins by straight flush");
+      hand.winningHand[0] = cType + compStraightFlush[compStraightFlush.length - 1].toString();
+      hand.winningHand[1] = cType + compStraightFlush[compStraightFlush.length - 2].toString();
+      hand.winningHand[2] = cType + compStraightFlush[compStraightFlush.length - 3].toString();
+      hand.winningHand[3] = cType + compStraightFlush[compStraightFlush.length - 4].toString();
+      hand.winningHand[4] = cType + compStraightFlush[compStraightFlush.length - 5].toString();
+      hand.winCondition = "completed";
       return;
     }
     if(userStraightFlush.length >= 5 && compStraightFlush.length >= 5){
@@ -927,10 +958,22 @@ function comBinaryConvert(){
         if(userStraightFlush[i] > compStraightFlush[i]){
           userWins();
           console.log("User wins by straight flush 2");
+          hand.winningHand[0] = uType + userStraightFlush[userStraightFlush.length - 1].toString();
+          hand.winningHand[1] = uType + userStraightFlush[userStraightFlush.length - 2].toString();
+          hand.winningHand[2] = uType + userStraightFlush[userStraightFlush.length - 3].toString();
+          hand.winningHand[3] = uType + userStraightFlush[userStraightFlush.length - 4].toString();
+          hand.winningHand[4] = uType + userStraightFlush[userStraightFlush.length - 5].toString();
+          hand.winCondition = "completed";
           return;
         }else if(userStraightFlush[i] < compStraightFlush[i]){
           computerWins();
           console.log("Computer wins by straight flush 2");
+          hand.winningHand[0] = cType + compStraightFlush[compStraightFlush.length - 1].toString();
+          hand.winningHand[1] = cType + compStraightFlush[compStraightFlush.length - 2].toString();
+          hand.winningHand[2] = cType + compStraightFlush[compStraightFlush.length - 3].toString();
+          hand.winningHand[3] = cType + compStraightFlush[compStraightFlush.length - 4].toString();
+          hand.winningHand[4] = cType + compStraightFlush[compStraightFlush.length - 5].toString();
+          hand.winCondition = "completed";
           return;
         }
       }
@@ -965,11 +1008,27 @@ function comBinaryConvert(){
     if(user4 && !comp4){
       userWins();
       console.log("User wins by 4 of kind");
+      hand.winningHand[0] = "Heart" + user4.toString();
+      hand.winningHand[1] = "Spade" + user4.toString();
+      hand.winningHand[2] = "Dia" + user4.toString();
+      hand.winningHand[3] = "Club" + user4.toString();
+      let final = Comp.slice(-7);
+      Comp.sort((a, b) => a[1] - b[1]);
+      final = final.filter(item => item[1] !== user4);
+      hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
       return;
     }
     if(!user4 && comp4){
       computerWins();
       console.log("Computer wins by 4 of kind");
+      hand.winningHand[0] = "Heart" + comp4.toString();
+      hand.winningHand[1] = "Spade" + comp4.toString();
+      hand.winningHand[2] = "Dia" + comp4.toString();
+      hand.winningHand[3] = "Club" + comp4.toString();
+      let final = Comp.slice(0, 7);
+      Comp.sort((a, b) => a[1] - b[1]);
+      final = final.filter(item => item[1] !== comp4);
+      hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
       return;
     }
     if(user4 && comp4){
@@ -977,10 +1036,26 @@ function comBinaryConvert(){
       if(user4 > comp4){
         userWins();
         console.log("User wins by 4 of kind 2");
+        hand.winningHand[0] = "Heart" + user4.toString();
+        hand.winningHand[1] = "Spade" + user4.toString();
+        hand.winningHand[2] = "Dia" + user4.toString();
+        hand.winningHand[3] = "Club" + user4.toString();
+        let final = Comp.slice(-7);
+        Comp.sort((a, b) => a[1] - b[1]);
+        final = final.filter(item => item[1] !== user4);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
         return;
       }else if(user4 < comp4){
         computerWins();
         console.log("Computer wins by 4 of kind 2");
+        hand.winningHand[0] = "Heart" + comp4.toString();
+        hand.winningHand[1] = "Spade" + comp4.toString();
+        hand.winningHand[2] = "Dia" + comp4.toString();
+        hand.winningHand[3] = "Club" + comp4.toString();
+        let final = Comp.slice(0, 7);
+        Comp.sort((a, b) => a[1] - b[1]);
+        final = final.filter(item => item[1] !== comp4);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
         return;
       }
       temp = userList.indexOf(user4);
@@ -990,10 +1065,26 @@ function comBinaryConvert(){
       if(userList[userList.length-1] > compList[compList.length-1]){
         userWins();
         console.log("User wins by 4 of kind 3");
+        hand.winningHand[0] = "Heart" + user4.toString();
+        hand.winningHand[1] = "Spade" + user4.toString();
+        hand.winningHand[2] = "Dia" + user4.toString();
+        hand.winningHand[3] = "Club" + user4.toString();
+        let final = Comp.slice(-7);
+        Comp.sort((a, b) => a[1] - b[1]);
+        final = final.filter(item => item[1] !== user4);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
         return;
       }else if(userList[userList.length-1] < compList[compList.length-1]){
         computerWins();
         console.log("Computer wins by 4 of kind 3");
+        hand.winningHand[0] = "Heart" + comp4.toString();
+        hand.winningHand[1] = "Spade" + comp4.toString();
+        hand.winningHand[2] = "Dia" + comp4.toString();
+        hand.winningHand[3] = "Club" + comp4.toString();
+        let final = Comp.slice(0, 7);
+        Comp.sort((a, b) => a[1] - b[1]);
+        final = final.filter(item => item[1] !== comp4);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
         return;
       }
     }
@@ -1001,25 +1092,33 @@ function comBinaryConvert(){
     //Full house
     if(userList[0] == userList[2]){
       user3.push(userList[0]);
-    }else if(userList[1] == userList[3]){
+    }
+    if(userList[1] == userList[3]){
       user3.push(userList[1]);
-    }else if(userList[2] == userList[4]){
+    }
+    if(userList[2] == userList[4]){
       user3.push(userList[2]);
-    }else if(userList[3] == userList[5]){
+    }
+    if(userList[3] == userList[5]){
       user3.push(userList[3]);
-    }else if(userList[4] == userList[6]){
+    }
+    if(userList[4] == userList[6]){
       user3.push(userList[4]);
     }
 
     if(compList[0] == compList[2]){
       comp3.push(compList[0]);
-    }else if(compList[1] == compList[3]){
+    }
+    if(compList[1] == compList[3]){
       comp3.push(compList[1]);
-    }else if(compList[2] == compList[4]){
+    }
+    if(compList[2] == compList[4]){
       comp3.push(compList[2]);
-    }else if(compList[3] == compList[5]){
+    }
+    if(compList[3] == compList[5]){
       comp3.push(compList[3]);
-    }else if(compList[4] == compList[6]){
+    }
+    if(compList[4] == compList[6]){
       comp3.push(compList[4]);
     }
 
@@ -1041,18 +1140,62 @@ function comBinaryConvert(){
     }
     for(let i = 0; i < tmp2.length-1; i++){
       if(tmp2[i] == tmp2[i+1]){
-        compPair.push(tmp[i]);
+        compPair.push(tmp2[i]);
       }
     }
 
     if((user3.length > 0 && (userPair.length > 0)) && !((compPair.length > 0) && comp3.length > 0)){
       userWins();
       console.log("User wins by Full house");
+      let final = Comp.slice(-7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 0;
+      while(true){
+        if(final[i][1] == user3[user3.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+      hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+      i = 0;
+      while(true){
+        if(final[i][1] == userPair[userPair.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[3] = final[i][0] + final[i][1].toString();
+      hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
       return;
     }
     if(!(user3.length > 0 && (userPair.length > 0)) && ((compPair.length > 0) && comp3.length > 0)){
       computerWins();
       console.log("Computer wins by Full house");
+      let final = Comp.slice(0, 7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 0;
+      while(true){
+        if(final[i][1] == comp3[comp3.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+      hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+      i = 0;
+      console.log(compPair);
+      while(true){
+        if(final[i][1] == compPair[compPair.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[3] = final[i][0] + final[i][1].toString();
+      hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
+      console.log(final);
       return;
     }
     if((user3.length > 0 && (userPair.length > 0)) && ((compPair.length > 0) && comp3.length > 0)){
@@ -1060,20 +1203,103 @@ function comBinaryConvert(){
       if(user3[user3.length-1] > comp3[comp3.length-1]){
         userWins();
         console.log("User wins by Full house 2");
+        let final = Comp.slice(-7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == user3[user3.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[3] = final[i][0] + final[i][1].toString();
+        hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
         return;
       }else if(user3[user3.length-1] < comp3[comp3.length-1]){
         computerWins();
         console.log("Computer wins by Full house 2");
+        let final = Comp.slice(0, 7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == comp3[comp3.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[3] = final[i][0] + final[i][1].toString();
+        hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
         return;
       }
-
       if(userPair[userPair.length-1] > compPair[compPair.length-1]){
         userWins();
         console.log("User wins by Full house 3");
+        let final = Comp.slice(-7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == user3[user3.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[3] = final[i][0] + final[i][1].toString();
+        hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
         return;
       }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
         computerWins();
         console.log("Computer wins by Full house 3");
+        let final = Comp.slice(0, 7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == comp3[comp3.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[3] = final[i][0] + final[i][1].toString();
+        hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
         return;
       }
 
@@ -1087,11 +1313,21 @@ function comBinaryConvert(){
     if(userFlush.length >= 5 && compFlush.length < 5){
        userWins();
        console.log("User wins by Flush");
+       hand.winningHand[0] = uType + userFlush[userFlush.length-1].toString();
+       hand.winningHand[1] = uType + userFlush[userFlush.length-2].toString();
+       hand.winningHand[2] = uType + userFlush[userFlush.length-3].toString();
+       hand.winningHand[3] = uType + userFlush[userFlush.length-4].toString();
+       hand.winningHand[4] = uType + userFlush[userFlush.length-5].toString();
        return;
      }
      if(userFlush.length < 5 && compFlush.length >= 5){
        computerWins();
        console.log("Computer wins by Flush");
+       hand.winningHand[0] = cType + compFlush[compFlush.length-1].toString();
+       hand.winningHand[1] = cType + compFlush[compFlush.length-2].toString();
+       hand.winningHand[2] = cType + compFlush[compFlush.length-3].toString();
+       hand.winningHand[3] = cType + compFlush[compFlush.length-4].toString();
+       hand.winningHand[4] = cType + compFlush[compFlush.length-5].toString();
        return;
      }
      if(userFlush.length >= 5 && compFlush.length >= 5){
@@ -1100,10 +1336,20 @@ function comBinaryConvert(){
          if(userFlush[userFlush.length - 1 - i] > compFlush[compFlush.length - 1 - i]){
            userWins();
            console.log("User wins by Flush 2");
+           hand.winningHand[0] = uType + userFlush[userFlush.length-1].toString();
+           hand.winningHand[1] = uType + userFlush[userFlush.length-2].toString();
+           hand.winningHand[2] = uType + userFlush[userFlush.length-3].toString();
+           hand.winningHand[3] = uType + userFlush[userFlush.length-4].toString();
+           hand.winningHand[4] = uType + userFlush[userFlush.length-5].toString();
            return;
          }else if(compFlush[compFlush.length - 1 - i] > userFlush[userFlush.length - 1 - i]){
            computerWins();
            console.log("Computer wins by Flush 2");
+           hand.winningHand[0] = cType + compFlush[compFlush.length-1].toString();
+           hand.winningHand[1] = cType + compFlush[compFlush.length-2].toString();
+           hand.winningHand[2] = cType + compFlush[compFlush.length-3].toString();
+           hand.winningHand[3] = cType + compFlush[compFlush.length-4].toString();
+           hand.winningHand[4] = cType + compFlush[compFlush.length-5].toString();
            return;
          }
        }
@@ -1112,193 +1358,721 @@ function comBinaryConvert(){
     }
 
       //Straight
-      if(userStraight.length == 5 && compStraight.length != 5){
-        userWins();
-        console.log("User wins by Straight " + userStraight);
-        return;
+    if(userStraight.length == 5 && compStraight.length != 5){
+      userWins();
+      console.log("User wins by Straight " + userStraight);
+      let final = Comp.slice(-7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 6;
+      while(true){
+        if(final[i][1] == userStraight[userStraight.length-1]){
+          break;
+        }
+        i--;
       }
-      if(userStraight.length != 5 && compStraight.length == 5){
-        computerWins();
-        console.log("Computer wins by Straight " + compStraight);
-        return;
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      if(final[i][1] == final[i-1][1]){
+        i--;
       }
-      if(userStraight.length == 5 && compStraight.length == 5){
-        //Tie breaker
-        for(let i = 4; i >= 0; i--){
-          if(userStraight[i] > compStraight[i]){
-            userWins();
-            console.log("User wins by Straight 2 " + userStraight);
-            return;
+      if(final[i][1] == final[i-1][1]){
+        i--;
+      }
+      hand.winningHand[1] = final[i-1][0] + final[i-1][1].toString();
+      if(final[i-1][1] == final[i-2][1]){
+        i--;
+      }
+      if(final[i-1][1] == final[i-2][1]){
+        i--;
+      }
+      hand.winningHand[2] = final[i-2][0] + final[i-2][1].toString();
+      if(final[i-2][1] == final[i-3][1]){
+        i--;
+      }
+      if(final[i-2][1] == final[i-3][1]){
+        i--;
+      }
+      hand.winningHand[3] = final[i-3][0] + final[i-3][1].toString();
+      if(final[i-3][1] == final[i-4][1]){
+        i--;
+      }
+      if(final[i-3][1] == final[i-4][1]){
+        i--;
+      }
+      hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
+      return;
+    }
+    if(userStraight.length != 5 && compStraight.length == 5){
+      computerWins();
+      console.log("Computer wins by Straight " + compStraight);
+      let final = Comp.slice(0, 7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 6;
+      while(true){
+        if(final[i][1] == compStraight[compStraight.length-1]){
+          break;
+        }
+        i--;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      if(final[i][1] == final[i-1][1]){
+        i--;
+      }
+      if(final[i][1] == final[i-1][1]){
+        i--;
+      }
+      hand.winningHand[1] = final[i-1][0] + final[i-1][1].toString();
+      if(final[i-1][1] == final[i-2][1]){
+        i--;
+      }
+      if(final[i-1][1] == final[i-2][1]){
+        i--;
+      }
+      hand.winningHand[2] = final[i-2][0] + final[i-2][1].toString();
+      if(final[i-2][1] == final[i-3][1]){
+        i--;
+      }
+      if(final[i-2][1] == final[i-3][1]){
+        i--;
+      }
+      hand.winningHand[3] = final[i-3][0] + final[i-3][1].toString();
+      if(final[i-3][1] == final[i-4][1]){
+        i--;
+      }
+      if(final[i-3][1] == final[i-4][1]){
+        i--;
+      }
+      hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
+      return;
+    }
+    if(userStraight.length == 5 && compStraight.length == 5){
+      //Tie breaker
+      for(let i = 4; i >= 0; i--){
+        if(userStraight[i] > compStraight[i]){
+          userWins();
+          console.log("User wins by Straight 2 " + userStraight);
+          let final = Comp.slice(-7);
+          final.sort((a, b) => a[1] - b[1]);
+          let i = 6;
+          while(true){
+            if(final[i][1] == userStraight[userStraight.length-1]){
+              break;
+            }
+            i--;
           }
-          if(compStraight[i] > userStraight[i]){
-            computerWins();
-            console.log("Computer wins by Straight 2 " + compStraight);
-            return;
+          hand.winningHand[0] = final[i][0] + final[i][1].toString();
+          if(final[i][1] == final[i-1][1]){
+            i--;
           }
-        }
-        //Tie split pot
-        gameTie()
-        console.log("Tie game in double straight ");
-        return;
-      }
-      //Three of kind
-      if(user3.length > 0 && !comp3.length > 0){
-        userWins();
-        console.log("User wins by 3 kind");
-        return;
-      }
-      if(!user3.length > 0 && comp3.length > 0){
-        computerWins();
-        console.log("Computer wins by 3 kind");
-        return;
-      }
-      if(user3.length > 0 && comp3.length > 0){
-        //Tie breaker
-        if(user3[user3.length-1] > comp3[comp3.length-1]){
-          userWins();
-          console.log("User wins by 3 kind 2");
-          return;
-        }else if(user3[user3.length-1] < comp3[comp3.length-1]){
-          computerWins();
-          console.log("Computer wins by 3 kind 2");
-          return;
-        }
-
-        temp = userList.indexOf(user3[0]);
-        userList.splice(temp, 3);
-        temp = compList.indexOf(comp3[0]);
-        compList.splice(temp, 3);
-        for(let i = 3; i > 1; i--){
-          if(userList[i] > compList[i]){
-            userWins();
-            console.log("User wins by 3 kind 3 " + userList[i]);
-            return;
-          }else if(userList[i] < compList[i]){
-            computerWins();
-            console.log("Computer wins by 3 kind 3");
-            return;
+          if(final[i][1] == final[i-1][1]){
+            i--;
           }
-        }
-        //Tie spilt pot
-        gameTie();
-        return;
-      }
-      //Two pair
-      if((userPair.length > 1) && !(compPair.length > 1)){
-        userWins();
-        console.log("User wins by 2 Pair");
-        return;
-      }
-      if(!(userPair.length > 1) && (compPair.length > 1)){
-        computerWins();
-        console.log("Computer wins by 2 Pair");
-        return;
-      }
-      if((userPair.length > 1) && (compPair.length > 1)){
-        //Tie breaker
-        //userPair = userList.sort(function (a, b) {  return a - b;  });
-        //compPair = compList.sort(function (a, b) {  return a - b;  });
-        if(userPair[userPair.length-1] > compPair[compPair.length-1]){
-          userWins();
-          console.log("User wins by 2 Pair 2");
-          return;
-        }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
-          computerWins();
-          console.log("Computer wins by 2 Pair 2");
-          return;
-        }
-        if(userPair[userPair.length-2] > compPair[compPair.length-2]){
-          userWins();
-          console.log("User wins by 2 Pair 3");
-          return;
-        }else if(userPair[userPair.length-2] < compPair[compPair.length-2]){
-          computerWins();
-          console.log("Computer wins by 2 Pair 3");
-          return;
-        }
-        //Have to find highest card that is not apart of pair to break tie
-        temp = userList.indexOf(userPair[userPair.length-1]);
-        userList.splice(temp, 2);
-        temp = userList.indexOf(userPair[userPair.length-2]);
-        userList.splice(temp, 2);
-        temp = compList.indexOf(compPair[compPair.length-1]);
-        compList.splice(temp, 2);
-        temp = compList.indexOf(compPair[compPair.length-2]);
-        compList.splice(temp, 2);
-        if(userList[userList.length-1] > compList[compList.length-1]){
-          userWins();
-          console.log("User wins by 2 Pair 4");
-          return;
-        }else if(userList[userList.length-1] < compList[compList.length-1]){
-          computerWins();
-          console.log("Computer wins by 2 Pair 4");
-          return;
-        }else{
-          //Tie spilt pot
-          gameTie();
-          console.log("Tie in 2 pairs");
-          return;
-        }
-      }
-      //One pair
-      if((userPair.length == 1) && !(compPair.length == 1)){
-        userWins();
-        console.log("User wins by one pair");
-        return;
-      }
-      if(!(userPair.length == 1) && (compPair.length == 1)){
-        computerWins();
-        console.log("Computer wins by one pair");
-        return;
-      }
-      if((userPair.length == 1) && (compPair.length == 1)){
-        //Tie breaker
-        if(userPair[0] > compPair[0]){
-          userWins();
-          console.log("User wins by one pair 2");
-          return;
-        }else if(userPair[0] < compPair[0]){
-          computerWins();
-          console.log("Computer wins by one pair 2");
-          return;
-        }
-        temp = userList.indexOf(userPair[0]);
-        userList.splice(temp, 2);
-        temp = compList.indexOf(compPair[0]);
-        compList.splice(temp, 2);
-        //Tie Breaker is top 3 cards not in the pair
-        for(let i = userList.length-1; i > userList.length-4; i--){
-          if(userList[i] > compList[i]){
-            userWins();
-            console.log("User wins by one pair 3");
-            return;
-          }else if(userList[i] < compList[i]){
-            computerWins();
-            console.log("Computer wins by one pair 3");
-            return;
+          hand.winningHand[1] = final[i-1][0] + final[i-1][1].toString();
+          if(final[i-1][1] == final[i-2][1]){
+            i--;
           }
+          if(final[i-1][1] == final[i-2][1]){
+            i--;
+          }
+          hand.winningHand[2] = final[i-2][0] + final[i-2][1].toString();
+          if(final[i-2][1] == final[i-3][1]){
+            i--;
+          }
+          if(final[i-2][1] == final[i-3][1]){
+            i--;
+          }
+          hand.winningHand[3] = final[i-3][0] + final[i-3][1].toString();
+          if(final[i-3][1] == final[i-4][1]){
+            i--;
+          }
+          if(final[i-3][1] == final[i-4][1]){
+            i--;
+          }
+          hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
+          return;
         }
-        //Tie Spilt tie
-        gameTie();
-        console.log("Tie in pair");
+        if(compStraight[i] > userStraight[i]){
+          computerWins();
+          console.log("Computer wins by Straight 2 " + compStraight);
+          let final = Comp.slice(0, 7);
+          final.sort((a, b) => a[1] - b[1]);
+          let i = 6;
+          while(true){
+            if(final[i][1] == compStraight[compStraight.length-1]){
+              break;
+            }
+            i--;
+          }
+          hand.winningHand[0] = final[i][0] + final[i][1].toString();
+          if(final[i][1] == final[i-1][1]){
+            i--;
+          }
+          if(final[i][1] == final[i-1][1]){
+            i--;
+          }
+          hand.winningHand[1] = final[i-1][0] + final[i-1][1].toString();
+          if(final[i-1][1] == final[i-2][1]){
+            i--;
+          }
+          if(final[i-1][1] == final[i-2][1]){
+            i--;
+          }
+          hand.winningHand[2] = final[i-2][0] + final[i-2][1].toString();
+          if(final[i-2][1] == final[i-3][1]){
+            i--;
+          }
+          if(final[i-2][1] == final[i-3][1]){
+            i--;
+          }
+          hand.winningHand[3] = final[i-3][0] + final[i-3][1].toString();
+          if(final[i-3][1] == final[i-4][1]){
+            i--;
+          }
+          if(final[i-3][1] == final[i-4][1]){
+            i--;
+          }
+          hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
+          return;
+        }
+      }
+      //Tie split pot
+      gameTie()
+      console.log("Tie game in double straight ");
+      return;
+    }
+    //Three of kind
+    if(user3.length > 0 && !comp3.length > 0){
+      userWins();
+      console.log("User wins by 3 kind");
+      let final = Comp.slice(-7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 0;
+      while(true){
+        if(final[i][1] == user3[user3.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+      hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+      final = final.filter(item => item[1] !== user3[user3.length-1]);
+      hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
+      hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+      return;
+    }
+    if(!user3.length > 0 && comp3.length > 0){
+      computerWins();
+      console.log("Computer wins by 3 kind");
+      let final = Comp.slice(0, 7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 0;
+      while(true){
+        if(final[i][1] == comp3[comp3.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+      hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+      final = final.filter(item => item[1] !== comp3[comp3.length-1]);
+      hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
+      hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+      return;
+    }
+    if(user3.length > 0 && comp3.length > 0){
+      //Tie breaker
+      if(user3[user3.length-1] > comp3[comp3.length-1]){
+        userWins();
+        console.log("User wins by 3 kind 2");
+        let final = Comp.slice(-7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == user3[user3.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+        final = final.filter(item => item[1] !== user3[user3.length-1]);
+        hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+        return;
+      }else if(user3[user3.length-1] < comp3[comp3.length-1]){
+        computerWins();
+        console.log("Computer wins by 3 kind 2");
+        let final = Comp.slice(0, 7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == comp3[comp3.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+        final = final.filter(item => item[1] !== comp3[comp3.length-1]);
+        hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
         return;
       }
-
-      //High card
-      for(let i = 6; i > 1; i--){
+      temp = userList.indexOf(user3[0]);
+      userList.splice(temp, 3);
+      temp = compList.indexOf(comp3[0]);
+      compList.splice(temp, 3);
+      for(let i = 3; i > 1; i--){
         if(userList[i] > compList[i]){
           userWins();
-          console.log("User wins by Card high");
+          console.log("User wins by 3 kind 3 " + userList[i]);
+          let final = Comp.slice(-7);
+          final.sort((a, b) => a[1] - b[1]);
+          let i = 0;
+          while(true){
+            if(final[i][1] == user3[user3.length-1]){
+              break;
+            }
+            i++;
+          }
+          hand.winningHand[0] = final[i][0] + final[i][1].toString();
+          hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+          hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+          final = final.filter(item => item[1] !== user3[user3.length-1]);
+          hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
+          hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
           return;
-        }else if(compList[i] > userList[i]){
+        }else if(userList[i] < compList[i]){
           computerWins();
-          console.log("Computer wins by Card High");
+          console.log("Computer wins by 3 kind 3");
+          let final = Comp.slice(0, 7);
+          final.sort((a, b) => a[1] - b[1]);
+          let i = 0;
+          while(true){
+            if(final[i][1] == comp3[comp3.length-1]){
+              break;
+            }
+            i++;
+          }
+          hand.winningHand[0] = final[i][0] + final[i][1].toString();
+          hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+          hand.winningHand[2] = final[i+2][0] + final[i+2][1].toString();
+          final = final.filter(item => item[1] !== comp3[comp3.length-1]);
+          hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
+          hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
           return;
         }
       }
+      //Tie spilt pot
       gameTie();
-      console.log("Tie in card high");
       return;
+    }
+    //Two pair
+    if((userPair.length > 1) && !(compPair.length > 1)){
+      userWins();
+      console.log("User wins by 2 Pair");
+      let final = Comp.slice(-7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 0;
+      while(true){
+        if(final[i][1] == userPair[userPair.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+      i = 0;
+      while(true){
+        if(final[i][1] == userPair[userPair.length-2]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[2] = final[i][0] + final[i][1].toString();
+      hand.winningHand[3] = final[i+1][0] + final[i+1][1].toString();
+      final = final.filter(item => item[1] !== userPair[userPair.length-1]);
+      final = final.filter(item => item[1] !== userPair[userPair.length-2]);
+      hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+      return;
+    }
+    if(!(userPair.length > 1) && (compPair.length > 1)){
+      computerWins();
+      console.log("Computer wins by 2 Pair");
+      let final = Comp.slice(0, 7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 0;
+      while(true){
+        if(final[i][1] == compPair[compPair.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+      i = 0;
+      while(true){
+        if(final[i][1] == compPair[compPair.length-2]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[2] = final[i][0] + final[i][1].toString();
+      hand.winningHand[3] = final[i+1][0] + final[i+1][1].toString();
+      final = final.filter(item => item[1] !== compPair[compPair.length-1]);
+      final = final.filter(item => item[1] !== compPair[compPair.length-2]);
+      hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+      return;
+    }
+    if((userPair.length > 1) && (compPair.length > 1)){
+      //Tie breaker
+      //userPair = userList.sort(function (a, b) {  return a - b;  });
+      //compPair = compList.sort(function (a, b) {  return a - b;  });
+      if(userPair[userPair.length-1] > compPair[compPair.length-1]){
+        userWins();
+        console.log("User wins by 2 Pair 2");
+        let final = Comp.slice(-7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-2]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[2] = final[i][0] + final[i][1].toString();
+        hand.winningHand[3] = final[i+1][0] + final[i+1][1].toString();
+        final = final.filter(item => item[1] !== userPair[userPair.length-1]);
+        final = final.filter(item => item[1] !== userPair[userPair.length-2]);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        return;
+      }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
+        computerWins();
+        console.log("Computer wins by 2 Pair 2");
+        let final = Comp.slice(0, 7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-2]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[2] = final[i][0] + final[i][1].toString();
+        hand.winningHand[3] = final[i+1][0] + final[i+1][1].toString();
+        final = final.filter(item => item[1] !== compPair[compPair.length-1]);
+        final = final.filter(item => item[1] !== compPair[compPair.length-2]);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        return;
+      }
+      if(userPair[userPair.length-2] > compPair[compPair.length-2]){
+        userWins();
+        console.log("User wins by 2 Pair 3");
+        let final = Comp.slice(-7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-2]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[2] = final[i][0] + final[i][1].toString();
+        hand.winningHand[3] = final[i+1][0] + final[i+1][1].toString();
+        final = final.filter(item => item[1] !== userPair[userPair.length-1]);
+        final = final.filter(item => item[1] !== userPair[userPair.length-2]);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        return;
+      }else if(userPair[userPair.length-2] < compPair[compPair.length-2]){
+        computerWins();
+        console.log("Computer wins by 2 Pair 3");
+        let final = Comp.slice(0, 7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-2]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[2] = final[i][0] + final[i][1].toString();
+        hand.winningHand[3] = final[i+1][0] + final[i+1][1].toString();
+        final = final.filter(item => item[1] !== compPair[compPair.length-1]);
+        final = final.filter(item => item[1] !== compPair[compPair.length-2]);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        return;
+      }
+      //Have to find highest card that is not apart of pair to break tie
+      temp = userList.indexOf(userPair[userPair.length-1]);
+      userList.splice(temp, 2);
+      temp = userList.indexOf(userPair[userPair.length-2]);
+      userList.splice(temp, 2);
+      temp = compList.indexOf(compPair[compPair.length-1]);
+      compList.splice(temp, 2);
+      temp = compList.indexOf(compPair[compPair.length-2]);
+      compList.splice(temp, 2);
+      if(userList[userList.length-1] > compList[compList.length-1]){
+        userWins();
+        console.log("User wins by 2 Pair 4");
+        let final = Comp.slice(-7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-2]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[2] = final[i][0] + final[i][1].toString();
+        hand.winningHand[3] = final[i+1][0] + final[i+1][1].toString();
+        final = final.filter(item => item[1] !== userPair[userPair.length-1]);
+        final = final.filter(item => item[1] !== userPair[userPair.length-2]);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        return;
+      }else if(userList[userList.length-1] < compList[compList.length-1]){
+        computerWins();
+        console.log("Computer wins by 2 Pair 4");
+        let final = Comp.slice(0, 7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-2]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[2] = final[i][0] + final[i][1].toString();
+        hand.winningHand[3] = final[i+1][0] + final[i+1][1].toString();
+        final = final.filter(item => item[1] !== compPair[compPair.length-1]);
+        final = final.filter(item => item[1] !== compPair[compPair.length-2]);
+        hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        return;
+      }else{
+        //Tie spilt pot
+        gameTie();
+        console.log("Tie in 2 pairs");
+        return;
+      }
+    }
+    //One pair
+    if((userPair.length == 1) && !(compPair.length == 1)){
+      userWins();
+      console.log("User wins by one pair");
+      let final = Comp.slice(-7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 0;
+      while(true){
+        if(final[i][1] == userPair[userPair.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+      final = final.filter(item => item[1] !== userPair[userPair.length-1]);
+      hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
+      hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
+      hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+      return;
+    }
+    if(!(userPair.length == 1) && (compPair.length == 1)){
+      computerWins();
+      console.log("Computer wins by one pair");
+      let final = Comp.slice(0, 7);
+      final.sort((a, b) => a[1] - b[1]);
+      let i = 0;
+      while(true){
+        if(final[i][1] == compPair[compPair.length-1]){
+          break;
+        }
+        i++;
+      }
+      hand.winningHand[0] = final[i][0] + final[i][1].toString();
+      hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+      final = final.filter(item => item[1] !== compPair[compPair.length-1]);
+      hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
+      hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
+      hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+      return;
+    }
+    if((userPair.length == 1) && (compPair.length == 1)){
+      //Tie breaker
+      if(userPair[0] > compPair[0]){
+        userWins();
+        console.log("User wins by one pair 2");
+        let final = Comp.slice(-7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == userPair[userPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        final = final.filter(item => item[1] !== userPair[userPair.length-1]);
+        hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
+        hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+        return;
+      }else if(userPair[0] < compPair[0]){
+        computerWins();
+        console.log("Computer wins by one pair 2");
+        let final = Comp.slice(0, 7);
+        final.sort((a, b) => a[1] - b[1]);
+        let i = 0;
+        while(true){
+          if(final[i][1] == compPair[compPair.length-1]){
+            break;
+          }
+          i++;
+        }
+        hand.winningHand[0] = final[i][0] + final[i][1].toString();
+        hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+        final = final.filter(item => item[1] !== compPair[compPair.length-1]);
+        hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
+        hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+        return;
+      }
+      temp = userList.indexOf(userPair[0]);
+      userList.splice(temp, 2);
+      temp = compList.indexOf(compPair[0]);
+      compList.splice(temp, 2);
+      //Tie Breaker is top 3 cards not in the pair
+      for(let i = userList.length-1; i > userList.length-4; i--){
+        if(userList[i] > compList[i]){
+          userWins();
+          console.log("User wins by one pair 3");
+          let final = Comp.slice(-7);
+          final.sort((a, b) => a[1] - b[1]);
+          let i = 0;
+          while(true){
+            if(final[i][1] == userPair[userPair.length-1]){
+              break;
+            }
+            i++;
+          }
+          hand.winningHand[0] = final[i][0] + final[i][1].toString();
+          hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+          final = final.filter(item => item[1] !== userPair[userPair.length-1]);
+          hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
+          hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
+          hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+          return;
+        }else if(userList[i] < compList[i]){
+          computerWins();
+          console.log("Computer wins by one pair 3");
+          let final = Comp.slice(0, 7);
+          final.sort((a, b) => a[1] - b[1]);
+          let i = 0;
+          while(true){
+            if(final[i][1] == compPair[compPair.length-1]){
+              break;
+            }
+            i++;
+          }
+          hand.winningHand[0] = final[i][0] + final[i][1].toString();
+          hand.winningHand[1] = final[i+1][0] + final[i+1][1].toString();
+          final = final.filter(item => item[1] !== compPair[compPair.length-1]);
+          hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
+          hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
+          hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+          return;
+        }
+      }
+      //Tie Spilt tie
+      gameTie();
+      console.log("Tie in pair");
+      return;
+    }
+    //High card
+    for(let i = 6; i > 1; i--){
+      if(userList[i] > compList[i]){
+        userWins();
+        console.log("User wins by Card high");
+        let final = Comp.slice(-7);
+        final.sort((a, b) => a[1] - b[1]);
+        hand.winningHand[0] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winningHand[1] = final[final.length-2][0] + final[final.length-2][1].toString();
+        hand.winningHand[2] = final[final.length-3][0] + final[final.length-3][1].toString();
+        hand.winningHand[3] = final[final.length-4][0] + final[final.length-4][1].toString();
+        hand.winningHand[4] = final[final.length-5][0] + final[final.length-5][1].toString();
+        return;
+      }else if(compList[i] > userList[i]){
+        computerWins();
+        console.log("Computer wins by Card High");
+        let final = Comp.slice(0, 7);
+        final.sort((a, b) => a[1] - b[1]);
+        hand.winningHand[0] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winningHand[1] = final[final.length-2][0] + final[final.length-2][1].toString();
+        hand.winningHand[2] = final[final.length-3][0] + final[final.length-3][1].toString();
+        hand.winningHand[3] = final[final.length-4][0] + final[final.length-4][1].toString();
+        hand.winningHand[4] = final[final.length-5][0] + final[final.length-5][1].toString();
+        return;
+      }
+    }
+    gameTie();
+    console.log("Tie in card high");
+    return;
   }
 
   //Used at the start of each hand
@@ -1318,9 +2092,9 @@ function comBinaryConvert(){
     }
 
     numHands += 1;
-    hand.totalBet = 0;
-    hand.compBet = 0;
-    hand.userBet = 0
+    hand.totalPotAmount = 0;
+    hand.computerBetAmount = 0;
+    hand.playerBetAmount = 0
 
     dealer = (dealer > 0) ? 0 : 1;
     //Blinds - Dealer has the big blind
@@ -1329,41 +2103,41 @@ function comBinaryConvert(){
     if(dealer == 1){
       if(oppMon < 10){
         pot += oppMon;
-        hand.totalBet += oppMon;
-        hand.compBet += oppMon;
+        hand.totalPotAmount += oppMon;
+        hand.computerBetAmount += oppMon;
         oppMon -= oppMon;
       }else{
-        hand.totalBet += 10;
-        hand.compBet += 10;
+        hand.totalPotAmount += 10;
+        hand.computerBetAmount += 10;
         pot += 10;
         oppMon -= 10;
       }
-      hand.totalBet += 5;
-      hand.userBet += 5;
+      hand.totalPotAmount += 5;
+      hand.playerBetAmount += 5;
       userMon -= 5;
       pot += 5;
     }else{
       //console.log(userMon)
       if(userMon < 10){
         pot += userMon
-        hand.totalBet += userMon
-        hand.userBet += userMon
+        hand.totalPotAmount += userMon
+        hand.playerBetAmount += userMon
         userMon -= userMon;
       }else{
-        hand.totalBet += 10
-        hand.userBet += 10
+        hand.totalPotAmount += 10
+        hand.playerBetAmount += 10
         pot += 10;
         userMon -= 10;
       }
-      hand.totalBet += 5;
-      hand.compBet += 5;
+      hand.totalPotAmount += 5;
+      hand.computerBetAmount += 5;
       pot += 5;
       oppMon -= 5;
     }
 
     updatePot();
-    shuffleDeck();
-    //playTest();
+    //shuffleDeck();
+    playTest();
     revealHand();
     hideFlop();
     hideOpponent();
