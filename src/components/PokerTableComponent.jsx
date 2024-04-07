@@ -1006,6 +1006,9 @@ function comBinaryConvert(){
         }
       }
       console.log("Tie by straight flush 2");
+      hand.winCondition = null;
+      hand.foldRound = null;
+      hand.winCondition = null;
       gameTie();
       return;
       //May need to add something for Royal straight vs weak Ace straight
@@ -1127,6 +1130,11 @@ function comBinaryConvert(){
         hand.foldRound = null;
         return;
       }
+      hand.winCondition = null;
+      hand.foldRound = null;
+      hand.winCondition = null;
+      gameTie();
+      return;
     }
 
     //Full house
@@ -1358,6 +1366,9 @@ function comBinaryConvert(){
       //Tie game
       gameTie();
       console.log("Tie game in Full house");
+      hand.winCondition = null;
+      hand.foldRound = null;
+      hand.winCondition = null;
       return;
     }
 
@@ -1414,6 +1425,9 @@ function comBinaryConvert(){
          }
        }
        gameTie();
+       hand.winCondition = null;
+       hand.foldRound = null;
+       hand.winCondition = null;
        console.log("Tie game in Flush")
     }
 
@@ -1605,6 +1619,9 @@ function comBinaryConvert(){
       //Tie split pot
       gameTie()
       console.log("Tie game in double straight ");
+      hand.winCondition = null;
+      hand.foldRound = null;
+      hand.winCondition = null;
       return;
     }
     //Three of kind
@@ -1748,6 +1765,9 @@ function comBinaryConvert(){
       }
       //Tie spilt pot
       gameTie();
+      hand.winCondition = null;
+      hand.foldRound = null;
+      hand.winCondition = null;
       return;
     }
     //Two pair
@@ -2004,6 +2024,9 @@ function comBinaryConvert(){
         //Tie spilt pot
         gameTie();
         console.log("Tie in 2 pairs");
+        hand.winCondition = null;
+        hand.foldRound = null;
+        hand.winCondition = null;
         return;
       }
     }
@@ -2150,6 +2173,9 @@ function comBinaryConvert(){
       //Tie Spilt tie
       gameTie();
       console.log("Tie in pair");
+      hand.winCondition = null;
+      hand.foldRound = null;
+      hand.winCondition = null;
       return;
     }
     //High card
@@ -2184,6 +2210,9 @@ function comBinaryConvert(){
     }
     gameTie();
     console.log("Tie in card high");
+    hand.winCondition = null;
+    hand.foldRound = null;
+    hand.winCondition = null;
     return;
   }
 
