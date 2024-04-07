@@ -260,6 +260,12 @@ const PokerTableComponent = () => {
         hand.computerBetAmount += 15;
         hand.totalPotAmount += 15;
         console.log("Raise of 15 by computer");
+      }else if(lastMove == "CA" && secondLastMove == "" && !postFlop){
+        oppMon -= 10;
+        pot += 10;
+        hand.computerBetAmount += 10;
+        hand.totalPotAmount += 10;
+        console.log("Raise of 10 by computer");
       }else{
         oppMon -= 20;
         pot += 20;
@@ -274,6 +280,12 @@ const PokerTableComponent = () => {
         hand.playerBetAmount += 15;
         hand.totalPotAmount += 15;
         console.log("Raise of 15 by player");
+      }else if(lastMove == "CA" && secondLastMove == "" && !postFlop){
+        userMon -= 10;
+        pot += 10;
+        hand.playerBetAmount += 10;
+        hand.totalPotAmount += 10;
+        console.log("Raise of 10 by player");
       }else{
         userMon -= 20;
         pot += 20;
@@ -575,8 +587,8 @@ async function turnStart() {
       button1 = false;
     //Right of or may be changed to own else if because (bet 10) may need to be (raise 10)
     }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
-      setDisplayLeftButton("Check");
-      setDisplayMiddleButton("Call 10");
+      setDisplayLeftButton("Raise 10");
+      setDisplayMiddleButton("Check");
       setDisplayRightButton("Fold");
       button1 = true;
     }else if(round[roundNumber] == 4){
@@ -2212,10 +2224,10 @@ function comBinaryConvert(){
       </div>
       <div className="buttons md:font-bold md:text-3xl font-semibold text-xl">
         {/* Used as both Raising and Checking */}
-        {showButtonLeft && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={button1 ? Check : Raise}>{displayLeftButton}</button>}
+        {showButtonLeft && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Raise}>{displayLeftButton}</button>}
         
         {/* Used as betting */}
-        {showButtonCenter && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Bet}>{displayMiddleButton}</button>}
+        {showButtonCenter && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={button1 ? Check : Bet}>{displayMiddleButton}</button>}
 
         {/* Used as both Folding and start game button */}
         {showButtonRight && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Fold}>{displayRightButton}</button>}
