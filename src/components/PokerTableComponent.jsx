@@ -261,7 +261,7 @@ const PokerTableComponent = () => {
         hand.computerBetAmount += 15;
         hand.totalPotAmount += 15;
         console.log("Raise of 15 by computer");
-      }else if(lastMove == "CA" && secondLastMove == "" && !postFlop){
+      }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
         oppMon -= 10;
         pot += 10;
         hand.computerBetAmount += 10;
@@ -281,7 +281,7 @@ const PokerTableComponent = () => {
         hand.playerBetAmount += 15;
         hand.totalPotAmount += 15;
         console.log("Raise of 15 by player");
-      }else if(lastMove == "CA" && secondLastMove == "" && !postFlop){
+      }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
         userMon -= 10;
         pot += 10;
         hand.playerBetAmount += 10;
