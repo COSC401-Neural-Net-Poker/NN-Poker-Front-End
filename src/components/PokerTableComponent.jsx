@@ -482,10 +482,16 @@ async function de(){
 
 //Start of a turn for either bot or player
 async function turnStart() {
+
   //Flip cards
   if((secondLastMove == "R" && lastMove == "CA") || (secondLastMove == "CH" && lastMove == "CH") || (secondLastMove == "CA" && lastMove == "CH") || advance){
     console.log("Middle Reveal");
     setShowButtonLeft(true);
+    //Just advance if someone is out of money
+    if(userMon == 0 || oppMon == 0){
+      advance = 1;
+      console.log("Adva");
+    }
     let i = 0;
     while(advance || i < 1){
       if(flop == false){
@@ -581,12 +587,11 @@ async function turnStart() {
  //}
  //////If player
  //else{
-    //No money means you can't bet
+    //Checks if someone is out of money
     if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
       setShowButtonLeft(false);
       console.log(turn);
       console.log(userMon + " " + oppMon);
-      //In the future have an auto advance function
     }else if((userMon == 0 && turn == 1) || (oppMon == 0 && turn == 0)){
       advance = 1;
       console.log("Adva");
