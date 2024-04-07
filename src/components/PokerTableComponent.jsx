@@ -127,7 +127,9 @@ const PokerTableComponent = () => {
       }
     }
   }
-
+  const handlePlayAgain = () => {
+    gameStart()
+  }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
     userMon = 20;
@@ -461,7 +463,7 @@ async function de(){
   //if(numHands == 2){
     //saveHistory();
   //}
-  await delay(4000);
+  await delay(1450)
   //Maybe change to handStart while loop or another function while loop
   handStart();
 }
@@ -2070,19 +2072,18 @@ function comBinaryConvert(){
 
   //Used at the start of each hand
   async function handStart() {
+    setGameState("start")
 
     //Game is over
     if(userMon <= 0){
       setGameState("over")
       endResult = "computer"
       saveHistory()
-      gameStart()
       return
     }else if(oppMon <= 0){
       setGameState("over")
       endResult = "user"
       saveHistory()
-      gameStart()
       return
     }
 
@@ -2220,7 +2221,7 @@ function comBinaryConvert(){
         {/* Used as both Folding and start game button */}
         {showButtonRight && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Fold}>{displayRightButton}</button>}
       </div>
-      {gameState === "over" ? <GameState startGame={gameStart} gameState="over" /> : <GameState startGame={gameStart} gameState="start" />}
+      {gameState === "over" ? <GameState startGame={handlePlayAgain} gameState="over" /> : <GameState startGame={handlePlayAgain} gameState="start" />}
     </div>
   )
 }
