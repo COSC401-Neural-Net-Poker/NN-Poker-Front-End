@@ -944,6 +944,7 @@ function comBinaryConvert(){
       hand.winningHand[3] = uType + userStraightFlush[userStraightFlush.length - 4].toString();
       hand.winningHand[4] = uType + userStraightFlush[userStraightFlush.length - 5].toString();
       hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(!(userStraightFlush.length >= 5) && compStraightFlush.length >= 5 ){
@@ -955,6 +956,7 @@ function comBinaryConvert(){
       hand.winningHand[3] = cType + compStraightFlush[compStraightFlush.length - 4].toString();
       hand.winningHand[4] = cType + compStraightFlush[compStraightFlush.length - 5].toString();
       hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(userStraightFlush.length >= 5 && compStraightFlush.length >= 5){
@@ -969,6 +971,7 @@ function comBinaryConvert(){
           hand.winningHand[3] = uType + userStraightFlush[userStraightFlush.length - 4].toString();
           hand.winningHand[4] = uType + userStraightFlush[userStraightFlush.length - 5].toString();
           hand.winCondition = "completed";
+          hand.foldRound = null;
           return;
         }else if(userStraightFlush[i] < compStraightFlush[i]){
           computerWins();
@@ -979,6 +982,7 @@ function comBinaryConvert(){
           hand.winningHand[3] = cType + compStraightFlush[compStraightFlush.length - 4].toString();
           hand.winningHand[4] = cType + compStraightFlush[compStraightFlush.length - 5].toString();
           hand.winCondition = "completed";
+          hand.foldRound = null;
           return;
         }
       }
@@ -1021,6 +1025,8 @@ function comBinaryConvert(){
       Comp.sort((a, b) => a[1] - b[1]);
       final = final.filter(item => item[1] !== user4);
       hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(!user4 && comp4){
@@ -1034,6 +1040,8 @@ function comBinaryConvert(){
       Comp.sort((a, b) => a[1] - b[1]);
       final = final.filter(item => item[1] !== comp4);
       hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(user4 && comp4){
@@ -1049,6 +1057,8 @@ function comBinaryConvert(){
         Comp.sort((a, b) => a[1] - b[1]);
         final = final.filter(item => item[1] !== user4);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(user4 < comp4){
         computerWins();
@@ -1061,6 +1071,8 @@ function comBinaryConvert(){
         Comp.sort((a, b) => a[1] - b[1]);
         final = final.filter(item => item[1] !== comp4);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
       temp = userList.indexOf(user4);
@@ -1078,6 +1090,8 @@ function comBinaryConvert(){
         Comp.sort((a, b) => a[1] - b[1]);
         final = final.filter(item => item[1] !== user4);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(userList[userList.length-1] < compList[compList.length-1]){
         computerWins();
@@ -1090,6 +1104,8 @@ function comBinaryConvert(){
         Comp.sort((a, b) => a[1] - b[1]);
         final = final.filter(item => item[1] !== comp4);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
     }
@@ -1173,6 +1189,8 @@ function comBinaryConvert(){
       }
       hand.winningHand[3] = final[i][0] + final[i][1].toString();
       hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(!(user3.length > 0 && (userPair.length > 0)) && ((compPair.length > 0) && comp3.length > 0)){
@@ -1201,6 +1219,8 @@ function comBinaryConvert(){
       hand.winningHand[3] = final[i][0] + final[i][1].toString();
       hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
       console.log(final);
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if((user3.length > 0 && (userPair.length > 0)) && ((compPair.length > 0) && comp3.length > 0)){
@@ -1229,6 +1249,8 @@ function comBinaryConvert(){
         }
         hand.winningHand[3] = final[i][0] + final[i][1].toString();
         hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(user3[user3.length-1] < comp3[comp3.length-1]){
         computerWins();
@@ -1254,6 +1276,8 @@ function comBinaryConvert(){
         }
         hand.winningHand[3] = final[i][0] + final[i][1].toString();
         hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
       if(userPair[userPair.length-1] > compPair[compPair.length-1]){
@@ -1280,6 +1304,8 @@ function comBinaryConvert(){
         }
         hand.winningHand[3] = final[i][0] + final[i][1].toString();
         hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
         computerWins();
@@ -1305,6 +1331,8 @@ function comBinaryConvert(){
         }
         hand.winningHand[3] = final[i][0] + final[i][1].toString();
         hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
 
@@ -1323,6 +1351,8 @@ function comBinaryConvert(){
        hand.winningHand[2] = uType + userFlush[userFlush.length-3].toString();
        hand.winningHand[3] = uType + userFlush[userFlush.length-4].toString();
        hand.winningHand[4] = uType + userFlush[userFlush.length-5].toString();
+       hand.winCondition = "completed";
+       hand.foldRound = null;
        return;
      }
      if(userFlush.length < 5 && compFlush.length >= 5){
@@ -1333,6 +1363,8 @@ function comBinaryConvert(){
        hand.winningHand[2] = cType + compFlush[compFlush.length-3].toString();
        hand.winningHand[3] = cType + compFlush[compFlush.length-4].toString();
        hand.winningHand[4] = cType + compFlush[compFlush.length-5].toString();
+       hand.winCondition = "completed";
+       hand.foldRound = null;
        return;
      }
      if(userFlush.length >= 5 && compFlush.length >= 5){
@@ -1346,6 +1378,8 @@ function comBinaryConvert(){
            hand.winningHand[2] = uType + userFlush[userFlush.length-3].toString();
            hand.winningHand[3] = uType + userFlush[userFlush.length-4].toString();
            hand.winningHand[4] = uType + userFlush[userFlush.length-5].toString();
+           hand.winCondition = "completed";
+           hand.foldRound = null;
            return;
          }else if(compFlush[compFlush.length - 1 - i] > userFlush[userFlush.length - 1 - i]){
            computerWins();
@@ -1355,6 +1389,8 @@ function comBinaryConvert(){
            hand.winningHand[2] = cType + compFlush[compFlush.length-3].toString();
            hand.winningHand[3] = cType + compFlush[compFlush.length-4].toString();
            hand.winningHand[4] = cType + compFlush[compFlush.length-5].toString();
+           hand.winCondition = "completed";
+           hand.foldRound = null;
            return;
          }
        }
@@ -1404,6 +1440,8 @@ function comBinaryConvert(){
         i--;
       }
       hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(userStraight.length != 5 && compStraight.length == 5){
@@ -1447,6 +1485,8 @@ function comBinaryConvert(){
         i--;
       }
       hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(userStraight.length == 5 && compStraight.length == 5){
@@ -1493,6 +1533,8 @@ function comBinaryConvert(){
             i--;
           }
           hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
+          hand.winCondition = "completed";
+          hand.foldRound = null;
           return;
         }
         if(compStraight[i] > userStraight[i]){
@@ -1536,6 +1578,8 @@ function comBinaryConvert(){
             i--;
           }
           hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
+          hand.winCondition = "completed";
+          hand.foldRound = null;
           return;
         }
       }
@@ -1563,6 +1607,8 @@ function comBinaryConvert(){
       final = final.filter(item => item[1] !== user3[user3.length-1]);
       hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
       hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(!user3.length > 0 && comp3.length > 0){
@@ -1583,6 +1629,8 @@ function comBinaryConvert(){
       final = final.filter(item => item[1] !== comp3[comp3.length-1]);
       hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
       hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(user3.length > 0 && comp3.length > 0){
@@ -1605,6 +1653,8 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== user3[user3.length-1]);
         hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
         hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(user3[user3.length-1] < comp3[comp3.length-1]){
         computerWins();
@@ -1624,6 +1674,8 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== comp3[comp3.length-1]);
         hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
         hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
       temp = userList.indexOf(user3[0]);
@@ -1649,6 +1701,8 @@ function comBinaryConvert(){
           final = final.filter(item => item[1] !== user3[user3.length-1]);
           hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
           hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+          hand.winCondition = "completed";
+          hand.foldRound = null;
           return;
         }else if(userList[i] < compList[i]){
           computerWins();
@@ -1668,6 +1722,8 @@ function comBinaryConvert(){
           final = final.filter(item => item[1] !== comp3[comp3.length-1]);
           hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
           hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
+          hand.winCondition = "completed";
+          hand.foldRound = null;
           return;
         }
       }
@@ -1702,6 +1758,8 @@ function comBinaryConvert(){
       final = final.filter(item => item[1] !== userPair[userPair.length-1]);
       final = final.filter(item => item[1] !== userPair[userPair.length-2]);
       hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(!(userPair.length > 1) && (compPair.length > 1)){
@@ -1730,6 +1788,8 @@ function comBinaryConvert(){
       final = final.filter(item => item[1] !== compPair[compPair.length-1]);
       final = final.filter(item => item[1] !== compPair[compPair.length-2]);
       hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if((userPair.length > 1) && (compPair.length > 1)){
@@ -1762,6 +1822,8 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== userPair[userPair.length-1]);
         final = final.filter(item => item[1] !== userPair[userPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
         computerWins();
@@ -1789,6 +1851,8 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== compPair[compPair.length-1]);
         final = final.filter(item => item[1] !== compPair[compPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
       if(userPair[userPair.length-2] > compPair[compPair.length-2]){
@@ -1817,6 +1881,8 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== userPair[userPair.length-1]);
         final = final.filter(item => item[1] !== userPair[userPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(userPair[userPair.length-2] < compPair[compPair.length-2]){
         computerWins();
@@ -1844,6 +1910,8 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== compPair[compPair.length-1]);
         final = final.filter(item => item[1] !== compPair[compPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
       //Have to find highest card that is not apart of pair to break tie
@@ -1881,6 +1949,8 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== userPair[userPair.length-1]);
         final = final.filter(item => item[1] !== userPair[userPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(userList[userList.length-1] < compList[compList.length-1]){
         computerWins();
@@ -1908,6 +1978,8 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== compPair[compPair.length-1]);
         final = final.filter(item => item[1] !== compPair[compPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else{
         //Tie spilt pot
@@ -1935,6 +2007,8 @@ function comBinaryConvert(){
       hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
       hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
       hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if(!(userPair.length == 1) && (compPair.length == 1)){
@@ -1955,6 +2029,8 @@ function comBinaryConvert(){
       hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
       hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
       hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+      hand.winCondition = "completed";
+      hand.foldRound = null;
       return;
     }
     if((userPair.length == 1) && (compPair.length == 1)){
@@ -1977,6 +2053,8 @@ function comBinaryConvert(){
         hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
         hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
         hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(userPair[0] < compPair[0]){
         computerWins();
@@ -1996,6 +2074,8 @@ function comBinaryConvert(){
         hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
         hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
         hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
       temp = userList.indexOf(userPair[0]);
@@ -2022,6 +2102,8 @@ function comBinaryConvert(){
           hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
           hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
           hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+          hand.winCondition = "completed";
+          hand.foldRound = null;
           return;
         }else if(userList[i] < compList[i]){
           computerWins();
@@ -2041,6 +2123,8 @@ function comBinaryConvert(){
           hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
           hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
           hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
+          hand.winCondition = "completed";
+          hand.foldRound = null;
           return;
         }
       }
@@ -2061,6 +2145,8 @@ function comBinaryConvert(){
         hand.winningHand[2] = final[final.length-3][0] + final[final.length-3][1].toString();
         hand.winningHand[3] = final[final.length-4][0] + final[final.length-4][1].toString();
         hand.winningHand[4] = final[final.length-5][0] + final[final.length-5][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }else if(compList[i] > userList[i]){
         computerWins();
@@ -2072,6 +2158,8 @@ function comBinaryConvert(){
         hand.winningHand[2] = final[final.length-3][0] + final[final.length-3][1].toString();
         hand.winningHand[3] = final[final.length-4][0] + final[final.length-4][1].toString();
         hand.winningHand[4] = final[final.length-5][0] + final[final.length-5][1].toString();
+        hand.winCondition = "completed";
+        hand.foldRound = null;
         return;
       }
     }
