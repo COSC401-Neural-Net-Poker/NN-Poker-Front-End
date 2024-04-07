@@ -610,12 +610,13 @@ async function turnStart() {
       setDisplayMiddleButton("Check");
       setDisplayRightButton("Fold");
       button1 = true;
-    }else if(round[roundNumber] == 4){
+    }else if(round[roundNumber] == 4 || (userMon < 20 && turn == 1)){
       //May need to be 3?
       console.log("Three raise rule")
       setShowButtonLeft(false);
       setDisplayMiddleButton("Call 10");
       setDisplayRightButton("Fold");
+      button1 = false;
       //This is wrong
     }else{
       setDisplayMiddleButton("Call 10");
