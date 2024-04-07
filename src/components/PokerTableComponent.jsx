@@ -39,6 +39,7 @@ const hand = {
   winningHand: ["", "", "", "", ""]
 }
 let handList = [];
+let advance;
 
 const PokerTableComponent = () => {
   let temp;
@@ -307,6 +308,7 @@ const PokerTableComponent = () => {
   async function Check() {
     secondLastMove = lastMove;
     lastMove = "CH";
+    turn = (turn > 0) ? 0 : 1;
     console.log("Check");
     await turnStart();
   }
@@ -481,27 +483,31 @@ async function de(){
 //Start of a turn for either bot or player
 async function turnStart() {
   //Flip cards
-  if((secondLastMove == "R" && lastMove == "CA") || (secondLastMove == "CH" && lastMove == "CH") || (secondLastMove == "CA" && lastMove == "CH")){
+  if((secondLastMove == "R" && lastMove == "CA") || (secondLastMove == "CH" && lastMove == "CH") || (secondLastMove == "CA" && lastMove == "CH") || advance){
     console.log("Middle Reveal");
     setShowButtonLeft(true);
-    if(flop == false){
-      revealFlop();
-      dealChange = true;
-      flop = true;
-      roundNumber = 1;
-    }else if(theTurn == false){
-      revealTurn();
-      dealChange = true;
-      theTurn = true;
-      roundNumber = 2;
-    }else if(river == false){
-      revealRiver();
-      dealChange = true;
-      river = true
-      roundNumber = 3;
-    }else{
-      de();
-      return;
+    let i = 0;
+    while(advance || i < 1){
+      if(flop == false){
+        revealFlop();
+        dealChange = true;
+        flop = true;
+        roundNumber = 1;
+      }else if(theTurn == false){
+        revealTurn();
+        dealChange = true;
+        theTurn = true;
+        roundNumber = 2;
+      }else if(river == false){
+        revealRiver();
+        dealChange = true;
+        river = true
+        roundNumber = 3;
+      }else{
+        de();
+        return;
+      }
+      i++;
     }
   }
 
@@ -576,10 +582,18 @@ async function turnStart() {
  //////If player
  //else{
     //No money means you can't bet
-    if(userMon == 0 || oppMon == 0){
-      setDisplayMiddleButton(false);
+    if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
+      setShowButtonLeft(false);
+      console.log(turn);
+      console.log(userMon + " " + oppMon);
       //In the future have an auto advance function
+    }else if((userMon == 0 && turn == 1) || (oppMon == 0 && turn == 0)){
+      advance = 1;
+      console.log("Adva");
+      turnStart();
+      return;
     }
+
     if(first == 1){
       setDisplayLeftButton("Raise 15");
       setDisplayMiddleButton("Call 5");
@@ -2245,6 +2259,7 @@ function comBinaryConvert(){
     theTurn = false;
     river = false;
     roundNumber = 0;
+    advance = 0;
     setShowButtonLeft(true);
     setShowButtonCenter(true);
     setShowButtonRight(true);
