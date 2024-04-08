@@ -334,13 +334,13 @@ const PokerTableComponent = () => {
   function userWins(){
     userMon += pot;
     pot = 0;
-    hand.winner = "user"
+    hand.winner = "win"
   }
 
   function computerWins(){
     oppMon += pot;
     pot = 0;
-    hand.winner = "computer"
+    hand.winner = "loss"
   }
 
   function gameTie(){
