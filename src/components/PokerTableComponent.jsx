@@ -325,7 +325,7 @@ const PokerTableComponent = () => {
       console.log("Fold by player");
     }
     hand.winCondition = "fold";
-    hand.winningHand = null;
+    hand.winningHand = [];
     hand.foldRound = roundNumber;
 
     handStart();
