@@ -1326,7 +1326,6 @@ function comBinaryConvert(){
       }
       userPair = userPair.filter(item => item !== user3[user3.length-1]);
       compPair = compPair.filter(item => item !== comp3[comp3.length-1]);
-      console.log(userPair[userPair.length-1]);
       if(userPair[userPair.length-1] > compPair[compPair.length-1]){
         userWins();
         console.log("User wins by Full house 3");
@@ -1737,9 +1736,9 @@ function comBinaryConvert(){
         hand.foldRound = null;
         return;
       }
-      temp = userList.indexOf(user3[0]);
+      temp = userList.indexOf(user3[user3.length-1]);
       userList.splice(temp, 3);
-      temp = compList.indexOf(comp3[0]);
+      temp = compList.indexOf(comp3[comp3.length-1]);
       compList.splice(temp, 3);
       for(let i = 3; i > 1; i--){
         if(userList[i] > compList[i]){
