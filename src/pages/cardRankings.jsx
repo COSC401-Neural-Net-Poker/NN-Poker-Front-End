@@ -419,3 +419,144 @@ const cardRankings = [
   //cardImageImport[7] = cardImageImport[36];
   //cardImageImport[8] = cardImageImport[29];
   //cardImageImport[9] = cardImageImport[14];
+
+  //cardRankings[1] = cardRankings[7];
+  //cardRankings[2] = cardRankings[11];
+  //cardRankings[3] = cardRankings[14];
+  //cardRankings[4] = cardRankings[19];
+  //cardRankings[5] = cardRankings[40];
+  //cardRankings[6] = cardRankings[39];
+  //cardRankings[7] = cardRankings[38];
+  //cardRankings[8] = cardRankings[19];
+  //cardRankings[9] = cardRankings[20];
+//Tie Flush Test
+  //cardImageImport[1] = cardImageImport[7];
+  //cardImageImport[2] = cardImageImport[11];
+  //cardImageImport[3] = cardImageImport[14];
+  //cardImageImport[4] = cardImageImport[19];
+  //cardImageImport[5] = cardImageImport[40];
+  //cardImageImport[6] = cardImageImport[39];
+  //cardImageImport[7] = cardImageImport[38];
+  //cardImageImport[8] = cardImageImport[19];
+  //cardImageImport[9] = cardImageImport[20];
+
+  //cardRankings[1] = cardRankings[7];
+  //cardRankings[2] = cardRankings[11];
+  //cardRankings[3] = cardRankings[14];
+  //cardRankings[4] = cardRankings[19];
+  //cardRankings[5] = cardRankings[40];
+  //cardRankings[6] = cardRankings[36];
+  //cardRankings[7] = cardRankings[32];
+  //cardRankings[8] = cardRankings[28];
+  //cardRankings[9] = cardRankings[20];
+//Tie Flush Test
+  //cardImageImport[1] = cardImageImport[7];
+  //cardImageImport[2] = cardImageImport[11];
+  //cardImageImport[3] = cardImageImport[14];
+  //cardImageImport[4] = cardImageImport[19];
+  //cardImageImport[5] = cardImageImport[40];
+  //cardImageImport[6] = cardImageImport[36];
+  //cardImageImport[7] = cardImageImport[32];
+  //cardImageImport[8] = cardImageImport[28];
+  //cardImageImport[9] = cardImageImport[20];
+
+
+  //cardRankings[1] = cardRankings[7];
+  //cardRankings[2] = cardRankings[11];
+  //cardRankings[3] = cardRankings[14];
+  //cardRankings[4] = cardRankings[19];
+  //cardRankings[5] = cardRankings[44];
+  //cardRankings[6] = cardRankings[39];
+  //cardRankings[7] = cardRankings[36];
+  //cardRankings[8] = cardRankings[30];
+  //cardRankings[9] = cardRankings[28];
+//Tie Straight Test
+  //cardImageImport[1] = cardImageImport[7];
+  //cardImageImport[2] = cardImageImport[11];
+  //cardImageImport[3] = cardImageImport[14];
+  //cardImageImport[4] = cardImageImport[19];
+  //cardImageImport[5] = cardImageImport[44];
+  //cardImageImport[6] = cardImageImport[39];
+  //cardImageImport[7] = cardImageImport[36];
+  //cardImageImport[8] = cardImageImport[30];
+  //cardImageImport[9] = cardImageImport[28];
+
+  //cardRankings[1] = cardRankings[7];
+  //cardRankings[2] = cardRankings[11];
+  //cardRankings[3] = cardRankings[14];
+  //cardRankings[4] = cardRankings[19];
+  //cardRankings[5] = cardRankings[44];
+  //cardRankings[6] = cardRankings[22];
+  //cardRankings[7] = cardRankings[36];
+  //cardRankings[8] = cardRankings[23];
+  //cardRankings[9] = cardRankings[24];
+//Tie 3 OF THE KIND Test
+  //cardImageImport[1] = cardImageImport[7];
+  //cardImageImport[2] = cardImageImport[11];
+  //cardImageImport[3] = cardImageImport[14];
+  //cardImageImport[4] = cardImageImport[19];
+  //cardImageImport[5] = cardImageImport[44];
+  //cardImageImport[6] = cardImageImport[22];
+  //cardImageImport[7] = cardImageImport[36];
+  //cardImageImport[8] = cardImageImport[23];
+  //cardImageImport[9] = cardImageImport[24];
+
+  //cardRankings[1] = cardRankings[7];
+  //cardRankings[2] = cardRankings[11];
+  //cardRankings[3] = cardRankings[14];
+  //cardRankings[4] = cardRankings[19];
+  //cardRankings[5] = cardRankings[44];
+  //cardRankings[6] = cardRankings[35];
+  //cardRankings[7] = cardRankings[36];
+  //cardRankings[8] = cardRankings[23];
+  //cardRankings[9] = cardRankings[24];
+//Tie 2 Pair Test
+  //cardImageImport[1] = cardImageImport[7];
+  //cardImageImport[2] = cardImageImport[11];
+  //cardImageImport[3] = cardImageImport[14];
+  //cardImageImport[4] = cardImageImport[19];
+  //cardImageImport[5] = cardImageImport[44];
+  //cardImageImport[6] = cardImageImport[35];
+  //cardImageImport[7] = cardImageImport[36];
+  //cardImageImport[8] = cardImageImport[23];
+  //cardImageImport[9] = cardImageImport[24];
+
+  //cardRankings[1] = cardRankings[7];
+  //cardRankings[2] = cardRankings[11];
+  //cardRankings[3] = cardRankings[14];
+  //cardRankings[4] = cardRankings[19];
+  //cardRankings[5] = cardRankings[44];
+  //cardRankings[6] = cardRankings[40];
+  //cardRankings[7] = cardRankings[36];
+  //cardRankings[8] = cardRankings[25];
+  //cardRankings[9] = cardRankings[24];
+//Tie Pair Test
+  //cardImageImport[1] = cardImageImport[7];
+  //cardImageImport[2] = cardImageImport[11];
+  //cardImageImport[3] = cardImageImport[14];
+  //cardImageImport[4] = cardImageImport[19];
+  //cardImageImport[5] = cardImageImport[44];
+  //cardImageImport[6] = cardImageImport[40];
+  //cardImageImport[7] = cardImageImport[36];
+  //cardImageImport[8] = cardImageImport[25];
+  //cardImageImport[9] = cardImageImport[24];
+
+  //cardRankings[1] = cardRankings[7];
+  //cardRankings[2] = cardRankings[11];
+  //cardRankings[3] = cardRankings[14];
+  //cardRankings[4] = cardRankings[19];
+  //cardRankings[5] = cardRankings[44];
+  //cardRankings[6] = cardRankings[40];
+  //cardRankings[7] = cardRankings[36];
+  //cardRankings[8] = cardRankings[29];
+  //cardRankings[9] = cardRankings[24];
+//Tie Card High Test
+  //cardImageImport[1] = cardImageImport[7];
+  //cardImageImport[2] = cardImageImport[11];
+  //cardImageImport[3] = cardImageImport[14];
+  //cardImageImport[4] = cardImageImport[19];
+  //cardImageImport[5] = cardImageImport[44];
+  //cardImageImport[6] = cardImageImport[40];
+  //cardImageImport[7] = cardImageImport[36];
+  //cardImageImport[8] = cardImageImport[29];
+  //cardImageImport[9] = cardImageImport[24];

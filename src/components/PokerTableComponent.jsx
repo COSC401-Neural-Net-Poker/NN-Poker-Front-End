@@ -195,25 +195,26 @@ const PokerTableComponent = () => {
     user[0] = cardImageImport[0];
     user[1] = cardImageImport[0];
 
-  cardRankings[1] = cardRankings[52];
-  cardRankings[2] = cardRankings[19];
-  cardRankings[3] = cardRankings[21];
-  cardRankings[4] = cardRankings[9];
-  cardRankings[5] = cardRankings[44];
-  cardRankings[6] = cardRankings[40];
-  cardRankings[7] = cardRankings[36];
-  cardRankings[8] = cardRankings[29];
-  cardRankings[9] = cardRankings[14];
-//Card High Comp Test
-  cardImageImport[1] = cardImageImport[52];
-  cardImageImport[2] = cardImageImport[19];
-  cardImageImport[3] = cardImageImport[21];
-  cardImageImport[4] = cardImageImport[9];
-  cardImageImport[5] = cardImageImport[44];
-  cardImageImport[6] = cardImageImport[40];
-  cardImageImport[7] = cardImageImport[36];
-  cardImageImport[8] = cardImageImport[29];
-  cardImageImport[9] = cardImageImport[14];
+  cardRankings[1] = cardRankings[7];
+  cardRankings[2] = cardRankings[11];
+  cardRankings[3] = cardRankings[14];
+  cardRankings[4] = cardRankings[19];
+  cardRankings[5] = cardRankings[40];
+  cardRankings[6] = cardRankings[39];
+  cardRankings[7] = cardRankings[38];
+  cardRankings[8] = cardRankings[19];
+  cardRankings[9] = cardRankings[20];
+//Tie Flush Test
+  cardImageImport[1] = cardImageImport[7];
+  cardImageImport[2] = cardImageImport[11];
+  cardImageImport[3] = cardImageImport[14];
+  cardImageImport[4] = cardImageImport[19];
+  cardImageImport[5] = cardImageImport[40];
+  cardImageImport[6] = cardImageImport[39];
+  cardImageImport[7] = cardImageImport[38];
+  cardImageImport[8] = cardImageImport[19];
+  cardImageImport[9] = cardImageImport[20];
+
 }
   
   async function Bet() {
@@ -1033,7 +1034,7 @@ function comBinaryConvert(){
       console.log("Tie by straight flush 2");
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       gameTie();
       return;
       //May need to add something for Royal straight vs weak Ace straight
@@ -1195,17 +1196,8 @@ function comBinaryConvert(){
       comp3.push(compList[4]);
     }
 
-    let tmp = userList.slice()
-    for(let i = 0; i < user3.length; i++){
-      temp = userList.indexOf(user3[i]);
-      tmp.splice(temp, 3);
-    }
-    let tmp2 = compList.slice()
-    for(let i = 0; i < comp3.length; i++){
-      temp = compList.indexOf(comp3[i]);
-      tmp2.splice(temp, 3);
-    }
-
+    let tmp = userList.slice();
+    let tmp2 = compList.slice();
     for(let i = 0; i < tmp.length-1; i++){
       if(tmp[i] == tmp[i+1]){
         userPair.push(tmp[i]);
@@ -1332,9 +1324,13 @@ function comBinaryConvert(){
         hand.foldRound = null;
         return;
       }
+      userPair = userPair.filter(item => item !== user3[user3.length-1]);
+      compPair = compPair.filter(item => item !== comp3[comp3.length-1]);
+      console.log(userPair[userPair.length-1]);
       if(userPair[userPair.length-1] > compPair[compPair.length-1]){
         userWins();
         console.log("User wins by Full house 3");
+        console.log(userPair[userPair.length-1] + " " + compPair[compPair.length-1])
         let final = Comp.slice(-7);
         final.sort((a, b) => a[1] - b[1]);
         let i = 0;
@@ -1393,7 +1389,7 @@ function comBinaryConvert(){
       console.log("Tie game in Full house");
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       return;
     }
 
@@ -1424,7 +1420,8 @@ function comBinaryConvert(){
      }
      if(userFlush.length >= 5 && compFlush.length >= 5){
        //Tie breaker
-       for(let i = 0; i < 5; i--){
+       console.log("Test");
+       for(let i = 0; i < 5; i++){
          if(userFlush[userFlush.length - 1 - i] > compFlush[compFlush.length - 1 - i]){
            userWins();
            console.log("User wins by Flush 2");
@@ -1452,8 +1449,9 @@ function comBinaryConvert(){
        gameTie();
        hand.winCondition = null;
        hand.foldRound = null;
-       hand.winCondition = null;
+       hand.winningHand = [];
        console.log("Tie game in Flush")
+       return;
     }
 
       //Straight
@@ -1646,7 +1644,7 @@ function comBinaryConvert(){
       console.log("Tie game in double straight ");
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       return;
     }
     //Three of kind
@@ -1789,10 +1787,11 @@ function comBinaryConvert(){
         }
       }
       //Tie spilt pot
+      console.log("Tie in three of the kind");
       gameTie();
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       return;
     }
     //Two pair
@@ -2051,7 +2050,7 @@ function comBinaryConvert(){
         console.log("Tie in 2 pairs");
         hand.winCondition = null;
         hand.foldRound = null;
-        hand.winCondition = null;
+        hand.winningHand = [];
         return;
       }
     }
@@ -2200,7 +2199,7 @@ function comBinaryConvert(){
       console.log("Tie in pair");
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       return;
     }
     //High card
