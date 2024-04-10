@@ -2248,12 +2248,12 @@ function comBinaryConvert(){
     //Game is over
     if(userMon <= 0){
       setGameState("over")
-      endResult = "computer"
+      endResult = "loss"
       saveHistory()
       return
     }else if(oppMon <= 0){
       setGameState("over")
-      endResult = "user"
+      endResult = "win"
       saveHistory()
       return
     }
