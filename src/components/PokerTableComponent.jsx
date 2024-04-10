@@ -39,7 +39,8 @@ const hand = {
   winningHand: ["", "", "", "", ""]
 }
 let handList = [];
-let advance;
+let advance; //Used if a player has 0 chips. Flag to auto advance the rest of the hand.
+let blindDef = [0, 0]; //Used in case the big blind does not have enough chips. blindDef[0] = user, blindDef[1] = comp
 
 const PokerTableComponent = () => {
   let temp;
@@ -133,8 +134,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 20;
-    oppMon = 20;
+    userMon = 5;
+    oppMon = 15;
     dealer = 1;
     numHands = 0;
     handStart()
@@ -349,13 +350,16 @@ const PokerTableComponent = () => {
   }
 
   function userWins(){
-    userMon += pot;
+    userMon += pot - blindDef[0];
+    oppMon += blindDef[0];
+    console.log(userMon + " " + oppMon + " " + blindDef[0]);
     pot = 0;
     hand.winner = "player"
   }
 
   function computerWins(){
-    oppMon += pot;
+    oppMon += pot - blindDef[1];
+    userMon += blindDef[1]
     pot = 0;
     hand.winner = "computer"
   }
@@ -607,15 +611,14 @@ async function turnStart() {
  //////If player
  //else{
     //Checks if someone is out of money
-    if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
-      setShowButtonLeft(false);
-      console.log(turn);
-      console.log(userMon + " " + oppMon);
-    }else if((userMon == 0 && turn == 1) || (oppMon == 0 && turn == 0)){
+    if((userMon == 0 && turn == 1) || (oppMon == 0 && turn == 0)){
       advance = 1;
       console.log("Adva");
       turnStart();
       return;
+    }else if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
+      setShowButtonLeft(false);
+      console.log(userMon + " first advance " + oppMon + " Turn " + turn);
     }
 
     if(first == 1){
@@ -2261,16 +2264,23 @@ function comBinaryConvert(){
     hand.totalPotAmount = 0;
     hand.computerBetAmount = 0;
     hand.playerBetAmount = 0
+    blindDef = [0, 0];
 
     dealer = (dealer > 0) ? 0 : 1;
     //Blinds - Dealer has the big blind
     //Not sure what to do if the player meant to big blind does not have enough 
     //https://boardgames.stackexchange.com/questions/39045/in-poker-what-happens-with-the-next-players-if-paying-the-big-blind-puts-a-play
     if(dealer == 1){
+      //Big Blind
       if(oppMon < 10){
         pot += oppMon;
         hand.totalPotAmount += oppMon;
         hand.computerBetAmount += oppMon;
+        if(userMon >= 10){
+          blindDef[1] = oppMon;
+          userMon -= 5;
+          pot -= 5;
+        }
         oppMon -= oppMon;
       }else{
         hand.totalPotAmount += 10;
@@ -2278,6 +2288,7 @@ function comBinaryConvert(){
         pot += 10;
         oppMon -= 10;
       }
+      //Small Blind
       hand.totalPotAmount += 5;
       hand.playerBetAmount += 5;
       userMon -= 5;
@@ -2285,13 +2296,18 @@ function comBinaryConvert(){
     }else{
       //console.log(userMon)
       if(userMon < 10){
-        pot += userMon
-        hand.totalPotAmount += userMon
-        hand.playerBetAmount += userMon
+        pot += userMon;
+        hand.totalPotAmount += userMon;
+        hand.playerBetAmount += userMon;
+        if(oppMon >= 10){
+          blindDef[0] = userMon;
+          oppMon -= 5;
+          pot += 5;
+        }
         userMon -= userMon;
       }else{
-        hand.totalPotAmount += 10
-        hand.playerBetAmount += 10
+        hand.totalPotAmount += 10;
+        hand.playerBetAmount += 10;
         pot += 10;
         userMon -= 10;
       }
@@ -2302,8 +2318,8 @@ function comBinaryConvert(){
     }
 
     updatePot();
-    //shuffleDeck();
-    playTest();
+    shuffleDeck();
+    //playTest();
     revealHand();
     hideFlop();
     hideOpponent();
