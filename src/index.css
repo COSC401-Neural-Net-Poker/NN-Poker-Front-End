@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nav {
+    background: rgb(15,15,15);
+    background: linear-gradient(90deg, rgba(15,15,15,1) 0%, rgba(19,18,18,1) 100%);
+    color: #FFF5EA
+}
