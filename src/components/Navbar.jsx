@@ -4,22 +4,8 @@ import { useState, useEffect } from 'react';
 import Logo from './Logo.png';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import { useLocation } from 'react-router-dom';
-
 
 const Navbar = () => {
-  const [basePath, setBasePath] = useState("")
-  const [historyPath, setHistoryPath] = useState("")
-  const [aboutPath, setAboutPath] = useState("")
-  const [authPath, setAuthPath] = useState("")
-
-  const location = useLocation();
-  const currentPath = location.pathname;
-
-  if (currentPath === "/") {
-
-  }
-
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) setLoginStatus("Sign Out")
