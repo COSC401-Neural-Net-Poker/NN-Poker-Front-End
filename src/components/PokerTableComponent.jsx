@@ -2354,7 +2354,7 @@ function comBinaryConvert(){
         </div>
       </div>
       <div className="amount">
-      <Icon icon="fluent-emoji:robot" />Computer: {displayOpp}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+      <Icon className='mr-[5px]' icon="fluent-emoji:robot" />Computer: {displayOpp}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
       </div>
       <div className="table-middle">
         <div className="community-cards1">
@@ -2398,7 +2398,7 @@ function comBinaryConvert(){
         </div>
       </div>
       <div className="player-chips">
-      <Icon icon="fluent-emoji:person-light" />Player: {displayUser}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+        <Icon className='mr-[5px]' icon="fluent-emoji:person-light" />Player: {displayUser}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
       </div>
       <div className="buttons md:font-bold md:text-3xl font-semibold text-xl">
         {/* Used as both Raising and Checking */}
