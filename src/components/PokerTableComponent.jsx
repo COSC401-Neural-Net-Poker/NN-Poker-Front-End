@@ -134,8 +134,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 5;
-    oppMon = 15;
+    userMon = 200;
+    oppMon = 200;
     dealer = 1;
     numHands = 0;
     handStart()
@@ -2279,7 +2279,8 @@ function comBinaryConvert(){
         if(userMon >= 10){
           blindDef[1] = oppMon;
           userMon -= 5;
-          pot -= 5;
+          pot += 5;
+          hand.totalPotAmount += oppMon;
         }
         oppMon -= oppMon;
       }else{
@@ -2303,6 +2304,7 @@ function comBinaryConvert(){
           blindDef[0] = userMon;
           oppMon -= 5;
           pot += 5;
+          hand.totalPotAmount += userMon;
         }
         userMon -= userMon;
       }else{
