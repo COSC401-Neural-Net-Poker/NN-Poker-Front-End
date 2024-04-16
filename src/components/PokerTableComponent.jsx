@@ -663,7 +663,7 @@ async function callModel(binOutput, legal, rawLegal){
   }
   let returnData = {}
 
-  const url = "https://34.29.92.110:8000/model";
+  const url = "http://34.29.92.110:8000/model";
 
   await fetch(url, {
     method: 'POST',
