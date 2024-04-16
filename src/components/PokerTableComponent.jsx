@@ -39,7 +39,8 @@ const hand = {
   winningHand: ["", "", "", "", ""]
 }
 let handList = [];
-let advance;
+let advance; //Used if a player has 0 chips. Flag to auto advance the rest of the hand.
+let blindDef = [0, 0]; //Used in case the big blind does not have enough chips. blindDef[0] = user, blindDef[1] = comp
 
 const PokerTableComponent = () => {
   let temp;
@@ -133,8 +134,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 20;
-    oppMon = 500;
+    userMon = 200;
+    oppMon = 200;
     dealer = 1;
     numHands = 0;
     handStart()
@@ -195,25 +196,26 @@ const PokerTableComponent = () => {
     user[0] = cardImageImport[0];
     user[1] = cardImageImport[0];
 
-  cardRankings[1] = cardRankings[52];
-  cardRankings[2] = cardRankings[19];
-  cardRankings[3] = cardRankings[21];
-  cardRankings[4] = cardRankings[9];
-  cardRankings[5] = cardRankings[44];
-  cardRankings[6] = cardRankings[40];
-  cardRankings[7] = cardRankings[36];
-  cardRankings[8] = cardRankings[29];
-  cardRankings[9] = cardRankings[14];
-//Card High Comp Test
-  cardImageImport[1] = cardImageImport[52];
-  cardImageImport[2] = cardImageImport[19];
-  cardImageImport[3] = cardImageImport[21];
-  cardImageImport[4] = cardImageImport[9];
-  cardImageImport[5] = cardImageImport[44];
-  cardImageImport[6] = cardImageImport[40];
-  cardImageImport[7] = cardImageImport[36];
-  cardImageImport[8] = cardImageImport[29];
-  cardImageImport[9] = cardImageImport[14];
+  cardRankings[1] = cardRankings[7];
+  cardRankings[2] = cardRankings[11];
+  cardRankings[3] = cardRankings[14];
+  cardRankings[4] = cardRankings[19];
+  cardRankings[5] = cardRankings[40];
+  cardRankings[6] = cardRankings[36];
+  cardRankings[7] = cardRankings[32];
+  cardRankings[8] = cardRankings[28];
+  cardRankings[9] = cardRankings[24];
+//Tie Straight Flush Test
+  cardImageImport[1] = cardImageImport[7];
+  cardImageImport[2] = cardImageImport[11];
+  cardImageImport[3] = cardImageImport[14];
+  cardImageImport[4] = cardImageImport[19];
+  cardImageImport[5] = cardImageImport[40];
+  cardImageImport[6] = cardImageImport[36];
+  cardImageImport[7] = cardImageImport[32];
+  cardImageImport[8] = cardImageImport[28];
+  cardImageImport[9] = cardImageImport[24];
+
 }
   
   async function Bet() {
@@ -258,11 +260,19 @@ const PokerTableComponent = () => {
     //Condense to final player variable which says whos turn it is
     if(turn == 0) {
       if(first == 1){
-        oppMon -= 15;
-        pot += 15;
-        hand.computerBetAmount += 15;
-        hand.totalPotAmount += 15;
-        console.log("Raise of 15 by computer");
+        if(userMon >= 15){
+          oppMon -= 15;
+          pot += 15;
+          hand.computerBetAmount += 15;
+          hand.totalPotAmount += 15;
+          console.log("Raise of 15 by computer");
+        }else{
+          console.log("Raise of " + userMon.toString() + " by computer");
+          oppMon -= userMon;
+          pot += userMon;
+          hand.computerBetAmount += userMon;
+          hand.totalPotAmount += userMon;
+        }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
         oppMon -= 10;
         pot += 10;
@@ -278,11 +288,19 @@ const PokerTableComponent = () => {
       }
     }else{
       if(first == 1){
-        userMon -= 15;
-        pot += 15;
-        hand.playerBetAmount += 15;
-        hand.totalPotAmount += 15;
-        console.log("Raise of 15 by player");
+        if(oppMon >= 15){
+          userMon -= 15;
+          pot += 15;
+          hand.playerBetAmount += 15;
+          hand.totalPotAmount += 15;
+          console.log("Raise of 15 by player");
+        }else{
+          console.log("Raise of " + oppMon.toString() + " by player");
+          userMon -= oppMon;
+          pot += oppMon;
+          hand.playerBetAmount += oppMon;
+          hand.totalPotAmount += oppMon;
+        }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
         userMon -= 10;
         pot += 10;
@@ -325,20 +343,23 @@ const PokerTableComponent = () => {
       console.log("Fold by player");
     }
     hand.winCondition = "fold";
-    hand.winningHand = null;
+    hand.winningHand = [];
     hand.foldRound = roundNumber;
 
     handStart();
   }
 
   function userWins(){
-    userMon += pot;
+    userMon += pot - blindDef[0];
+    oppMon += blindDef[0];
+    console.log(userMon + " " + oppMon + " " + blindDef[0]);
     pot = 0;
     hand.winner = "player"
   }
 
   function computerWins(){
-    oppMon += pot;
+    oppMon += pot - blindDef[1];
+    userMon += blindDef[1]
     pot = 0;
     hand.winner = "computer"
   }
@@ -590,19 +611,24 @@ async function turnStart() {
  //////If player
  //else{
     //Checks if someone is out of money
-    if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
-      setShowButtonLeft(false);
-      console.log(turn);
-      console.log(userMon + " " + oppMon);
-    }else if((userMon == 0 && turn == 1) || (oppMon == 0 && turn == 0)){
+    if((userMon == 0 && turn == 1) || (oppMon == 0 && turn == 0)){
       advance = 1;
       console.log("Adva");
       turnStart();
       return;
+    }else if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
+      setShowButtonLeft(false);
+      console.log(userMon + " first advance " + oppMon + " Turn " + turn);
     }
 
     if(first == 1){
-      setDisplayLeftButton("Raise 15");
+      if(oppMon >= 15){
+        setDisplayLeftButton("Raise 15");
+      }else if(oppMon > 0){
+        setDisplayLeftButton("Raise " + oppMon.toString());
+      }else{
+        setShowButtonLeft(false);
+      }
       setDisplayMiddleButton("Call 5");
       setDisplayRightButton("Fold");
       button1 = false;
@@ -1008,10 +1034,10 @@ function comBinaryConvert(){
           return;
         }
       }
-      console.log("Tie by straight flush 2");
+      console.log("Tie by straight flush");
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       gameTie();
       return;
       //May need to add something for Royal straight vs weak Ace straight
@@ -1135,7 +1161,8 @@ function comBinaryConvert(){
       }
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
+      console.log("Four of a kind Tie")
       gameTie();
       return;
     }
@@ -1173,17 +1200,8 @@ function comBinaryConvert(){
       comp3.push(compList[4]);
     }
 
-    let tmp = userList.slice()
-    for(let i = 0; i < user3.length; i++){
-      temp = userList.indexOf(user3[i]);
-      tmp.splice(temp, 3);
-    }
-    let tmp2 = compList.slice()
-    for(let i = 0; i < comp3.length; i++){
-      temp = compList.indexOf(comp3[i]);
-      tmp2.splice(temp, 3);
-    }
-
+    let tmp = userList.slice();
+    let tmp2 = compList.slice();
     for(let i = 0; i < tmp.length-1; i++){
       if(tmp[i] == tmp[i+1]){
         userPair.push(tmp[i]);
@@ -1310,9 +1328,12 @@ function comBinaryConvert(){
         hand.foldRound = null;
         return;
       }
+      userPair = userPair.filter(item => item !== user3[user3.length-1]);
+      compPair = compPair.filter(item => item !== comp3[comp3.length-1]);
       if(userPair[userPair.length-1] > compPair[compPair.length-1]){
         userWins();
         console.log("User wins by Full house 3");
+        console.log(userPair[userPair.length-1] + " " + compPair[compPair.length-1])
         let final = Comp.slice(-7);
         final.sort((a, b) => a[1] - b[1]);
         let i = 0;
@@ -1371,7 +1392,7 @@ function comBinaryConvert(){
       console.log("Tie game in Full house");
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       return;
     }
 
@@ -1402,7 +1423,8 @@ function comBinaryConvert(){
      }
      if(userFlush.length >= 5 && compFlush.length >= 5){
        //Tie breaker
-       for(let i = 0; i < 5; i--){
+       console.log("Test");
+       for(let i = 0; i < 5; i++){
          if(userFlush[userFlush.length - 1 - i] > compFlush[compFlush.length - 1 - i]){
            userWins();
            console.log("User wins by Flush 2");
@@ -1430,8 +1452,9 @@ function comBinaryConvert(){
        gameTie();
        hand.winCondition = null;
        hand.foldRound = null;
-       hand.winCondition = null;
+       hand.winningHand = [];
        console.log("Tie game in Flush")
+       return;
     }
 
       //Straight
@@ -1624,7 +1647,7 @@ function comBinaryConvert(){
       console.log("Tie game in double straight ");
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       return;
     }
     //Three of kind
@@ -1717,9 +1740,9 @@ function comBinaryConvert(){
         hand.foldRound = null;
         return;
       }
-      temp = userList.indexOf(user3[0]);
+      temp = userList.indexOf(user3[user3.length-1]);
       userList.splice(temp, 3);
-      temp = compList.indexOf(comp3[0]);
+      temp = compList.indexOf(comp3[comp3.length-1]);
       compList.splice(temp, 3);
       for(let i = 3; i > 1; i--){
         if(userList[i] > compList[i]){
@@ -1767,10 +1790,11 @@ function comBinaryConvert(){
         }
       }
       //Tie spilt pot
+      console.log("Tie in three of the kind");
       gameTie();
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       return;
     }
     //Two pair
@@ -2029,7 +2053,7 @@ function comBinaryConvert(){
         console.log("Tie in 2 pairs");
         hand.winCondition = null;
         hand.foldRound = null;
-        hand.winCondition = null;
+        hand.winningHand = [];
         return;
       }
     }
@@ -2178,7 +2202,7 @@ function comBinaryConvert(){
       console.log("Tie in pair");
       hand.winCondition = null;
       hand.foldRound = null;
-      hand.winCondition = null;
+      hand.winningHand = [];
       return;
     }
     //High card
@@ -2240,16 +2264,24 @@ function comBinaryConvert(){
     hand.totalPotAmount = 0;
     hand.computerBetAmount = 0;
     hand.playerBetAmount = 0
+    blindDef = [0, 0];
 
     dealer = (dealer > 0) ? 0 : 1;
     //Blinds - Dealer has the big blind
     //Not sure what to do if the player meant to big blind does not have enough 
     //https://boardgames.stackexchange.com/questions/39045/in-poker-what-happens-with-the-next-players-if-paying-the-big-blind-puts-a-play
     if(dealer == 1){
+      //Big Blind
       if(oppMon < 10){
         pot += oppMon;
         hand.totalPotAmount += oppMon;
         hand.computerBetAmount += oppMon;
+        if(userMon >= 10){
+          blindDef[1] = oppMon;
+          userMon -= 5;
+          pot += 5;
+          hand.totalPotAmount += oppMon;
+        }
         oppMon -= oppMon;
       }else{
         hand.totalPotAmount += 10;
@@ -2257,6 +2289,7 @@ function comBinaryConvert(){
         pot += 10;
         oppMon -= 10;
       }
+      //Small Blind
       hand.totalPotAmount += 5;
       hand.playerBetAmount += 5;
       userMon -= 5;
@@ -2264,13 +2297,19 @@ function comBinaryConvert(){
     }else{
       //console.log(userMon)
       if(userMon < 10){
-        pot += userMon
-        hand.totalPotAmount += userMon
-        hand.playerBetAmount += userMon
+        pot += userMon;
+        hand.totalPotAmount += userMon;
+        hand.playerBetAmount += userMon;
+        if(oppMon >= 10){
+          blindDef[0] = userMon;
+          oppMon -= 5;
+          pot += 5;
+          hand.totalPotAmount += userMon;
+        }
         userMon -= userMon;
       }else{
-        hand.totalPotAmount += 10
-        hand.playerBetAmount += 10
+        hand.totalPotAmount += 10;
+        hand.playerBetAmount += 10;
         pot += 10;
         userMon -= 10;
       }
@@ -2281,8 +2320,8 @@ function comBinaryConvert(){
     }
 
     updatePot();
-    //shuffleDeck();
-    playTest();
+    shuffleDeck();
+    //playTest();
     revealHand();
     hideFlop();
     hideOpponent();
@@ -2315,7 +2354,7 @@ function comBinaryConvert(){
         </div>
       </div>
       <div className="amount">
-      <Icon icon="fluent-emoji:robot" />Computer: {displayOpp}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+      <Icon className='mr-[5px]' icon="fluent-emoji:robot" />Computer: {displayOpp}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
       </div>
       <div className="table-middle">
         <div className="community-cards1">
@@ -2359,7 +2398,7 @@ function comBinaryConvert(){
         </div>
       </div>
       <div className="player-chips">
-      <Icon icon="fluent-emoji:person-light" />Player: {displayUser}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+        <Icon className='mr-[5px]' icon="fluent-emoji:person-light" />Player: {displayUser}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
       </div>
       <div className="buttons md:font-bold md:text-3xl font-semibold text-xl">
         {/* Used as both Raising and Checking */}

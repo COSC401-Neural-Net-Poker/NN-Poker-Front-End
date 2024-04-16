@@ -6,7 +6,6 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const Navbar = () => {
-
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) setLoginStatus("Sign Out")
@@ -51,18 +50,18 @@ const Navbar = () => {
   return (
     <>
       {/* This is the main desktop navigation UI */}
-      <div className="fixed w-full top-0 left-0 bg-[#FF8200] text-lg font-semibold text-[#ffffff] h-[60px] md:h-[70px] flex z-40 items-center">
+      <div className="fixed w-full top-0 left-0 nav drop-shadow-xl text-lg font-semibold text-[#ffffff] h-[60px] md:h-[70px] flex z-40 items-center">
         <div className='flex justify-between items-center w-full max-w-[1500px] mx-auto'>
-          <Link onClick={() => mobileClose()} to="/" className='flex items-center pl-5 whitespace-nowrap'>
+          <Link onClick={() => mobileClose()} to="/" className='flex items-center pl-5 whitespace-nowrap md:hover:drop-shadow-[0_0_0.10rem_#FF8200] duration-300 transition-all ease-in-out md:hover:text-[#FF8200] md:hover:scale-[105%]'>
             <img alt="AI Poker Logo" src={Logo} rel="noreferrer" />
             <h1>The Bluff Buddy</h1>
           </Link>
           <div className='lg:flex justify-between items-center w-[30%] whitespace-nowrap min-w-[500px] hidden px-5'>
-            <Link to="/"><h1>Play Game</h1></Link>
-            <Link to="/history"><h1>Game History</h1></Link>
-            <Link to="/about"><h1>About Project</h1></Link>
-            {loginStatus === "Sign In" ? <Link to="/auth"><h1 className='bg-[#4B4B4B] hover:bg-[#ffffff] hover:text-[#4B4B4B] duration-150 px-3 py-1 rounded-md'>Login</h1></Link> :
-            <h1 className="cursor-pointer hover:bg-[#4B4B4B] bg-[#ffffff] text-[#4B4B4B] hover:text-white duration-150 px-3 py-1 rounded-md" onClick={() => handleLogout()}>
+            <Link className='md:hover:drop-shadow-[0_0_0.10rem_#FF8200] duration-300 transition-all ease-in-out md:hover:text-[#FF8200] md:hover:scale-[105%]' to="/"><h1>Play Game</h1></Link>
+            <Link className='md:hover:drop-shadow-[0_0_0.10rem_#FF8200] duration-300 transition-all ease-in-out md:hover:text-[#FF8200] md:hover:scale-[105%]' to="/history"><h1>Game History</h1></Link>
+            <Link className='md:hover:drop-shadow-[0_0_0.10rem_#FF8200] duration-300 transition-all ease-in-out md:hover:text-[#FF8200] md:hover:scale-[105%]' to="/about"><h1>About Project</h1></Link>
+            {loginStatus === "Sign In" ? <Link to="/auth"><h1 className='bg-[#FF8200] duration-300  md:hover:bg-[#ffffff] md:hover:text-[#4B4B4B] ease-in-out transition-all px-3 py-1 rounded-md'>Login</h1></Link> :
+            <h1 className="cursor-pointer md:hover:bg-[#FF8200] bg-[#ffffff] text-[#222222] md:hover:text-white duration-300 ease-in-out transition-all px-3 py-1 rounded-md" onClick={() => handleLogout()}>
               Logout
             </h1>}
             
@@ -80,12 +79,12 @@ const Navbar = () => {
 
       {/* This is the mobile menu */}
       {mobileMenu ? 
-      <div className='bg-[#4B4B4B] text-white text-3xl h-screen w-full md:hidden fixed top-0 z-30 left-0 overflow-y-hidden flex justify-center items-center flex-col'>
+      <div className='bg-[#222222] text-white text-3xl h-screen w-full md:hidden fixed top-0 z-30 left-0 overflow-y-hidden flex justify-center items-center flex-col'>
         <Link onClick={() => mobileClose()} className='my-4' to="/"><h1>Play Game</h1></Link>
         <Link onClick={() => mobileClose()} className='my-4' to="/history"><h1>Game History</h1></Link>
         <Link onClick={() => mobileClose()} className='my-4' to="/about"><h1>About Project</h1></Link>
         {loginStatus === "Sign In" ? <Link onClick={() => mobileClose()} className='my-4' to="/auth"><h1 className='bg-[#FF8200] px-3 py-1 rounded-md'>Login</h1></Link> :
-        <h1 className="cursor-pointer my-4  bg-[#ffffff] text-[#4B4B4B] px-3 py-1 rounded-md" onClick={() => handleLogout()}>
+        <h1 className="cursor-pointer my-4 bg-[#ffffff] text-[#222222] px-3 py-1 rounded-md" onClick={() => handleLogout()}>
           Logout
         </h1>}
       </div> :
@@ -93,14 +92,13 @@ const Navbar = () => {
       }
 
       {/* This is the half menu that looks better for medium screens */}
-      <div className={`${mobileMenu ? 'right-0' : 'right-[-325px]'} bg-[#4B4B4B] drop-shadow-xl text-white duration-200 transition-all md:h-screen md:w-[325px] lg:hidden hidden fixed top-0 z-30 overflow-y-hidden md:flex justify-center items-center`}>
-        <div className='px-3 flex flex-col justify-center items-center w-full h-full'>
-          <Link onClick={() => mobileClose()} className='my-3' to="/"><h1>Play Game</h1></Link>
-          <Link onClick={() => mobileClose()} className='my-3' to="/scenario-creator"><h1>Scenario</h1></Link>
-          <Link onClick={() => mobileClose()} className='my-3' to="/history"><h1>Game History</h1></Link>
-          <Link onClick={() => mobileClose()} className='my-3' to="/about"><h1>About Project</h1></Link>
-          {loginStatus === "Sign In" ? <Link onClick={() => mobileClose()} className='my-3' to="/auth"><h1 className='bg-[#FF8200] hover:bg-[#ffffff] hover:text-[#4B4B4B] duration-150 px-3 py-1 rounded-md'>Login</h1></Link> :
-          <h1 className="cursor-pointer my-3 hover:bg-[#4B4B4B] bg-[#ffffff] text-[#4B4B4B] hover:text-white duration-150 px-3 py-1 rounded-md" onClick={() => handleLogout()}>
+      <div className={`${mobileMenu ? 'right-0' : 'right-[-325px]'} nav font-semibold text-2xl drop-shadow-xl text-white duration-200 transition-all md:h-screen md:w-[325px] lg:hidden hidden fixed top-0 z-30 overflow-y-hidden md:flex justify-center items-center`}>
+        <div className='flex flex-col pt-[90px] items-start w-full h-full'>
+          <Link onClick={() => mobileClose()} className='px-[25px] uppercase border-b border-gray-600 w-full my-3 md:hover:drop-shadow-[0_0_0.10rem_#FF8200] duration-300 transition-all ease-in-out md:hover:text-[#FF8200] md:hover:scale-[105%]' to="/"><h1>Play Game</h1></Link>
+          <Link onClick={() => mobileClose()} className='px-[25px] uppercase border-b border-gray-600 w-full my-3 md:hover:drop-shadow-[0_0_0.10rem_#FF8200] duration-300 transition-all ease-in-out md:hover:text-[#FF8200] md:hover:scale-[105%]' to="/history"><h1>Game History</h1></Link>
+          <Link onClick={() => mobileClose()} className='px-[25px] uppercase border-b border-gray-600 w-full my-3 md:hover:drop-shadow-[0_0_0.10rem_#FF8200] duration-300 transition-all ease-in-out md:hover:text-[#FF8200] md:hover:scale-[105%]' to="/about"><h1>About Project</h1></Link>
+          {loginStatus === "Sign In" ? <Link onClick={() => mobileClose()} className='my-3 px-[25px]' to="/auth"><h1 className='bg-[#FF8200] transition-all ease-in-out md:hover:scale-[105%] uppercase md:hover:bg-[#ffffff] md:hover:text-[#222222] duration-300 px-3 py-1 rounded-md'>Login</h1></Link> :
+          <h1 className="md:hover:scale-[105%] cursor-pointer my-3 md:hover:bg-[#FF8200] ease-in-out transition-all mx-[25px] uppercase bg-[#ffffff] text-[#222222] md:hover:text-white duration-300 px-3 py-1 rounded-md" onClick={() => handleLogout()}>
             Logout
           </h1>}
         </div>
