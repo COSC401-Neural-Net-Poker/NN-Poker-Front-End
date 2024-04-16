@@ -549,78 +549,78 @@ async function turnStart() {
     secondLastMove = "";
   }
 
- //if(turn == 0){
- //   let che = 0;
- //   let be = 0;
- //   let rai = 0;
- //   let fo = 0;
- //   //let ava = {};
- //   let ava = []
- //   let rawAva = [];
- //   let bin = comBinaryConvert();
- //   //Set actions avaiable
- //   if(oppMon == 0){
- //     //Maybe nothing
- //     che = 1;
- //   }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
- //     //ra = 1;
- //     //ava[1] = null
- //     ava.push([1, null])
- //     rawAva.push('raise');
- //     //fo = 1;
- //     ava.push([2, null])
- //     //ava[2] = null
- //     rawAva.push('fold')
- //     //che = 1;
- //     //ava[3] = null
- //     ava.push([3, null])
- //     rawAva.push('check')
- //   }else{
- //     //be = 1;
- //     //ava[0] = null
- //     ava.push([0, null])
- //     rawAva.push('call');
- //     //rai = 1;
- //     //ava[1] = null
- //     ava.push([1, null])
- //     rawAva.push('raise');
- //     //fo = 1;
- //     //ava[2] = null
- //     ava.push([2, null])
- //     rawAva.push('fold')
- //   }
- //   console.log("Calling model");
- //   let modelOutput = {}
- //   modelOutput = await callModel(bin, ava, rawAva);
- //   modelOutput = Number(modelOutput.output);
- //   console.log("MODEL OUTPUT", modelOutput)
-//
- //   if(modelOutput === 0){
- //     Bet();
- //   }else if(modelOutput === 1){
- //     Raise();
- //   }else if(modelOutput === 2){
- //     Fold();
- //   }else if (modelOutput === 3){
- //     Check();
- //   }
-//
- //  //Call api
- //  //Do what api says
- //}
- //////If player
- //else{
-    //Checks if someone is out of money
-    if((userMon == 0 && turn == 1) || (oppMon == 0 && turn == 0)){
-      advance = 1;
-      console.log("Adva");
-      turnStart();
-      return;
-    }else if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
-      setShowButtonLeft(false);
-      console.log(userMon + " first advance " + oppMon + " Turn " + turn);
-    }
+  //Checks if someone is out of money
+  if((userMon == 0 && turn == 1) || (oppMon == 0 && turn == 0)){
+    advance = 1;
+    console.log("Adva");
+    turnStart();
+    return;
+  }else if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
+    setShowButtonLeft(false);
+    console.log(userMon + " first advance " + oppMon + " Turn " + turn);
+  }
 
+ if(turn == 0){
+    let che = 0;
+    let be = 0;
+    let rai = 0;
+    let fo = 0;
+    //let ava = {};
+    let ava = []
+    let rawAva = [];
+    let bin = comBinaryConvert();
+    //Set actions avaiable
+    if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
+      if(!((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1))){
+          //rai = 1;
+        //ava[1] = null
+        ava.push([1, null])
+        rawAva.push('raise');
+       }
+      //fo = 1;
+      ava.push([2, null])
+      //ava[2] = null
+      rawAva.push('fold')
+      //che = 1;
+      //ava[3] = null
+      ava.push([3, null])
+      rawAva.push('check')
+    }else{
+      //be = 1;
+      //ava[0] = null
+      ava.push([0, null])
+      rawAva.push('call');
+      if(!((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1))){
+        //rai = 1;
+        //ava[1] = null
+        ava.push([1, null])
+        rawAva.push('raise');
+      }
+      //fo = 1;
+      //ava[2] = null
+      ava.push([2, null])
+      rawAva.push('fold')
+    }
+    console.log("Calling model");
+    let modelOutput = {}
+    modelOutput = await callModel(bin, ava, rawAva);
+    modelOutput = Number(modelOutput.output);
+    console.log("MODEL OUTPUT", modelOutput)
+//
+    if(modelOutput === 0){
+      Bet();
+    }else if(modelOutput === 1){
+      Raise();
+    }else if(modelOutput === 2){
+      Fold();
+    }else if (modelOutput === 3){
+      Check();
+    }
+//
+
+ }
+ //////If player
+ else{
     if(first == 1){
       if(oppMon >= 15){
         setDisplayLeftButton("Raise 15");
@@ -652,7 +652,7 @@ async function turnStart() {
       setDisplayRightButton("Fold");
       button1 = false;
     }
-  //}
+  }
 }
 
 async function callModel(binOutput, legal, rawLegal){
@@ -663,7 +663,7 @@ async function callModel(binOutput, legal, rawLegal){
   }
   let returnData = {}
 
-  const url = "https://34.29.92.110/model";
+  const url = "https://34.29.92.110:8000/model";
 
   await fetch(url, {
     method: 'POST',
