@@ -344,17 +344,17 @@ const PokerTableComponent = () => {
     setShowButtonRight(false);
     secondLastMove = lastMove;
     lastMove = "CH";
-    turn = (turn > 0) ? 0 : 1;
     if(turn == 0){
       console.log("Check by Computer");
       compLastMove = "Check";
     }else{
       console.log("Check by User");
     }
+    turn = (turn > 0) ? 0 : 1;
     await turnStart();
   }
 
-  function Fold(){
+  async function Fold(){
     //Needs to account for dealer I think
     if(turn == 0){
       userWins();
@@ -369,6 +369,7 @@ const PokerTableComponent = () => {
     hand.winCondition = "fold";
     hand.winningHand = [];
     hand.foldRound = roundNumber;
+    await revealOpponent();
     handStart();
   }
 
@@ -511,7 +512,7 @@ const PokerTableComponent = () => {
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 async function de(){
-  revealOpponent();
+  await revealOpponent();
   winCheck();
   console.log(hand.cards);
   console.log(hand.winningHand);
@@ -541,17 +542,17 @@ async function turnStart() {
     let i = 0;
     while(advance || i < 1){
       if(flop == false){
-        revealFlop();
+        await revealFlop();
         dealChange = true;
         flop = true;
         roundNumber = 1;
       }else if(theTurn == false){
-        revealTurn();
+        await revealTurn();
         dealChange = true;
         theTurn = true;
         roundNumber = 2;
       }else if(river == false){
-        revealRiver();
+        await revealRiver();
         dealChange = true;
         river = true
         roundNumber = 3;
@@ -670,7 +671,7 @@ async function turnStart() {
       setDisplayMiddleButton("Check");
       setDisplayRightButton("Fold");
       button1 = true;
-    }else if(round[roundNumber] >= 4 || (userMon < 20 && turn == 1)){
+    }else if(round[roundNumber] >= 4 || (userMon < 20 && turn == 1) || (oppMon < 10 && turn == 0 && lastMove == "R")){
       //May need to be 3?
       console.log("Three raise rule")
       setShowButtonLeft(false);
@@ -2356,7 +2357,7 @@ function comBinaryConvert(){
     updatePot();
     shuffleDeck();
     //playTest();
-    revealHand();
+    await revealHand();
     hideFlop();
     hideOpponent();
     lastMove = "";
