@@ -61,8 +61,8 @@ const PokerTableComponent = () => {
   const [displayOpp, setDisplayOpp] = useState(oppMon);
   const [displayPot, setDisplayPot] = useState(pot);
   const [displayUser, setDisplayUser] = useState(userMon);
-  const [displayLeftButton, setDisplayLeftButton] = useState("Call");
-  const [displayMiddleButton, setDisplayMiddleButton] = useState("Call 10");
+  const [displayLeftButton, setDisplayLeftButton] = useState("Raise 15");
+  const [displayMiddleButton, setDisplayMiddleButton] = useState("Call 5");
   const [displayRightButton, setDisplayRightButton] = useState("Fold");
   const [showButtonLeft, setShowButtonLeft] = useState(false);
   const [showButtonCenter, setShowButtonCenter] = useState(false);
@@ -248,6 +248,9 @@ const PokerTableComponent = () => {
         console.log("Bet of 10 by user");
       }
     }
+    setShowButtonLeft(false);
+    setShowButtonCenter(false);
+    setShowButtonRight(false);
     turn = (turn > 0) ? 0 : 1; 
     updatePot();
     first = 0;
@@ -315,7 +318,9 @@ const PokerTableComponent = () => {
         console.log("Raise of 20 by player + " + round[roundNumber]);
       }
     }
-
+    setShowButtonLeft(false);
+    setShowButtonCenter(false);
+    setShowButtonRight(false);
     round[roundNumber] += 1;
     turn = (turn > 0) ? 0 : 1;
     updatePot();
@@ -326,6 +331,9 @@ const PokerTableComponent = () => {
   }
 
   async function Check() {
+    setShowButtonLeft(false);
+    setShowButtonCenter(false);
+    setShowButtonRight(false);
     secondLastMove = lastMove;
     lastMove = "CH";
     turn = (turn > 0) ? 0 : 1;
@@ -342,10 +350,12 @@ const PokerTableComponent = () => {
       computerWins();
       console.log("Fold by player");
     }
+    setShowButtonLeft(false);
+    setShowButtonCenter(false);
+    setShowButtonRight(false);
     hand.winCondition = "fold";
     hand.winningHand = [];
     hand.foldRound = roundNumber;
-
     handStart();
   }
 
@@ -488,8 +498,8 @@ const PokerTableComponent = () => {
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 async function de(){
-  winCheck();
   revealOpponent();
+  winCheck();
   console.log(hand.cards);
   console.log(hand.winningHand);
   handList.push(structuredClone(hand));
@@ -509,7 +519,7 @@ async function turnStart() {
   //Flip cards
   if((secondLastMove == "R" && lastMove == "CA") || (secondLastMove == "CH" && lastMove == "CH") || (secondLastMove == "CA" && lastMove == "CH") || advance){
     console.log("Middle Reveal");
-    setShowButtonLeft(true);
+    //setShowButtonLeft(true);
     //Just advance if someone is out of money
     if(userMon == 0 || oppMon == 0){
       advance = 1;
@@ -566,7 +576,7 @@ async function turnStart() {
     let rai = 0;
     let fo = 0;
     //let ava = {};
-    let ava = []
+    let ava = [];
     let rawAva = [];
     let bin = comBinaryConvert();
     //Set actions avaiable
@@ -574,17 +584,23 @@ async function turnStart() {
       if(!((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1))){
           //rai = 1;
         //ava[1] = null
-        ava.push([1, null])
+        ava.push([1, null]);
         rawAva.push('raise');
        }
       //fo = 1;
-      ava.push([2, null])
-      //ava[2] = null
-      rawAva.push('fold')
+      ava.push([2, null]);
+      //ava[2] = null;
+      rawAva.push('fold');
       //che = 1;
       //ava[3] = null
-      ava.push([3, null])
-      rawAva.push('check')
+      ava.push([3, null]);
+      rawAva.push('check');
+    }else if(round[roundNumber] >= 4 || (oppMon < 20 && turn == 0)){
+      console.log("Three raise rule")
+      ava.push([0, null]);
+      rawAva.push('call');
+      ava.push([2, null]);
+      rawAva.push('fold');
     }else{
       //be = 1;
       //ava[0] = null
@@ -593,13 +609,13 @@ async function turnStart() {
       if(!((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1))){
         //rai = 1;
         //ava[1] = null
-        ava.push([1, null])
+        ava.push([1, null]);
         rawAva.push('raise');
       }
       //fo = 1;
       //ava[2] = null
-      ava.push([2, null])
-      rawAva.push('fold')
+      ava.push([2, null]);
+      rawAva.push('fold');
     }
     console.log("Calling model");
     let modelOutput = {}
@@ -620,7 +636,10 @@ async function turnStart() {
 
  }
  //////If player
- else{
+  else{
+    setShowButtonLeft(true);
+    setShowButtonCenter(true);
+    setShowButtonRight(true);
     if(first == 1){
       if(oppMon >= 15){
         setDisplayLeftButton("Raise 15");
@@ -638,7 +657,7 @@ async function turnStart() {
       setDisplayMiddleButton("Check");
       setDisplayRightButton("Fold");
       button1 = true;
-    }else if(round[roundNumber] == 4 || (userMon < 20 && turn == 1)){
+    }else if(round[roundNumber] >= 4 || (userMon < 20 && turn == 1)){
       //May need to be 3?
       console.log("Three raise rule")
       setShowButtonLeft(false);
@@ -2335,9 +2354,6 @@ function comBinaryConvert(){
     river = false;
     roundNumber = 0;
     advance = 0;
-    setShowButtonLeft(true);
-    setShowButtonCenter(true);
-    setShowButtonRight(true);
     await turnStart();
   }
 
