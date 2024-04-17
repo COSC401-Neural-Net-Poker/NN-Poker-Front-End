@@ -2297,6 +2297,7 @@ function comBinaryConvert(){
     hand.computerBetAmount = 0;
     hand.playerBetAmount = 0
     blindDef = [0, 0];
+    round = [0, 0, 0, 0];
     compLastMove = "No Move Yet";
 
     dealer = (dealer > 0) ? 0 : 1;
