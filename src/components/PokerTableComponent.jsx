@@ -663,7 +663,7 @@ async function callModel(binOutput, legal, rawLegal){
   }
   let returnData = {}
 
-  const url = "https://bluff-buddy.web.app/model";
+  const url = "https://bluffbuddy.lakeviewtechnology.net/model";
 
   await fetch(url, {
     method: 'POST',
