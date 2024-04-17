@@ -11,8 +11,8 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Icon } from '@iconify/react';
 
 let pot = 0;
-let oppMon = 500;
-let userMon = 500;
+let oppMon = 200;
+let userMon = 200;
 let turn;
 let dealer;
 let secondLastMove = "";
