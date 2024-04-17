@@ -28,6 +28,7 @@ let round = [0, 0, 0, 0]
 let roundNumber = 0;
 let endResult;
 let numHands;
+let compLastMove;
 const hand = {
   totalPotAmount: 0,
   computerBetAmount: 0,
@@ -218,6 +219,7 @@ const PokerTableComponent = () => {
 
 }
   
+//Used for calling
   async function Bet() {
     if(turn == 0) {
       if(first == 1){
@@ -225,13 +227,15 @@ const PokerTableComponent = () => {
         pot += 5;
         hand.totalPotAmount += 5;
         hand.computerBetAmount += 5
-        console.log("Bet of 5 by computer");
+        console.log("Call of 5 by computer");
+        compLastMove = "Call of 5";
       }else{
         oppMon -= 10;
         pot += 10;
         hand.computerBetAmount += 10;
         hand.totalPotAmount += 10;
-        console.log("Bet of 10 by computer");
+        console.log("Call of 10 by computer");
+        compLastMove = "Call of 10";
       }
     }else{
       if(first == 1){
@@ -239,13 +243,13 @@ const PokerTableComponent = () => {
         pot += 5;
         hand.playerBetAmount += 5
         hand.totalPotAmount += 5
-        console.log("Bet of 5 by user");
+        console.log("Call of 5 by user");
       }else{
         userMon -= 10;
         pot += 10;
         hand.playerBetAmount += 10;
         hand.totalPotAmount += 10;
-        console.log("Bet of 10 by user");
+        console.log("Call of 10 by user");
       }
     }
     setShowButtonLeft(false);
@@ -269,8 +273,10 @@ const PokerTableComponent = () => {
           hand.computerBetAmount += 15;
           hand.totalPotAmount += 15;
           console.log("Raise of 15 by computer");
+          compLastMove = "Raise of 15";
         }else{
           console.log("Raise of " + userMon.toString() + " by computer");
+          compLastMove = "Raise of " + userMon.toString();
           oppMon -= userMon;
           pot += userMon;
           hand.computerBetAmount += userMon;
@@ -282,12 +288,14 @@ const PokerTableComponent = () => {
         hand.computerBetAmount += 10;
         hand.totalPotAmount += 10;
         console.log("Raise of 10 by computer");
+        compLastMove = "Raise of 10";
       }else{
         oppMon -= 20;
         pot += 20;
         hand.computerBetAmount += 20;
         hand.totalPotAmount += 20;
         console.log("Raise of 20 by computer " + round[roundNumber]);
+        compLastMove = "Raise of 20";
       }
     }else{
       if(first == 1){
@@ -337,7 +345,12 @@ const PokerTableComponent = () => {
     secondLastMove = lastMove;
     lastMove = "CH";
     turn = (turn > 0) ? 0 : 1;
-    console.log("Check");
+    if(turn == 0){
+      console.log("Check by Computer");
+      compLastMove = "Check";
+    }else{
+      console.log("Check by User");
+    }
     await turnStart();
   }
 
@@ -508,7 +521,7 @@ async function de(){
   //if(numHands == 2){
     //saveHistory();
   //}
-  await delay(1450)
+  await delay(2450)
   //Maybe change to handStart while loop or another function while loop
   handStart();
 }
@@ -2284,6 +2297,7 @@ function comBinaryConvert(){
     hand.computerBetAmount = 0;
     hand.playerBetAmount = 0
     blindDef = [0, 0];
+    compLastMove = "No Move Yet";
 
     dealer = (dealer > 0) ? 0 : 1;
     //Blinds - Dealer has the big blind
