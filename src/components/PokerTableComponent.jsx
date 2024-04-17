@@ -28,7 +28,7 @@ let round = [0, 0, 0, 0]
 let roundNumber = 0;
 let endResult;
 let numHands;
-let compLastMove;
+let compLastMove = "No Move Yet";
 const hand = {
   totalPotAmount: 0,
   computerBetAmount: 0,
@@ -2385,8 +2385,12 @@ function comBinaryConvert(){
           {/* Display community cards here */}
         </div>
       </div>
-      <div className="amount">
-      <Icon className='mr-[5px]' icon="fluent-emoji:robot" />Computer: {displayOpp}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+      <div className="w-full md:flex-row flex-col justify-center items-center flex gap-4">
+        <div className="icon-logo">
+          <Icon icon="fluent-emoji:robot" />
+          &nbsp;AI: {displayOpp} <Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+        </div>
+        <div className="amount">Last Move: {compLastMove}</div>
       </div>
       <div className="table-middle">
         <div className="community-cards1">
