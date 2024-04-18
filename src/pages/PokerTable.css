@@ -208,6 +208,6 @@
     padding: 0 1rem
   }
   .bottom-buttons {
-    background: rgb(15,15,15);
-    background: linear-gradient(90deg, rgba(15,15,15,1) 0%, rgb(44, 44, 44) 100%);
+    background: #f21343;
+    background: linear-gradient(90deg, rgba(242,19,67,1) 0%, rgba(255,0,55,1) 100%);
   }

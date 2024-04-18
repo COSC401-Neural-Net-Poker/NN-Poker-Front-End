@@ -2490,18 +2490,18 @@ function comBinaryConvert(){
          {/* Display player cards and information here */}
         </div>
       </div>
-      <div className="player-chips text-black">
-        <Icon className='mr-[5px] drop-shadow-[0_0_0.08rem_black] text-[26px]' icon="fluent-emoji:person-light" /><span className=''>Player</span>: {displayUser}<Icon className='text-[24px] text-[#961733]' icon="mdi:poker-chip" />
+      <div className="player-chips text-black text-[#961733">
+        <Icon className='mr-[5px] drop-shadow-[0_0_0.08rem_black] text-[26px]' icon="fluent-emoji:person-light" /><span className='text-black'>Player</span>: {displayUser}<Icon className='text-[24px] text-[#961733]' icon="mdi:poker-chip" />
       </div>
       <div className="buttons md:font-bold md:text-3xl font-semibold text-xl">
         {/* Used as both Raising and Checking */}
-        {showButtonLeft && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Raise}>{displayLeftButton}</button>}
+        {showButtonLeft && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={Raise}>{displayLeftButton}</button>}
         
         {/* Used as betting */}
-        {showButtonCenter && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={button1 ? Check : Bet}>{displayMiddleButton}</button>}
+        {showButtonCenter && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={button1 ? Check : Bet}>{displayMiddleButton}</button>}
 
         {/* Used as both Folding and start game button */}
-        {showButtonRight && <button className='w-full py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#FF8200] duration-300 ease-in-out transition-all bg-gradient-to-r from-[#ff8200] to-[#ffa930] text-white' onClick={Fold}>{displayRightButton}</button>}
+        {showButtonRight && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={Fold}>{displayRightButton}</button>}
       </div>
       {gameState === "over" ? <GameState startGame={handlePlayAgain} gameState="over" /> : <GameState startGame={handlePlayAgain} gameState="start" />}
     </div>
