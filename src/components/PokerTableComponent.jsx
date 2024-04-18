@@ -140,8 +140,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 100;
-    oppMon = 100;
+    userMon = 400;
+    oppMon = 400;
     dealer = 1;
     numHands = 0;
     handStart()
@@ -706,7 +706,7 @@ async function turnStart() {
       setShowButtonLeft(false);
       console.log(userMon + " first advance " + oppMon + " Turn " + turn);
     }
-    
+
     if(first == 1){
       if(oppMon >= 15){
         setDisplayLeftButton("Raise 15");
