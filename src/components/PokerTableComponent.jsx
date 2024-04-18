@@ -2386,11 +2386,11 @@ function comBinaryConvert(){
         </div>
       </div>
       <div className="w-full md:flex-row flex-col justify-center items-center flex gap-4">
-        <div className="icon-logo">
-          <Icon icon="fluent-emoji:robot" />
-          &nbsp;AI: {displayOpp} <Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+        <div className="icon-logo yellow-stuff text-black">
+          <Icon className='drop-shadow-[0_0_0.08rem_black]' icon="fluent-emoji:robot" />
+          &nbsp;<span className=''>AI</span>: {displayOpp}<Icon className='text-[24px] text-[#961733]' icon="mdi:poker-chip" />
         </div>
-        <div className="amount">Last Move: {compLastMove}</div>
+        <div className="amount text-black"><span className=''>Last Move</span>: {compLastMove}</div>
       </div>
       <div className="table-middle">
         <div className="community-cards1">
@@ -2414,8 +2414,8 @@ function comBinaryConvert(){
           {/* Display community cards here */}
         </div>
       </div>
-      <div className="pot">
-          <span className='margin-top: 10px'>Total Pot:</span>&nbsp;{displayPot}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+      <div className="pot bg-white text-[#222222]">
+          <span className=''>Total Pot</span>: {displayPot}<Icon className='text-[24px] text-[#961733]' icon="mdi:poker-chip" />
       </div>
       <div className="table-bottom">
         <div className={`${cssReveal === "" ? 'right-[200vw] bottom-[200vh]' : 'md:drop-shadow-md fixed top-1/2 left-1/2 transform -translate-x-[40%] -translate-y-[47%]'} z-[16] absolute transition-all duration-300 ease-in-out`}>
@@ -2433,8 +2433,8 @@ function comBinaryConvert(){
          {/* Display player cards and information here */}
         </div>
       </div>
-      <div className="player-chips">
-        <Icon className='mr-[5px]' icon="fluent-emoji:person-light" />Player: {displayUser}<Icon className='text-[26px] text-[#FF8200]' icon="ph:poker-chip" />
+      <div className="player-chips text-black">
+        <Icon className='mr-[5px] drop-shadow-[0_0_0.08rem_black] text-[26px]' icon="fluent-emoji:person-light" /><span className=''>Player</span>: {displayUser}<Icon className='text-[24px] text-[#961733]' icon="mdi:poker-chip" />
       </div>
       <div className="buttons md:font-bold md:text-3xl font-semibold text-xl">
         {/* Used as both Raising and Checking */}

@@ -108,8 +108,6 @@
   }
 
   .pot {
-      background-color: white;
-      color: #4B4B4B;
       border-radius: 1.2rem;
       height: 3.7vh;
       width: 20%;
@@ -208,4 +206,8 @@
     z-index: 15;
     width: auto;
     padding: 0 1rem
+  }
+  .bottom-buttons {
+    background: rgb(15,15,15);
+    background: linear-gradient(90deg, rgba(15,15,15,1) 0%, rgb(44, 44, 44) 100%);
   }
