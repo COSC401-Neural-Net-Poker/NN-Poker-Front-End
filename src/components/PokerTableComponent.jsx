@@ -140,8 +140,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 200;
-    oppMon = 200;
+    userMon = 100;
+    oppMon = 100;
     dealer = 1;
     numHands = 0;
     handStart()
@@ -630,9 +630,6 @@ async function turnStart() {
     console.log("Adva");
     turnStart();
     return;
-  }else if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
-    setShowButtonLeft(false);
-    console.log(userMon + " first advance " + oppMon + " Turn " + turn);
   }
 
  if(turn == 0){
@@ -705,6 +702,11 @@ async function turnStart() {
     setShowButtonLeft(true);
     setShowButtonCenter(true);
     setShowButtonRight(true);
+    if((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1)){
+      setShowButtonLeft(false);
+      console.log(userMon + " first advance " + oppMon + " Turn " + turn);
+    }
+    
     if(first == 1){
       if(oppMon >= 15){
         setDisplayLeftButton("Raise 15");
@@ -2416,8 +2418,8 @@ function comBinaryConvert(){
     }
 
     updatePot();
-    //shuffleDeck();
-    playTest();
+    shuffleDeck();
+    //playTest();
     await revealHand();
     hideFlop();
     hideOpponent();
