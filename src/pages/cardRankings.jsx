@@ -600,3 +600,23 @@ const cardRankings = [
   //cardImageImport[7] = cardImageImport[36];
   //cardImageImport[8] = cardImageImport[29];
   //cardImageImport[9] = cardImageImport[24];
+
+  //cardRankings[1] = cardRankings[32];
+  //cardRankings[2] = cardRankings[14];
+  //cardRankings[3] = cardRankings[39];
+  //cardRankings[4] = cardRankings[50];
+  //cardRankings[5] = cardRankings[5];
+  //cardRankings[6] = cardRankings[6];
+  //cardRankings[7] = cardRankings[7];
+  //cardRankings[8] = cardRankings[34];
+  //cardRankings[9] = cardRankings[24];
+//Negative value test
+  //cardImageImport[1] = cardImageImport[32];
+  //cardImageImport[2] = cardImageImport[14];
+  //cardImageImport[3] = cardImageImport[39];
+  //cardImageImport[4] = cardImageImport[50];
+  //cardImageImport[5] = cardImageImport[5];
+  //cardImageImport[6] = cardImageImport[6];
+  //cardImageImport[7] = cardImageImport[7];
+  //cardImageImport[8] = cardImageImport[34];
+  //cardImageImport[9] = cardImageImport[24];

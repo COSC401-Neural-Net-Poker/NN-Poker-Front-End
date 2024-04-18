@@ -202,24 +202,24 @@ const PokerTableComponent = () => {
     user[0] = cardImageImport[0];
     user[1] = cardImageImport[0];
 
-  cardRankings[1] = cardRankings[7];
-  cardRankings[2] = cardRankings[11];
-  cardRankings[3] = cardRankings[14];
-  cardRankings[4] = cardRankings[19];
-  cardRankings[5] = cardRankings[40];
-  cardRankings[6] = cardRankings[36];
-  cardRankings[7] = cardRankings[32];
-  cardRankings[8] = cardRankings[28];
+  cardRankings[1] = cardRankings[32];
+  cardRankings[2] = cardRankings[14];
+  cardRankings[3] = cardRankings[31];
+  cardRankings[4] = cardRankings[50];
+  cardRankings[5] = cardRankings[5];
+  cardRankings[6] = cardRankings[6];
+  cardRankings[7] = cardRankings[7];
+  cardRankings[8] = cardRankings[34];
   cardRankings[9] = cardRankings[24];
-//Tie Straight Flush Test
-  cardImageImport[1] = cardImageImport[7];
-  cardImageImport[2] = cardImageImport[11];
-  cardImageImport[3] = cardImageImport[14];
-  cardImageImport[4] = cardImageImport[19];
-  cardImageImport[5] = cardImageImport[40];
-  cardImageImport[6] = cardImageImport[36];
-  cardImageImport[7] = cardImageImport[32];
-  cardImageImport[8] = cardImageImport[28];
+//Negative value test
+  cardImageImport[1] = cardImageImport[32];
+  cardImageImport[2] = cardImageImport[14];
+  cardImageImport[3] = cardImageImport[39];
+  cardImageImport[4] = cardImageImport[50];
+  cardImageImport[5] = cardImageImport[5];
+  cardImageImport[6] = cardImageImport[6];
+  cardImageImport[7] = cardImageImport[7];
+  cardImageImport[8] = cardImageImport[34];
   cardImageImport[9] = cardImageImport[24];
 
 }
@@ -337,7 +337,7 @@ const PokerTableComponent = () => {
           toCall = 10;
         }else{
           toCall = oppMon;
-          console.log("Raise of " + oppMon.toString() + " by player");
+          console.log("Raise of " + oppMon.toString() + " by playeropp");
           userMon -= oppMon;
           pot += oppMon;
           hand.playerBetAmount += oppMon;
@@ -726,7 +726,7 @@ async function turnStart() {
       setDisplayMiddleButton("Check");
       setDisplayRightButton("Fold");
       button1 = true;
-    }else if(round[roundNumber] >= 4 || (userMon < 20 && turn == 1) || (oppMon < 10 && turn == 0 && lastMove == "R")){
+    }else if(round[roundNumber] >= 4 || (userMon < 20 && turn == 1) || (oppMon <= 10 && turn == 0 && lastMove == "R")){
       //May need to be 3?
       console.log("Three raise rule")
       setShowButtonLeft(false);
@@ -1296,12 +1296,12 @@ function comBinaryConvert(){
     let tmp = userList.slice();
     let tmp2 = compList.slice();
     for(let i = 0; i < tmp.length-1; i++){
-      if(tmp[i] == tmp[i+1]){
+      if(tmp[i] == tmp[i+1] && (tmp[i] != user3[user3.length-1])){
         userPair.push(tmp[i]);
       }
     }
     for(let i = 0; i < tmp2.length-1; i++){
-      if(tmp2[i] == tmp2[i+1]){
+      if(tmp2[i] == tmp2[i+1] && tmp[i] != comp3[comp3.length-1]){
         compPair.push(tmp2[i]);
       }
     }
@@ -2416,8 +2416,8 @@ function comBinaryConvert(){
     }
 
     updatePot();
-    shuffleDeck();
-    //playTest();
+    //shuffleDeck();
+    playTest();
     await revealHand();
     hideFlop();
     hideOpponent();
