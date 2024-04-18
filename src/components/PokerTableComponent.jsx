@@ -140,8 +140,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 400;
-    oppMon = 400;
+    userMon = 200;
+    oppMon = 200;
     dealer = 1;
     numHands = 0;
     handStart()
@@ -308,7 +308,7 @@ const PokerTableComponent = () => {
           toCall = 5;
         }
       }else{
-        if(userMon >= 20){
+        if(userMon >= 10){
           oppMon -= 20;
           pot += 20;
           hand.computerBetAmount += 20;
@@ -360,7 +360,7 @@ const PokerTableComponent = () => {
           toCall = 5;
         }
       }else{
-        if(oppMon >= 20){
+        if(oppMon >= 10){
           userMon -= 20;
           pot += 20;
           hand.playerBetAmount += 20;
