@@ -11,6 +11,9 @@ const Game = ({historyData = []}) => {
   let { id } = useParams()
   const navigate = useNavigate();
 
+  let reversedHistory = []
+  for (let i = historyData?.length - 1; i >= 0; --i) reversedHistory.push(historyData[i])
+
   useEffect(() => {
     const listen = onAuthStateChanged(auth, async (user) => {
       if (!user) navigate("/")
@@ -30,10 +33,10 @@ const Game = ({historyData = []}) => {
         </div>
         <h1 className='pt-[20px] font-bold text-3xl'>Hands</h1>
         <div className='mt-[20px] w-1/2 h-auto'>
-          {historyData[id]?.handHistory.map((round, ind) => {
-              return(
-                <Round key={ind} roundData={round} roundNum={ind} />
-              )
+          {reversedHistory[id]?.handHistory.map((round, ind) => {
+            return(
+              <Round key={ind} roundData={round} roundNum={ind} />
+            )
           })}
         </div>
       </div>

@@ -125,6 +125,10 @@ const PokerTableComponent = () => {
             },
             { merge: true }
         )
+
+        endResult = null
+        numHands = null
+        handList = []
       }
       catch(error) {
         console.log(error)
