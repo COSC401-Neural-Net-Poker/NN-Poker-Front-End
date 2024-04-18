@@ -29,6 +29,7 @@ let roundNumber = 0;
 let endResult;
 let numHands;
 let compLastMove;
+let toCall;
 const hand = {
   totalPotAmount: 0,
   computerBetAmount: 0,
@@ -230,12 +231,12 @@ const PokerTableComponent = () => {
         console.log("Call of 5 by computer");
         compLastMove = "Call of 5";
       }else{
-        oppMon -= 10;
-        pot += 10;
-        hand.computerBetAmount += 10;
-        hand.totalPotAmount += 10;
-        console.log("Call of 10 by computer");
-        compLastMove = "Call of 10";
+        oppMon -= toCall;
+        pot += toCall;
+        hand.computerBetAmount += toCall;
+        hand.totalPotAmount += toCall;
+        console.log("Call of " + (toCall) + " by computer");
+        compLastMove = "Call of " + toCall;
       }
     }else{
       if(first == 1){
@@ -247,9 +248,9 @@ const PokerTableComponent = () => {
       }else{
         userMon -= 10;
         pot += 10;
-        hand.playerBetAmount += 10;
-        hand.totalPotAmount += 10;
-        console.log("Call of 10 by user");
+        hand.playerBetAmount += toCall;
+        hand.totalPotAmount += toCall;
+        console.log("Call of " + toCall + " by user");
       }
     }
     setShowButtonLeft(false);
@@ -274,28 +275,52 @@ const PokerTableComponent = () => {
           hand.totalPotAmount += 15;
           console.log("Raise of 15 by computer");
           compLastMove = "Raise of 15";
+          toCall = 10;
         }else{
           console.log("Raise of " + userMon.toString() + " by computer");
           compLastMove = "Raise of " + userMon.toString();
+          toCall = userMon;
           oppMon -= userMon;
           pot += userMon;
           hand.computerBetAmount += userMon;
           hand.totalPotAmount += userMon;
         }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
-        oppMon -= 10;
-        pot += 10;
-        hand.computerBetAmount += 10;
-        hand.totalPotAmount += 10;
-        console.log("Raise of 10 by computer");
-        compLastMove = "Raise of 10";
+        if(userMon >= 10){
+          oppMon -= 10;
+          pot += 10;
+          hand.computerBetAmount += 10;
+          hand.totalPotAmount += 10;
+          console.log("Raise of 10 by computer");
+          compLastMove = "Raise of 10";
+          toCall = 10;
+        }else{
+          oppMon -= 5;
+          pot += 5;
+          hand.computerBetAmount += 5;
+          hand.totalPotAmount += 5;
+          console.log("Raise of 5 by computer");
+          compLastMove = "Raise of 5";
+          toCall = 5;
+        }
       }else{
-        oppMon -= 20;
-        pot += 20;
-        hand.computerBetAmount += 20;
-        hand.totalPotAmount += 20;
-        console.log("Raise of 20 by computer " + round[roundNumber]);
-        compLastMove = "Raise of 20";
+        if(userMon >= 20){
+          oppMon -= 20;
+          pot += 20;
+          hand.computerBetAmount += 20;
+          hand.totalPotAmount += 20;
+          console.log("Raise of 20 by computer " + round[roundNumber]);
+          compLastMove = "Raise of 20";
+          toCall = 10;
+        }else{
+          oppMon -= 15;
+          pot += 15;
+          hand.computerBetAmount += 15;
+          hand.totalPotAmount += 15;
+          console.log("Raise of 15 by computer " + round[roundNumber]);
+          compLastMove = "Raise of 15";
+          toCall = 5;
+        }
       }
     }else{
       if(first == 1){
@@ -305,7 +330,9 @@ const PokerTableComponent = () => {
           hand.playerBetAmount += 15;
           hand.totalPotAmount += 15;
           console.log("Raise of 15 by player");
+          toCall = 10;
         }else{
+          toCall = oppMon;
           console.log("Raise of " + oppMon.toString() + " by player");
           userMon -= oppMon;
           pot += oppMon;
@@ -313,17 +340,37 @@ const PokerTableComponent = () => {
           hand.totalPotAmount += oppMon;
         }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
-        userMon -= 10;
-        pot += 10;
-        hand.playerBetAmount += 10;
-        hand.totalPotAmount += 10;
-        console.log("Raise of 10 by player");
+        if(oppMon >= 10){
+          userMon -= 10;
+          pot += 10;
+          hand.playerBetAmount += 10;
+          hand.totalPotAmount += 10;
+          console.log("Raise of 10 by player");
+          toCall = 10;
+        }else{
+          userMon -= 5;
+          pot += 5;
+          hand.playerBetAmount += 5;
+          hand.totalPotAmount += 5;
+          console.log("Raise of 5 by player");
+          toCall = 5;
+        }
       }else{
-        userMon -= 20;
-        pot += 20;
-        hand.playerBetAmount += 20;
-        hand.totalPotAmount += 20;
-        console.log("Raise of 20 by player + " + round[roundNumber]);
+        if(oppMon >= 20){
+          userMon -= 20;
+          pot += 20;
+          hand.playerBetAmount += 20;
+          hand.totalPotAmount += 20;
+          console.log("Raise of 20 by player + " + round[roundNumber]);
+          toCall = 10;
+        }else{
+          userMon -= 15;
+          pot += 15;
+          hand.playerBetAmount += 15;
+          hand.totalPotAmount += 15;
+          console.log("Raise of 15 by player + " + round[roundNumber]);
+          toCall = 5;
+        }
       }
     }
     setShowButtonLeft(false);
@@ -667,7 +714,11 @@ async function turnStart() {
       button1 = false;
     //Right of or may be changed to own else if because (bet 10) may need to be (raise 10)
     }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
-      setDisplayLeftButton("Raise 10");
+      if(oppMon >= 10){
+        setDisplayLeftButton("Raise 10");
+      }else{
+        setDisplayLeftButton("Raise " + oppMon);
+      }
       setDisplayMiddleButton("Check");
       setDisplayRightButton("Fold");
       button1 = true;
@@ -675,12 +726,17 @@ async function turnStart() {
       //May need to be 3?
       console.log("Three raise rule")
       setShowButtonLeft(false);
-      setDisplayMiddleButton("Call 10");
+      setDisplayMiddleButton("Call " + (toCall));
+
       setDisplayRightButton("Fold");
       button1 = false;
       //This is wrong
     }else{
-      setDisplayMiddleButton("Call 10");
+      if(toCall == 0){
+        setDisplayMiddleButton("Call " + (10));
+      }else{
+        setDisplayMiddleButton("Call " + (toCall));
+      }
       setDisplayLeftButton("Raise 20");
       setDisplayRightButton("Fold");
       button1 = false;
@@ -2300,6 +2356,7 @@ function comBinaryConvert(){
     blindDef = [0, 0];
     round = [0, 0, 0, 0];
     compLastMove = "No Move Yet";
+    toCall = 0;
 
     dealer = (dealer > 0) ? 0 : 1;
     //Blinds - Dealer has the big blind
