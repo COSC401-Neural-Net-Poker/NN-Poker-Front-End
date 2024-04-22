@@ -398,7 +398,7 @@ const PokerTableComponent = () => {
     secondLastMove = lastMove;
     lastMove = "CH";
     if(turn == 0){
-      console.log("Check by Computer");
+      console.log("Check by Computer ");
       compLastMove = "Check";
     }else{
       console.log("Check by User");
@@ -422,6 +422,7 @@ const PokerTableComponent = () => {
     hand.winCondition = "fold";
     hand.winningHand = [];
     hand.foldRound = roundNumber;
+    handList.push(structuredClone(hand));
     await revealOpponent();
     handStart();
   }
