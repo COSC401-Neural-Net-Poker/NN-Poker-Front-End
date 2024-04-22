@@ -78,7 +78,7 @@ const PokerTableComponent = () => {
   const [allTop, setAllTop] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
   const [isGameStarted, setIsGameStarted] = useState(false)
-  const [gameState, setGameState] = useState("start")
+  const [gameState, setGameState] = useState("over")
   const [gameHistory, setGameHistory] = useState([])
   const [userInstance, setUserInstance] = useState(null)
   const [numHandsGS, setNumHandsGS] = useState(0)
