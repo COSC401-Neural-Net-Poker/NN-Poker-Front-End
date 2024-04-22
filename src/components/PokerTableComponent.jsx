@@ -78,14 +78,10 @@ const PokerTableComponent = () => {
   const [allTop, setAllTop] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
   const [isGameStarted, setIsGameStarted] = useState(false)
-  const [gameState, setGameState] = useState("over")
+  const [gameState, setGameState] = useState("start")
   const [gameHistory, setGameHistory] = useState([])
   const [userInstance, setUserInstance] = useState(null)
   const [numHandsGS, setNumHandsGS] = useState(0)
-
-  // Wherever the game is at an ending point, we need to do setGameState("over")
-  // and we also need to run saveHistory() and either pass in our game data or just track it for each
-  // new game with state.
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -99,7 +95,6 @@ const PokerTableComponent = () => {
     return () => listen()
   }, []);
 
-  // (BRANDON BUDDY) Whenever the game comes to a close, we need to call this function to save the game history automatically
   const saveHistory = async () => {
     // This will save the game data to the users history array
     const  today = new Date()

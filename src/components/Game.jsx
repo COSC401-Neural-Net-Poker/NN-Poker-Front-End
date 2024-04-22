@@ -21,7 +21,7 @@ const Game = ({historyData = []}) => {
   
     return () => listen()
   }, []);
-
+  
   return (
     <div className='w-full h-screen pt-[70px] px-5 flex justify-center items-center'>
       <Navbar />
