@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from "react";
 import { Icon } from '@iconify/react';
+import { act } from 'react-dom/test-utils';
 
 const ListOfResults = ({history = []}) => {
   let reversedHistory = []
@@ -30,7 +31,7 @@ const ListOfResults = ({history = []}) => {
       <div className="flex w-full items-center h-full flex-col">
           {historyDisplay.map((game, ind) => {
               return(
-                <Link key={ind} className='w-full h-[7%] my-1' to={`/history/${ind}`}>
+                <Link key={ind} className='w-full h-[7%] my-1' to={`/history/${activePage * 10 + ind}`}>
                   <div className="h-full w-full cursor-pointer bg-[#cbcfcc] hover:bg-[#4B4B4B] hover:text-[#cbcfcc] duration-150 ease-in-out transition-all text-[#4B4B4B] flex justify-between items-center text-2xl md:text-3xl font-bold">
                     <h1 className="px-3">{game.date}:</h1>
                     <div className="flex items-center px-3">

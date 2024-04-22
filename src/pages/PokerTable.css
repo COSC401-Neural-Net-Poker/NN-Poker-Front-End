@@ -10,7 +10,12 @@
     background-size: cover;
     background-repeat: no-repeat;
   }
-  
+  .modal-bg {
+    background-image: url('./table1.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    outline: 3px solid white;
+  }
   .table-top {
     height: 20vh;
     width: 100%;

@@ -79,7 +79,8 @@ const PokerTableComponent = () => {
   const [gameState, setGameState] = useState("start")
   const [gameHistory, setGameHistory] = useState([])
   const [userInstance, setUserInstance] = useState(null)
-  
+  const [numHandsGS, setNumHandsGS] = useState(0)
+
   // Wherever the game is at an ending point, we need to do setGameState("over")
   // and we also need to run saveHistory() and either pass in our game data or just track it for each
   // new game with state.
@@ -113,6 +114,7 @@ const PokerTableComponent = () => {
         numOfHands: numHands,
         handHistory: handList
       }
+      setNumHandsGS(numHands)
       try {
         const userRef = doc(db, "users", userInstance?.uid)
         const docSnap = await getDoc(userRef)
@@ -2509,7 +2511,7 @@ function comBinaryConvert(){
         {/* Used as both Folding and start game button */}
         {showButtonRight && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={Fold}>{displayRightButton}</button>}
       </div>
-      {gameState === "over" ? <GameState startGame={handlePlayAgain} gameState="over" /> : <GameState startGame={handlePlayAgain} gameState="start" />}
+      {gameState === "over" ? <GameState winningHand={null} numOfHands={numHandsGS} winner={endResult} startGame={handlePlayAgain} gameState="over" /> : <GameState startGame={handlePlayAgain} gameState="start" />}
     </div>
   )
 }
