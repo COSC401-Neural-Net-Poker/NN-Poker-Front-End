@@ -66,9 +66,11 @@ const PokerTableComponent = () => {
   const [displayLeftButton, setDisplayLeftButton] = useState("Raise 15");
   const [displayMiddleButton, setDisplayMiddleButton] = useState("Call 5");
   const [displayRightButton, setDisplayRightButton] = useState("Fold");
+  const [displayButtonOver, setDisplayOverButton] = useState("Next Hand");
   const [showButtonLeft, setShowButtonLeft] = useState(false);
   const [showButtonCenter, setShowButtonCenter] = useState(false);
   const [showButtonRight, setShowButtonRight] = useState(false);
+  const [showButtonOver, setShowButtonOver] = useState(false);
   const [cssReveal, setCssReveal] = useState("")
   const [firstThreeMiddle, setFirstThreeMiddle] = useState("")
   const [fourthMiddle, setFourthMiddle] = useState("")
@@ -424,7 +426,8 @@ const PokerTableComponent = () => {
     hand.foldRound = roundNumber;
     handList.push(structuredClone(hand));
     await revealOpponent();
-    handStart();
+    //handStart();
+    setShowButtonOver(true);
   }
 
   function userWins(){
@@ -440,6 +443,7 @@ const PokerTableComponent = () => {
     userMon += blindDef[1]
     pot = 0;
     hand.winner = "computer"
+
   }
 
   function gameTie(){
@@ -578,7 +582,8 @@ async function de(){
   //}
   await delay(2450)
   //Maybe change to handStart while loop or another function while loop
-  handStart();
+  //handStart();
+  setShowButtonOver(true);
 }
 
 //Start of a turn for either bot or player
@@ -2343,6 +2348,7 @@ function comBinaryConvert(){
 
   //Used at the start of each hand
   async function handStart() {
+    setShowButtonOver(false);
     setGameState("start")
 
     //Game is over
@@ -2511,6 +2517,7 @@ function comBinaryConvert(){
 
         {/* Used as both Folding and start game button */}
         {showButtonRight && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={Fold}>{displayRightButton}</button>}
+        {showButtonOver && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={handStart}>{displayButtonOver}</button>}
       </div>
       {gameState === "over" ? <GameState winningHand={null} numOfHands={numHandsGS} winner={endResult} startGame={handlePlayAgain} gameState="over" /> : <GameState startGame={handlePlayAgain} gameState="start" />}
     </div>
