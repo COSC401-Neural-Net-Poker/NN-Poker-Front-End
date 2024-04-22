@@ -422,6 +422,7 @@ const PokerTableComponent = () => {
     hand.winCondition = "fold";
     hand.winningHand = [];
     hand.foldRound = roundNumber;
+    handList.push(structuredClone(hand));
     await revealOpponent();
     handStart();
   }
