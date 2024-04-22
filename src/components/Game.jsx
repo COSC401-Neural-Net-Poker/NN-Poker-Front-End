@@ -27,9 +27,9 @@ const Game = ({historyData = []}) => {
       <Navbar />
       <div className="flex w-full items-center h-full flex-col">
         <div className='flex md:justify-around items-center text-3xl md:flex-row flex-col'>
-            <h1 className='px-3'><span className='font-bold'>Result:</span> {historyData[id]?.result}</h1>
-            <h1 className='px-3'><span className='font-bold'>Date:</span> {historyData[id]?.date}</h1>
-            <h1 className='px-3'><span className='font-bold'># of Hands:</span> {historyData[id]?.numOfHands}</h1> 
+            <h1 className='px-3'><span className='font-bold'>Result:</span> {reversedHistory[id]?.result}</h1>
+            <h1 className='px-3'><span className='font-bold'>Date:</span> {reversedHistory[id]?.date}</h1>
+            <h1 className='px-3'><span className='font-bold'># of Hands:</span> {reversedHistory[id]?.numOfHands}</h1> 
         </div>
         <h1 className='pt-[20px] font-bold text-3xl'>Hands</h1>
         <div className='mt-[20px] w-1/2 h-auto'>
