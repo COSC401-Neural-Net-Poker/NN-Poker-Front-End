@@ -105,6 +105,7 @@ const PokerTableComponent = () => {
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
     console.log(hand.cards)
+    setNumHandsGS(numHands)
     if (loggedIn) {
       // this currentGame variable will be populated from state during our game
       // hard-coded for the time-being
@@ -114,7 +115,6 @@ const PokerTableComponent = () => {
         numOfHands: numHands,
         handHistory: handList
       }
-      setNumHandsGS(numHands)
       try {
         const userRef = doc(db, "users", userInstance?.uid)
         const docSnap = await getDoc(userRef)
