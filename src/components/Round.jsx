@@ -179,7 +179,7 @@ const Round = ({roundData = {}, roundNum = 1}) => {
       {modalOpen ? 
       <>
         <div onClick={() => setModalOpen(false)} className="z-10 w-full h-screen absolute top-0 left-0 bg-black/70"></div>
-        <div className="bg-green-800 p-4 justify-center items-center rounded-lg z-20 md:w-[600px] md:h-[700px] w-full h-[60%] flex flex-col fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="modal-bg p-4 justify-center items-center rounded-lg z-20 md:w-[600px] md:h-[700px] w-full h-[60%] flex flex-col fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="w-full h-1/3 flex justify-center items-center">
             {topCards.map((card, ind) => {
             return(<img key={ind} className="md:w-1/6 mx-1 w-1/5" src={card} />)
