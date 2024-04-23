@@ -139,8 +139,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 20;
-    oppMon = 20;
+    userMon = 200;
+    oppMon = 200;
     dealer = 1;
     numHands = 0;
     setDisplayOverButton("Next Hand");
@@ -272,7 +272,7 @@ const PokerTableComponent = () => {
     //Condense to final player variable which says whos turn it is
     if(turn == 0) {
       if(first == 1){
-        if(userMon >= 15){
+        if(userMon >= 15 && oppMon >= 15){
           oppMon -= 15;
           pot += 15;
           hand.computerBetAmount += 15;
@@ -280,6 +280,14 @@ const PokerTableComponent = () => {
           console.log("Raise of 15 by computer");
           compLastMove = "Raise of 15";
           toCall = 10;
+        }else if(userMon > oppMon && oppMon > 0){
+          console.log("Raise of " + oppMon.toString() + " by computer");
+          compLastMove = "Raise of " + oppMon.toString();
+          toCall = oppMon;
+          oppMon -= oppMon;
+          pot += oppMon;
+          hand.computerBetAmount += oppMon;
+          hand.totalPotAmount += oppMon;
         }else{
           console.log("Raise of " + userMon.toString() + " by computer");
           compLastMove = "Raise of " + userMon.toString();
@@ -328,16 +336,23 @@ const PokerTableComponent = () => {
       }
     }else{
       if(first == 1){
-        if(oppMon >= 15){
+        if(oppMon >= 15 && userMon >= 15){
           userMon -= 15;
           pot += 15;
           hand.playerBetAmount += 15;
           hand.totalPotAmount += 15;
           console.log("Raise of 15 by player");
           toCall = 10;
+        }else if(oppMon > userMon && userMon > 0){
+          toCall = userMon;
+          console.log("Raise of " + userMon.toString() + " by player");
+          userMon -= userMon;
+          pot += userMon;
+          hand.playerBetAmount += userMon;
+          hand.totalPotAmount += userMon;
         }else{
           toCall = oppMon;
-          console.log("Raise of " + oppMon.toString() + " by playeropp");
+          console.log("Raise of " + oppMon.toString() + " by player");
           userMon -= oppMon;
           pot += oppMon;
           hand.playerBetAmount += oppMon;
@@ -735,10 +750,12 @@ async function turnStart() {
     }
 
     if(first == 1){
-      if(oppMon >= 15){
+      if(oppMon >= 15 && userMon >= 15){
         setDisplayLeftButton("Raise 15");
-      }else if(oppMon > 0){
+      }else if(userMon > oppMon && oppMon > 0){
         setDisplayLeftButton("Raise " + oppMon.toString());
+      }else if(oppMon >= userMon && userMon > 0){
+        setDisplayLeftButton("Raise " + userMon.toString());
       }else{
         setShowButtonLeft(false);
       }
