@@ -439,6 +439,8 @@ const PokerTableComponent = () => {
     console.log(userMon + " " + oppMon + " " + blindDef[0]);
     pot = 0;
     hand.winner = "player"
+    var spanElement = document.querySelector('.amount.text-black span');
+    spanElement.textContent = 'Hand Over:\u00A0';
   }
 
   function computerWins(){
@@ -446,7 +448,8 @@ const PokerTableComponent = () => {
     userMon += blindDef[1]
     pot = 0;
     hand.winner = "computer"
-
+    var spanElement = document.querySelector('.amount.text-black span');
+    spanElement.textContent = 'Hand Over:\u00A0';
   }
 
   function gameTie(){
@@ -461,6 +464,8 @@ const PokerTableComponent = () => {
       }
     }
     pot = 0;
+    var spanElement = document.querySelector('.amount.text-black span');
+    spanElement.textContent = 'Hand Over:\u00A0';
   }
 
   async function revealAll() {
@@ -597,7 +602,6 @@ async function de(){
   //if(numHands == 2){
     //saveHistory();
   //}
-  await delay(2450)
   //Maybe change to handStart while loop or another function while loop
   //handStart();
   revealAll();
@@ -2436,6 +2440,8 @@ function comBinaryConvert(){
       return
     }
 
+    var spanElement = document.querySelector('.amount.text-black span');
+    spanElement.textContent = 'Last Move:\u00A0';
     numHands += 1;
     hand.totalPotAmount = 0;
     hand.computerBetAmount = 0;
@@ -2534,7 +2540,7 @@ function comBinaryConvert(){
           <Icon className='drop-shadow-[0_0_0.08rem_black]' icon="fluent-emoji:robot" />
           &nbsp;<span className=''>AI</span>: {displayOpp}<Icon className='text-[24px] text-[#961733]' icon="mdi:poker-chip" />
         </div>
-        <div className="amount text-black"><span className=''>Last Move</span>: {compLastMove}</div>
+        <div className="amount text-black"><span className=''>Last Move:&nbsp;</span> {compLastMove}</div>
       </div>
       <div className="table-middle">
         <div className="community-cards1">
