@@ -144,8 +144,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 200;
-    oppMon = 200;
+    userMon = 20;
+    oppMon = 20;
     dealer = 1;
     numHands = 0;
     handStart()
@@ -294,7 +294,7 @@ const PokerTableComponent = () => {
           hand.totalPotAmount += userMon;
         }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
-        if(userMon >= 10){
+        if(userMon >= 10 && oppMon >= 10){
           oppMon -= 10;
           pot += 10;
           hand.computerBetAmount += 10;
@@ -348,7 +348,7 @@ const PokerTableComponent = () => {
           hand.totalPotAmount += oppMon;
         }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
-        if(oppMon >= 10){
+        if(oppMon >= 10 && userMon >= 10){
           userMon -= 10;
           pot += 10;
           hand.playerBetAmount += 10;
@@ -687,8 +687,9 @@ async function turnStart() {
       //ava[3] = null
       ava.push([3, null]);
       rawAva.push('check');
+      console.log("First call if");
     }else if(round[roundNumber] >= 4 || (oppMon < 20 && turn == 0)){
-      console.log("Three raise rule")
+      console.log("Three raise rule In Model call")
       ava.push([0, null]);
       rawAva.push('call');
       ava.push([2, null]);
@@ -709,7 +710,7 @@ async function turnStart() {
       ava.push([2, null]);
       rawAva.push('fold');
     }
-    console.log("Calling model");
+    console.log("Calling model " + rawAva);
     let modelOutput = {}
     modelOutput = await callModel(bin, ava, rawAva);
     modelOutput = Number(modelOutput.output);
@@ -2426,21 +2427,25 @@ function comBinaryConvert(){
   async function handStart() {
     setShowButtonOver(false);
     setGameState("start")
+    var spanElement = document.querySelector('.amount.text-black span');
 
     //Game is over
     if(userMon <= 0){
       setGameState("over")
       endResult = "loss"
       saveHistory()
+      setShowButtonOver(true);
+      spanElement.textContent = 'Game Over: Computer has won';
       return
     }else if(oppMon <= 0){
       setGameState("over")
       endResult = "win"
       saveHistory()
+      setShowButtonOver(true);
+      spanElement.textContent = 'Game Over: Player has won';
       return
     }
 
-    var spanElement = document.querySelector('.amount.text-black span');
     spanElement.textContent = 'Last Move:\u00A0';
     numHands += 1;
     hand.totalPotAmount = 0;
