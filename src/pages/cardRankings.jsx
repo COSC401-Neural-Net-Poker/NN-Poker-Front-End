@@ -620,3 +620,23 @@ const cardRankings = [
   //cardImageImport[7] = cardImageImport[7];
   //cardImageImport[8] = cardImageImport[34];
   //cardImageImport[9] = cardImageImport[24];
+
+  //cardRankings[1] = cardRankings[28];
+  //cardRankings[2] = cardRankings[27];
+  //cardRankings[3] = cardRankings[34];
+  //cardRankings[4] = cardRankings[7];
+  //cardRankings[5] = cardRankings[31];
+  //cardRankings[6] = cardRankings[30];
+  //cardRankings[7] = cardRankings[29];
+  //cardRankings[8] = cardRankings[12];
+  //cardRankings[9] = cardRankings[48];
+//Full House Bug test
+  //cardImageImport[1] = cardImageImport[28];
+  //cardImageImport[2] = cardImageImport[27];
+  //cardImageImport[3] = cardImageImport[34];
+  //cardImageImport[4] = cardImageImport[7];
+  //cardImageImport[5] = cardImageImport[31];
+  //cardImageImport[6] = cardImageImport[30];
+  //cardImageImport[7] = cardImageImport[29];
+  //cardImageImport[8] = cardImageImport[12];
+  //cardImageImport[9] = cardImageImport[48];
