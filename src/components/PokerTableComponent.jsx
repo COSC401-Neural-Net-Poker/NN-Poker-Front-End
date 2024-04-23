@@ -78,7 +78,7 @@ const PokerTableComponent = () => {
   const [allTop, setAllTop] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
   const [isGameStarted, setIsGameStarted] = useState(false)
-  const [gameState, setGameState] = useState("over")
+  const [gameState, setGameState] = useState("start")
   const [gameHistory, setGameHistory] = useState([])
   const [userInstance, setUserInstance] = useState(null)
   const [numHandsGS, setNumHandsGS] = useState(0)
@@ -427,6 +427,7 @@ const PokerTableComponent = () => {
     handList.push(structuredClone(hand));
     await revealOpponent();
     //handStart();
+    revealAll();
     setShowButtonOver(true);
   }
 
@@ -460,6 +461,20 @@ const PokerTableComponent = () => {
     pot = 0;
   }
 
+  async function revealAll() {
+    setImageMid1(cardImageImport[5]);
+    setImageMid2(cardImageImport[6]);
+    setImageMid3(cardImageImport[7]);
+    setImageMid4(cardImageImport[8]);
+    setImageMid5(cardImageImport[9]);
+    if(dealer){
+      setImageOpp1(cardImageImport[2]);
+      setImageOpp2(cardImageImport[4]);
+    }else{
+      setImageOpp1(cardImageImport[1]);
+      setImageOpp2(cardImageImport[3]);
+    }
+  }
   //Shows the user's hand
   //The order the cards are dealt is based on who is the dealer
   async function revealHand() {
@@ -583,6 +598,7 @@ async function de(){
   await delay(2450)
   //Maybe change to handStart while loop or another function while loop
   //handStart();
+  revealAll();
   setShowButtonOver(true);
 }
 
@@ -1094,7 +1110,7 @@ function comBinaryConvert(){
       hand.winningHand[2] = uType + userStraightFlush[userStraightFlush.length - 3].toString();
       hand.winningHand[3] = uType + userStraightFlush[userStraightFlush.length - 4].toString();
       hand.winningHand[4] = uType + userStraightFlush[userStraightFlush.length - 5].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "Straight Flush";
       hand.foldRound = null;
       return;
     }
@@ -1106,7 +1122,7 @@ function comBinaryConvert(){
       hand.winningHand[2] = cType + compStraightFlush[compStraightFlush.length - 3].toString();
       hand.winningHand[3] = cType + compStraightFlush[compStraightFlush.length - 4].toString();
       hand.winningHand[4] = cType + compStraightFlush[compStraightFlush.length - 5].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "Straight Flush";
       hand.foldRound = null;
       return;
     }
@@ -1121,7 +1137,7 @@ function comBinaryConvert(){
           hand.winningHand[2] = uType + userStraightFlush[userStraightFlush.length - 3].toString();
           hand.winningHand[3] = uType + userStraightFlush[userStraightFlush.length - 4].toString();
           hand.winningHand[4] = uType + userStraightFlush[userStraightFlush.length - 5].toString();
-          hand.winCondition = "completed";
+          hand.winCondition = "Straight Flush";
           hand.foldRound = null;
           return;
         }else if(userStraightFlush[i] < compStraightFlush[i]){
@@ -1132,13 +1148,13 @@ function comBinaryConvert(){
           hand.winningHand[2] = cType + compStraightFlush[compStraightFlush.length - 3].toString();
           hand.winningHand[3] = cType + compStraightFlush[compStraightFlush.length - 4].toString();
           hand.winningHand[4] = cType + compStraightFlush[compStraightFlush.length - 5].toString();
-          hand.winCondition = "completed";
+          hand.winCondition = "Straight Flush";
           hand.foldRound = null;
           return;
         }
       }
       console.log("Tie by straight flush");
-      hand.winCondition = null;
+      hand.winCondition = "Tie";
       hand.foldRound = null;
       hand.winningHand = [];
       gameTie();
@@ -1179,7 +1195,7 @@ function comBinaryConvert(){
       Comp.sort((a, b) => a[1] - b[1]);
       final = final.filter(item => item[1] !== user4);
       hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "4 of a Kind";
       hand.foldRound = null;
       return;
     }
@@ -1194,7 +1210,7 @@ function comBinaryConvert(){
       Comp.sort((a, b) => a[1] - b[1]);
       final = final.filter(item => item[1] !== comp4);
       hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "4 of a Kind";
       hand.foldRound = null;
       return;
     }
@@ -1211,7 +1227,7 @@ function comBinaryConvert(){
         Comp.sort((a, b) => a[1] - b[1]);
         final = final.filter(item => item[1] !== user4);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "4 of a Kind";
         hand.foldRound = null;
         return;
       }else if(user4 < comp4){
@@ -1225,7 +1241,7 @@ function comBinaryConvert(){
         Comp.sort((a, b) => a[1] - b[1]);
         final = final.filter(item => item[1] !== comp4);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "4 of a Kind";
         hand.foldRound = null;
         return;
       }
@@ -1244,7 +1260,7 @@ function comBinaryConvert(){
         Comp.sort((a, b) => a[1] - b[1]);
         final = final.filter(item => item[1] !== user4);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "4 of a Kind";
         hand.foldRound = null;
         return;
       }else if(userList[userList.length-1] < compList[compList.length-1]){
@@ -1258,11 +1274,11 @@ function comBinaryConvert(){
         Comp.sort((a, b) => a[1] - b[1]);
         final = final.filter(item => item[1] !== comp4);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "4 of a Kind";
         hand.foldRound = null;
         return;
       }
-      hand.winCondition = null;
+      hand.winCondition = "Tie";
       hand.foldRound = null;
       hand.winningHand = [];
       console.log("Four of a kind Tie")
@@ -1340,7 +1356,7 @@ function comBinaryConvert(){
       }
       hand.winningHand[3] = final[i][0] + final[i][1].toString();
       hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "Full House";
       hand.foldRound = null;
       return;
     }
@@ -1370,7 +1386,7 @@ function comBinaryConvert(){
       hand.winningHand[3] = final[i][0] + final[i][1].toString();
       hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
       console.log(final);
-      hand.winCondition = "completed";
+      hand.winCondition = "Full House";
       hand.foldRound = null;
       return;
     }
@@ -1400,7 +1416,7 @@ function comBinaryConvert(){
         }
         hand.winningHand[3] = final[i][0] + final[i][1].toString();
         hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "Full House";
         hand.foldRound = null;
         return;
       }else if(user3[user3.length-1] < comp3[comp3.length-1]){
@@ -1427,7 +1443,7 @@ function comBinaryConvert(){
         }
         hand.winningHand[3] = final[i][0] + final[i][1].toString();
         hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "Full House";
         hand.foldRound = null;
         return;
       }
@@ -1458,7 +1474,7 @@ function comBinaryConvert(){
         }
         hand.winningHand[3] = final[i][0] + final[i][1].toString();
         hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "Full House";
         hand.foldRound = null;
         return;
       }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
@@ -1485,7 +1501,7 @@ function comBinaryConvert(){
         }
         hand.winningHand[3] = final[i][0] + final[i][1].toString();
         hand.winningHand[4] = final[i+1][0] + final[i+1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "Full House";
         hand.foldRound = null;
         return;
       }
@@ -1493,7 +1509,7 @@ function comBinaryConvert(){
       //Tie game
       gameTie();
       console.log("Tie game in Full house");
-      hand.winCondition = null;
+      hand.winCondition = "Tie";
       hand.foldRound = null;
       hand.winningHand = [];
       return;
@@ -1508,7 +1524,7 @@ function comBinaryConvert(){
        hand.winningHand[2] = uType + userFlush[userFlush.length-3].toString();
        hand.winningHand[3] = uType + userFlush[userFlush.length-4].toString();
        hand.winningHand[4] = uType + userFlush[userFlush.length-5].toString();
-       hand.winCondition = "completed";
+       hand.winCondition = "Flush";
        hand.foldRound = null;
        return;
      }
@@ -1520,7 +1536,7 @@ function comBinaryConvert(){
        hand.winningHand[2] = cType + compFlush[compFlush.length-3].toString();
        hand.winningHand[3] = cType + compFlush[compFlush.length-4].toString();
        hand.winningHand[4] = cType + compFlush[compFlush.length-5].toString();
-       hand.winCondition = "completed";
+       hand.winCondition = "Flush";
        hand.foldRound = null;
        return;
      }
@@ -1536,7 +1552,7 @@ function comBinaryConvert(){
            hand.winningHand[2] = uType + userFlush[userFlush.length-3].toString();
            hand.winningHand[3] = uType + userFlush[userFlush.length-4].toString();
            hand.winningHand[4] = uType + userFlush[userFlush.length-5].toString();
-           hand.winCondition = "completed";
+           hand.winCondition = "Flush";
            hand.foldRound = null;
            return;
          }else if(compFlush[compFlush.length - 1 - i] > userFlush[userFlush.length - 1 - i]){
@@ -1547,13 +1563,13 @@ function comBinaryConvert(){
            hand.winningHand[2] = cType + compFlush[compFlush.length-3].toString();
            hand.winningHand[3] = cType + compFlush[compFlush.length-4].toString();
            hand.winningHand[4] = cType + compFlush[compFlush.length-5].toString();
-           hand.winCondition = "completed";
+           hand.winCondition = "Flush";
            hand.foldRound = null;
            return;
          }
        }
        gameTie();
-       hand.winCondition = null;
+       hand.winCondition = "Tie";
        hand.foldRound = null;
        hand.winningHand = [];
        console.log("Tie game in Flush")
@@ -1602,7 +1618,7 @@ function comBinaryConvert(){
         i--;
       }
       hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "Straight";
       hand.foldRound = null;
       return;
     }
@@ -1647,7 +1663,7 @@ function comBinaryConvert(){
         i--;
       }
       hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "Straight";
       hand.foldRound = null;
       return;
     }
@@ -1695,7 +1711,7 @@ function comBinaryConvert(){
             i--;
           }
           hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
-          hand.winCondition = "completed";
+          hand.winCondition = "Straight";
           hand.foldRound = null;
           return;
         }
@@ -1740,7 +1756,7 @@ function comBinaryConvert(){
             i--;
           }
           hand.winningHand[4] = final[i-4][0] + final[i-4][1].toString();
-          hand.winCondition = "completed";
+          hand.winCondition = "Straight";
           hand.foldRound = null;
           return;
         }
@@ -1748,7 +1764,7 @@ function comBinaryConvert(){
       //Tie split pot
       gameTie()
       console.log("Tie game in double straight ");
-      hand.winCondition = null;
+      hand.winCondition = "Tie";
       hand.foldRound = null;
       hand.winningHand = [];
       return;
@@ -1772,7 +1788,7 @@ function comBinaryConvert(){
       final = final.filter(item => item[1] !== user3[user3.length-1]);
       hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
       hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "3 of a Kind";
       hand.foldRound = null;
       return;
     }
@@ -1794,7 +1810,7 @@ function comBinaryConvert(){
       final = final.filter(item => item[1] !== comp3[comp3.length-1]);
       hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
       hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "3 of a Kind";
       hand.foldRound = null;
       return;
     }
@@ -1818,7 +1834,7 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== user3[user3.length-1]);
         hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
         hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "3 of a Kind";
         hand.foldRound = null;
         return;
       }else if(user3[user3.length-1] < comp3[comp3.length-1]){
@@ -1839,7 +1855,7 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== comp3[comp3.length-1]);
         hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
         hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "3 of a Kind";
         hand.foldRound = null;
         return;
       }
@@ -1866,7 +1882,7 @@ function comBinaryConvert(){
           final = final.filter(item => item[1] !== user3[user3.length-1]);
           hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
           hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
-          hand.winCondition = "completed";
+          hand.winCondition = "3 of a Kind";
           hand.foldRound = null;
           return;
         }else if(userList[i] < compList[i]){
@@ -1887,7 +1903,7 @@ function comBinaryConvert(){
           final = final.filter(item => item[1] !== comp3[comp3.length-1]);
           hand.winningHand[3] = final[final.length-1][0] + final[final.length-1][1].toString();
           hand.winningHand[4] = final[final.length-2][0] + final[final.length-2][1].toString();
-          hand.winCondition = "completed";
+          hand.winCondition = "3 of a Kind";
           hand.foldRound = null;
           return;
         }
@@ -1895,7 +1911,7 @@ function comBinaryConvert(){
       //Tie spilt pot
       console.log("Tie in three of the kind");
       gameTie();
-      hand.winCondition = null;
+      hand.winCondition = "Tie";
       hand.foldRound = null;
       hand.winningHand = [];
       return;
@@ -1927,7 +1943,7 @@ function comBinaryConvert(){
       final = final.filter(item => item[1] !== userPair[userPair.length-1]);
       final = final.filter(item => item[1] !== userPair[userPair.length-2]);
       hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "2 Pair";
       hand.foldRound = null;
       return;
     }
@@ -1957,7 +1973,7 @@ function comBinaryConvert(){
       final = final.filter(item => item[1] !== compPair[compPair.length-1]);
       final = final.filter(item => item[1] !== compPair[compPair.length-2]);
       hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "2 Pair";
       hand.foldRound = null;
       return;
     }
@@ -1991,7 +2007,7 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== userPair[userPair.length-1]);
         final = final.filter(item => item[1] !== userPair[userPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "2 Pair";
         hand.foldRound = null;
         return;
       }else if(userPair[userPair.length-1] < compPair[compPair.length-1]){
@@ -2020,7 +2036,7 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== compPair[compPair.length-1]);
         final = final.filter(item => item[1] !== compPair[compPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "2 Pair";
         hand.foldRound = null;
         return;
       }
@@ -2050,7 +2066,7 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== userPair[userPair.length-1]);
         final = final.filter(item => item[1] !== userPair[userPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "2 Pair";
         hand.foldRound = null;
         return;
       }else if(userPair[userPair.length-2] < compPair[compPair.length-2]){
@@ -2079,7 +2095,7 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== compPair[compPair.length-1]);
         final = final.filter(item => item[1] !== compPair[compPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "2 Pair";
         hand.foldRound = null;
         return;
       }
@@ -2118,7 +2134,7 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== userPair[userPair.length-1]);
         final = final.filter(item => item[1] !== userPair[userPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "2 Pair";
         hand.foldRound = null;
         return;
       }else if(userList[userList.length-1] < compList[compList.length-1]){
@@ -2147,14 +2163,14 @@ function comBinaryConvert(){
         final = final.filter(item => item[1] !== compPair[compPair.length-1]);
         final = final.filter(item => item[1] !== compPair[compPair.length-2]);
         hand.winningHand[4] = final[final.length-1][0] + final[final.length-1][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "2 Pair";
         hand.foldRound = null;
         return;
       }else{
         //Tie spilt pot
         gameTie();
         console.log("Tie in 2 pairs");
-        hand.winCondition = null;
+        hand.winCondition = "Tie";
         hand.foldRound = null;
         hand.winningHand = [];
         return;
@@ -2179,7 +2195,7 @@ function comBinaryConvert(){
       hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
       hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
       hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "Pair";
       hand.foldRound = null;
       return;
     }
@@ -2201,7 +2217,7 @@ function comBinaryConvert(){
       hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
       hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
       hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
-      hand.winCondition = "completed";
+      hand.winCondition = "Pair";
       hand.foldRound = null;
       return;
     }
@@ -2225,7 +2241,7 @@ function comBinaryConvert(){
         hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
         hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
         hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "Pair";
         hand.foldRound = null;
         return;
       }else if(userPair[0] < compPair[0]){
@@ -2246,7 +2262,7 @@ function comBinaryConvert(){
         hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
         hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
         hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "Pair";
         hand.foldRound = null;
         return;
       }
@@ -2274,7 +2290,7 @@ function comBinaryConvert(){
           hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
           hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
           hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
-          hand.winCondition = "completed";
+          hand.winCondition = "Pair";
           hand.foldRound = null;
           return;
         }else if(userList[i] < compList[i]){
@@ -2295,7 +2311,7 @@ function comBinaryConvert(){
           hand.winningHand[2] = final[final.length-1][0] + final[final.length-1][1].toString();
           hand.winningHand[3] = final[final.length-2][0] + final[final.length-2][1].toString();
           hand.winningHand[4] = final[final.length-3][0] + final[final.length-3][1].toString();
-          hand.winCondition = "completed";
+          hand.winCondition = "Pair";
           hand.foldRound = null;
           return;
         }
@@ -2303,7 +2319,7 @@ function comBinaryConvert(){
       //Tie Spilt tie
       gameTie();
       console.log("Tie in pair");
-      hand.winCondition = null;
+      hand.winCondition = "Tie";
       hand.foldRound = null;
       hand.winningHand = [];
       return;
@@ -2320,7 +2336,7 @@ function comBinaryConvert(){
         hand.winningHand[2] = final[final.length-3][0] + final[final.length-3][1].toString();
         hand.winningHand[3] = final[final.length-4][0] + final[final.length-4][1].toString();
         hand.winningHand[4] = final[final.length-5][0] + final[final.length-5][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "Card High";
         hand.foldRound = null;
         return;
       }else if(compList[i] > userList[i]){
@@ -2333,16 +2349,15 @@ function comBinaryConvert(){
         hand.winningHand[2] = final[final.length-3][0] + final[final.length-3][1].toString();
         hand.winningHand[3] = final[final.length-4][0] + final[final.length-4][1].toString();
         hand.winningHand[4] = final[final.length-5][0] + final[final.length-5][1].toString();
-        hand.winCondition = "completed";
+        hand.winCondition = "Card High";
         hand.foldRound = null;
         return;
       }
     }
     gameTie();
     console.log("Tie in card high");
-    hand.winCondition = null;
+    hand.winCondition = "Tie";
     hand.foldRound = null;
-    hand.winCondition = null;
     return;
   }
 
