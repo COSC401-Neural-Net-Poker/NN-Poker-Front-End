@@ -144,8 +144,8 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 20;
-    oppMon = 20;
+    userMon = 200;
+    oppMon = 200;
     dealer = 1;
     numHands = 0;
     handStart()
