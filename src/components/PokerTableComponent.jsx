@@ -414,11 +414,11 @@ const PokerTableComponent = () => {
     if(turn == 0){
       userWins();
       console.log("Fold by computer");
-      compLastMove = "Player folded. Computer Wins"
+      compLastMove = "Computer folded. Player Wins";
     }else{
       computerWins();
       console.log("Fold by player");
-      compLastMove = "Computer folded. Player Wins"
+      compLastMove = "Player folded. Computer Wins";
     }
     setShowButtonLeft(false);
     setShowButtonCenter(false);
@@ -2595,7 +2595,7 @@ function comBinaryConvert(){
 
         {/* Used as both Folding and start game button */}
         {showButtonRight && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={Fold}>{displayRightButton}</button>}
-        {showButtonOver && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={handStart}>{displayButtonOver}</button>}
+        {showButtonOver && <button className='w-full bottom-buttons py-3 rounded-xl m-3 max-w-[300px] min-w-[75px] hover:scale-[105%] hover:drop-shadow-[0_0_0.55rem_#f21343] duration-300 ease-in-out transition-all text-white' onClick={gameState === "over" ? gameStart : (gameState === "start" ? handStart : null)}>{displayButtonOver}</button>}
       </div>
       {gameState === "over" ? <GameState winningHand={null} numOfHands={numHandsGS} winner={endResult} startGame={handlePlayAgain} gameState="over" /> : <GameState startGame={handlePlayAgain} gameState="start" />}
     </div>
