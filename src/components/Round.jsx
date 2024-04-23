@@ -173,7 +173,7 @@ const Round = ({roundData = {}, roundNum = 1}) => {
   for (let i = 0; i < topCards.length; ++i) topCards[i] = cardMapper[topCards[i]]
   for (let i = 0; i < middleCards.length; ++i) middleCards[i] = cardMapper[middleCards[i]]
   for (let i = 0; i < bottomCards.length; ++i) bottomCards[i] = cardMapper[bottomCards[i]]
-  console.log(roundData)
+  
   return (
     <>
       {modalOpen ? 
