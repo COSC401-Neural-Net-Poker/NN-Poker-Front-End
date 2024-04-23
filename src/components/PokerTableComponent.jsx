@@ -139,10 +139,11 @@ const PokerTableComponent = () => {
   }
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 200;
-    oppMon = 200;
+    userMon = 20;
+    oppMon = 20;
     dealer = 1;
     numHands = 0;
+    setDisplayOverButton("Next Hand");
     handStart()
   }
 
@@ -2430,6 +2431,8 @@ function comBinaryConvert(){
       endResult = "loss"
       saveHistory()
       setShowButtonOver(true);
+      setDisplayOverButton("New Game");
+      compLastMove = '';
       spanElement.textContent = 'Game Over: Computer has won';
       return
     }else if(oppMon <= 0){
@@ -2437,6 +2440,8 @@ function comBinaryConvert(){
       endResult = "win"
       saveHistory()
       setShowButtonOver(true);
+      setDisplayOverButton("New Game");
+      compLastMove = '';
       spanElement.textContent = 'Game Over: Player has won';
       return
     }
