@@ -317,7 +317,7 @@ const PokerTableComponent = () => {
           toCall = 5;
         }
       }else{
-        if(userMon >= 10){
+        if(userMon >= 10 && oppMon >= 20){
           oppMon -= 20;
           pot += 20;
           hand.computerBetAmount += 20;
@@ -325,7 +325,7 @@ const PokerTableComponent = () => {
           console.log("Raise of 20 by computer " + round[roundNumber]);
           compLastMove = "Raise of 20";
           toCall = 10;
-        }else{
+        }else if(oppMon >= 20){
           oppMon -= 15;
           pot += 15;
           hand.computerBetAmount += 15;
@@ -333,6 +333,20 @@ const PokerTableComponent = () => {
           console.log("Raise of 15 by computer " + round[roundNumber]);
           compLastMove = "Raise of 15";
           toCall = 5;
+        }else if(oppMon > userMon){
+          oppMon -= userMon;
+          pot += userMon;
+          hand.computerBetAmount += userMon;
+          hand.totalPotAmount += userMon;
+          console.log("Raise of " + userMon.toString() + " by computer " + round[roundNumber]);
+          compLastMove = "Raise of " + userMon.toString(); 
+        }else{
+          oppMon -= oppMon;
+          pot += oppMon;
+          hand.computerBetAmount += oppMon;
+          hand.totalPotAmount += oppMon;
+          console.log("Raise of " + oppMon.toString() + " by computer " + round[roundNumber]);
+          compLastMove = "Raise of " + oppMon.toString(); 
         }
       }
     }else{
@@ -376,20 +390,34 @@ const PokerTableComponent = () => {
           toCall = 5;
         }
       }else{
-        if(oppMon >= 10){
+        if(oppMon >= 10 && userMon >= 20){
           userMon -= 20;
           pot += 20;
           hand.playerBetAmount += 20;
           hand.totalPotAmount += 20;
           console.log("Raise of 20 by player + " + round[roundNumber]);
           toCall = 10;
-        }else{
+        }else if(userMon >= 20){
           userMon -= 15;
           pot += 15;
           hand.playerBetAmount += 15;
           hand.totalPotAmount += 15;
           console.log("Raise of 15 by player + " + round[roundNumber]);
           toCall = 5;
+        }else if(userMon > oppMon){
+          userMon -= oppMon;
+          pot += oppMon;
+          hand.playerBetAmount += oppMon;
+          hand.totalPotAmount += oppMon;
+          console.log("Raise of " + oppMon.toString() + " by player " + round[roundNumber]);
+          compLastMove = "Raise of " + oppMon.toString();
+        }else{
+          userMon -= userMon;
+          pot += userMon;
+          hand.playerBetAmount += userMon;
+          hand.totalPotAmount += userMon;
+          console.log("Raise of " + userMon.toString() + " by player " + round[roundNumber]);
+          compLastMove = "Raise of " + userMon.toString(); 
         }
       }
     }
