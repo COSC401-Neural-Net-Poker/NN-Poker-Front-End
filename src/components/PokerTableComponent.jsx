@@ -1950,7 +1950,7 @@ function comBinaryConvert(){
       for(let i = 3; i > 1; i--){
         if(userList[i] > compList[i]){
           userWins();
-          console.log("User wins by 3 kind 3 " + userList[i]);
+          console.log("User wins by 3 kind 3");
           let final = Comp.slice(-7);
           final.sort((a, b) => a[1] - b[1]);
           let i = 0;
@@ -2475,6 +2475,7 @@ function comBinaryConvert(){
 
     //Game is over
     if(userMon <= 0){
+      updatePot();
       setGameState("over")
       endResult = "loss"
       saveHistory()
@@ -2484,6 +2485,7 @@ function comBinaryConvert(){
       spanElement.textContent = 'Game Over: Computer has won';
       return
     }else if(oppMon <= 0){
+      updatePot();
       setGameState("over")
       endResult = "win"
       saveHistory()
