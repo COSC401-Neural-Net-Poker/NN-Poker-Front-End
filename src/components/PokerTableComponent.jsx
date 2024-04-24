@@ -341,12 +341,12 @@ const PokerTableComponent = () => {
           console.log("Raise of " + userMon.toString() + " by computer " + round[roundNumber]);
           compLastMove = "Raise of " + userMon.toString(); 
         }else{
+          console.log("Raise of " + oppMon.toString() + " by computer " + round[roundNumber]);
+          compLastMove = "Raise of " + oppMon.toString(); 
           oppMon -= oppMon;
           pot += oppMon;
           hand.computerBetAmount += oppMon;
           hand.totalPotAmount += oppMon;
-          console.log("Raise of " + oppMon.toString() + " by computer " + round[roundNumber]);
-          compLastMove = "Raise of " + oppMon.toString(); 
         }
       }
     }else{
