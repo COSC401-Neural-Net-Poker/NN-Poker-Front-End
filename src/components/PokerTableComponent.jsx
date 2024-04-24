@@ -38,7 +38,8 @@ const hand = {
   winCondition: "",
   foldRound: null,
   winner: "",
-  winningHand: ["", "", "", "", ""]
+  winningHand: ["", "", "", "", ""],
+  raiseAmounts: [0, 0, 0, 0]
 }
 let handList = [];
 let advance; //Used if a player has 0 chips. Flag to auto advance the rest of the hand.
@@ -437,6 +438,7 @@ const PokerTableComponent = () => {
     hand.winCondition = "fold";
     hand.winningHand = [];
     hand.foldRound = roundNumber;
+    hand.raiseAmounts = round;
     handList.push(structuredClone(hand));
     await revealOpponent();
     //handStart();
@@ -607,6 +609,7 @@ async function de(){
   winCheck();
   console.log(hand.cards);
   console.log(hand.winningHand);
+  hand.raiseAmounts = round;
   handList.push(structuredClone(hand));
   console.log(handList);
   //Testing
