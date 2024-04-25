@@ -818,7 +818,15 @@ async function turnStart() {
       }else{
         setDisplayMiddleButton("Call " + (toCall));
       }
-      setDisplayLeftButton("Raise 20");
+      if(userMon >= 20 && oppMon >= 10){
+        setDisplayLeftButton("Raise 20");
+      }else if(userMon >= 20){
+        setDisplayLeftButton("Raise 15");
+      }else if(oppMon < userMon){
+        setDisplayLeftButton("Raise " + (oppMon));
+      }else{
+        setDisplayLeftButton("Raise " + (userMon));
+      }
       setDisplayRightButton("Fold");
       button1 = false;
     }
