@@ -142,8 +142,8 @@ const PokerTableComponent = () => {
   //Sets the starting chip amounts, other starting conditions then starts a new hand
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 200;
-    oppMon = 200;
+    userMon = 100;
+    oppMon = 10;
     dealer = 1;
     numHands = 0;
     setDisplayOverButton("Next Hand");
@@ -302,13 +302,13 @@ const PokerTableComponent = () => {
         }
         //Bot does not have enough chips to raise 15
         else if(userMon > oppMon && oppMon > 0){
-          console.log("Raise of " + oppMon.toString() + " by computer");
-          compLastMove = "Raise of " + oppMon.toString();
+          console.log("Raise of " + (oppMon + 5).toString() + " by computer");
+          compLastMove = "Raise of " + (oppMon + 5).toString();
           toCall = oppMon;
-          oppMon -= oppMon;
-          pot += oppMon;
-          hand.computerBetAmount += oppMon;
-          hand.totalPotAmount += oppMon;
+          oppMon -= oppMon + 5;
+          pot += oppMon + 5;
+          hand.computerBetAmount += oppMon + 5;
+          hand.totalPotAmount += oppMon + 5;
         }else{
           console.log("Raise of " + userMon.toString() + " by computer");
           compLastMove = "Raise of " + userMon.toString();
@@ -380,18 +380,18 @@ const PokerTableComponent = () => {
           toCall = 10;
         }else if(oppMon > userMon && userMon > 0){
           toCall = userMon;
-          console.log("Raise of " + userMon.toString() + " by player");
-          userMon -= userMon;
-          pot += userMon;
-          hand.playerBetAmount += userMon;
-          hand.totalPotAmount += userMon;
+          console.log("Raise of " + (userMon + 5).toString() + " by player");
+          userMon -= (userMon + 5);
+          pot += (userMon + 5);
+          hand.playerBetAmount += userMon + 5;
+          hand.totalPotAmount += userMon + 5;
         }else{
           toCall = oppMon;
-          console.log("Raise of " + oppMon.toString() + " by player");
-          userMon -= oppMon;
-          pot += oppMon;
-          hand.playerBetAmount += oppMon;
-          hand.totalPotAmount += oppMon;
+          console.log("Raise of " + (oppMon + 5).toString() + " by player");
+          userMon -= oppMon + 5;
+          pot += oppMon + 5;
+          hand.playerBetAmount += oppMon + 5;
+          hand.totalPotAmount += oppMon + 5;
         }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
         if(oppMon >= 10 && userMon >= 10){
@@ -804,9 +804,9 @@ async function turnStart() {
       if(oppMon >= 15 && userMon >= 15){
         setDisplayLeftButton("Raise 15");
       }else if(userMon > oppMon && oppMon > 0){
-        setDisplayLeftButton("Raise " + oppMon.toString());
+        setDisplayLeftButton("Raise " + (oppMon+5).toString());
       }else if(oppMon >= userMon && userMon > 0){
-        setDisplayLeftButton("Raise " + userMon.toString());
+        setDisplayLeftButton("Raise " + (userMon+5).toString());
       }else{
         setShowButtonLeft(false);
       }
@@ -2595,7 +2595,8 @@ function comBinaryConvert(){
     hideOpponent();
     lastMove = "";
     dealChange = false;
-    turn = (dealer > 0) ? 1 : 0;
+    //turn = (dealer > 0) ? 1 : 0;
+    turn = (dealer > 0) ? 0 : 1;
     first = 1;
     postFlop = false;
     flop = false;
