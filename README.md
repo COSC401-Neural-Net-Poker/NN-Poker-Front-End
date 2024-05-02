@@ -1,7 +1,7 @@
 # NN Poker Frontend
 
 > [!IMPORTANT]  
-> Due to our limited budget, our Google Cloud Credits will run out May 12, 2024. This will prevent connection to our AI our project will no longer function as intended.
+> Due to our limited budget, our Google Cloud Credits will run out May 12, 2024. This will prevent connection to our AI and our project will no longer function as intended.
 
 
 ### Where to play?
