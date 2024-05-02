@@ -10,44 +10,45 @@ import { auth, db } from '../firebase';
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Icon } from '@iconify/react';
 
-let pot = 0;
-let oppMon = 200;
-let userMon = 200;
-let turn;
-let dealer;
-let secondLastMove = "";
-let lastMove = "";
-let button1 = 0;
-let first = 1;
-let dealChange = false;
-let postFlop = false;
-let flop = false;
-let theTurn = false;
-let river = false;
-let round = [0, 0, 0, 0]
-let roundNumber = 0;
-let endResult;
-let numHands;
-let compLastMove = "No Move Yet";
-let toCall;
-const hand = {
+let pot = 0;                      //Chips in the pot currently
+let oppMon = 200;                 //Computer's chips
+let userMon = 200;                //User's chips
+let turn;                         //Who's turn it is 0 == computer 1 == user
+let dealer;                       //Who the dealer is. Switches per round. Dealer goes first
+let secondLastMove = "";          //Stores the second to last move
+let lastMove = "";                //Stores the last move
+let button1 = 0;                  //button1 == false will be call, and == true will make the leftmost button check
+let first = 1;                    //== 1 if no moves have been made this round
+let dealChange = false;           //True after a flop, resets last move and changes the turn.
+let postFlop = false;             //True after a flop, and changes the first betting amounts of the round
+let flop = false;                 //True if after the flop
+let theTurn = false;              //True if after the turn
+let river = false;                //True if after the river
+let round = [0, 0, 0, 0]          //Stores the amount of raises in each round. Max of 4
+let roundNumber = 0;              //What the current round number is
+let endResult;                    //Who won the overall game
+let numHands;                     //Number of hands that was in the game
+let compLastMove = "No Move Yet"; //Last move that the bot did. Will be displayed
+let toCall;                       //The amount that will be called if someone calls
+const hand = {                    //Contains information about the hand, pushed into handList
   totalPotAmount: 0,
   computerBetAmount: 0,
   playerBetAmount: 0,
   cards: ["", "", "", "", "", "", "", "", ""],
-  winCondition: "",
+  winCondition: "",               //How the game was won
   foldRound: null,
   winner: "",
   winningHand: ["", "", "", "", ""],
   raiseAmounts: [0, 0, 0, 0]
 }
-let handList = [];
-let advance; //Used if a player has 0 chips. Flag to auto advance the rest of the hand.
-let blindDef = [0, 0]; //Used in case the big blind does not have enough chips. blindDef[0] = user, blindDef[1] = comp
+let handList = [];                //List of all the hands that happened in the game
+let advance;                      //Used if a player has 0 chips. Flag to auto advance the rest of the hand.
+let blindDef = [0, 0];            //Used in case the big blind does not have enough chips. blindDef[0] = user, blindDef[1] = comp
 
 const PokerTableComponent = () => {
   let temp;
-  let temp2;
+  //let temp2;
+  //Sets the starting cards to the back img of cards
   let opp = [cardImageImport[0], cardImageImport[0]];
   let mid = [cardImageImport[0], cardImageImport[0], cardImageImport[0] ,cardImageImport[0], cardImageImport[0]];
   let user = [cardImageImport[0], cardImageImport[0]];
@@ -106,7 +107,6 @@ const PokerTableComponent = () => {
     setNumHandsGS(numHands)
     if (loggedIn) {
       // this currentGame variable will be populated from state during our game
-      // hard-coded for the time-being
       let currentGame = {
         result: endResult,
         date: mm + '-' + dd + '-' + yyyy,
@@ -138,17 +138,21 @@ const PokerTableComponent = () => {
   const handlePlayAgain = () => {
     gameStart()
   }
+
+  //Sets the starting chip amounts, other starting conditions then starts a new hand
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 200;
-    oppMon = 200;
+    userMon = 1000;
+    oppMon = 1000;
     dealer = 1;
     numHands = 0;
+    pot = 0;
+    handList = [];
     setDisplayOverButton("Next Hand");
     handStart()
   }
 
-  //Update text for opponent's pot
+  //Updates the display for the pot and players' chips
   const updatePot = () => {
     // Update the state variable with a new text
     setDisplayOpp(oppMon);
@@ -156,6 +160,7 @@ const PokerTableComponent = () => {
     setDisplayUser(userMon);
   };
 
+  // Test function not used in normal games
   const changeImage = () => {
     // Update the state with the new image source
     setImageUser1(cardImageImport[1]);
@@ -169,8 +174,9 @@ const PokerTableComponent = () => {
     setImageMid5(cardImageImport[9]);
   };
 
+  //Function shuffles the deck and gives random cards
   function shuffleDeck() {
-    // alert(Math.floor(Math.random() * (52 - 1 + 1)) + 1);
+    let temp2;
     opp[0] = cardImageImport[0];
     opp[1] = cardImageImport[0];
     mid[0] = cardImageImport[0];
@@ -181,6 +187,7 @@ const PokerTableComponent = () => {
     user[0] = cardImageImport[0];
     user[1] = cardImageImport[0];
 
+    //Swaps cards throughout the deck at random
     for (let i = cardImageImport.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (52 - 1 + 1)) + 1;
       temp = cardImageImport[i];
@@ -192,6 +199,8 @@ const PokerTableComponent = () => {
     }
   }
 
+  //Test function not used during normal play
+  //Sets exact cards for the user, opp, and middle
   function playTest() {
     opp[0] = cardImageImport[0];
     opp[1] = cardImageImport[0];
@@ -203,31 +212,32 @@ const PokerTableComponent = () => {
     user[0] = cardImageImport[0];
     user[1] = cardImageImport[0];
 
-  cardRankings[1] = cardRankings[28];
-  cardRankings[2] = cardRankings[27];
-  cardRankings[3] = cardRankings[34];
-  cardRankings[4] = cardRankings[7];
-  cardRankings[5] = cardRankings[31];
-  cardRankings[6] = cardRankings[30];
-  cardRankings[7] = cardRankings[29];
-  cardRankings[8] = cardRankings[12];
-  cardRankings[9] = cardRankings[48];
-//Full House Bug test
-  cardImageImport[1] = cardImageImport[28];
-  cardImageImport[2] = cardImageImport[27];
-  cardImageImport[3] = cardImageImport[34];
-  cardImageImport[4] = cardImageImport[7];
-  cardImageImport[5] = cardImageImport[31];
-  cardImageImport[6] = cardImageImport[30];
-  cardImageImport[7] = cardImageImport[29];
-  cardImageImport[8] = cardImageImport[12];
-  cardImageImport[9] = cardImageImport[48];
-
-}
+    cardRankings[1] = cardRankings[28];
+    cardRankings[2] = cardRankings[27];
+    cardRankings[3] = cardRankings[34];
+    cardRankings[4] = cardRankings[7];
+    cardRankings[5] = cardRankings[31];
+    cardRankings[6] = cardRankings[30];
+    cardRankings[7] = cardRankings[29];
+    cardRankings[8] = cardRankings[12];
+    cardRankings[9] = cardRankings[48];
+    //Full House Bug test
+    cardImageImport[1] = cardImageImport[28];
+    cardImageImport[2] = cardImageImport[27];
+    cardImageImport[3] = cardImageImport[34];
+    cardImageImport[4] = cardImageImport[7];
+    cardImageImport[5] = cardImageImport[31];
+    cardImageImport[6] = cardImageImport[30];
+    cardImageImport[7] = cardImageImport[29];
+    cardImageImport[8] = cardImageImport[12];
+    cardImageImport[9] = cardImageImport[48];
+  }
   
-//Used for calling
+  //Used when the user calls
   async function Bet() {
+    //Computer on turn 0
     if(turn == 0) {
+      //First move after the deal, always call 5
       if(first == 1){
         oppMon -= 5;
         pot += 5;
@@ -236,6 +246,7 @@ const PokerTableComponent = () => {
         console.log("Call of 5 by computer");
         compLastMove = "Call of 5";
       }else{
+        //toCall set in Raise()
         oppMon -= toCall;
         pot += toCall;
         hand.computerBetAmount += toCall;
@@ -243,7 +254,10 @@ const PokerTableComponent = () => {
         console.log("Call of " + (toCall) + " by computer");
         compLastMove = "Call of " + toCall;
       }
-    }else{
+    }
+    //User's turn
+    else{
+      //First move after the deal, always call 5
       if(first == 1){
         userMon -= 5;
         pot += 5;
@@ -251,16 +265,19 @@ const PokerTableComponent = () => {
         hand.totalPotAmount += 5
         console.log("Call of 5 by user");
       }else{
-        userMon -= 10;
-        pot += 10;
+        //toCall set in Raise()
+        userMon -= toCall;
+        pot += toCall;
         hand.playerBetAmount += toCall;
         hand.totalPotAmount += toCall;
         console.log("Call of " + toCall + " by user");
       }
     }
+    //Hides buttons in case it is the computer's turn
     setShowButtonLeft(false);
     setShowButtonCenter(false);
     setShowButtonRight(false);
+    //Change the turn
     turn = (turn > 0) ? 0 : 1; 
     updatePot();
     first = 0;
@@ -269,10 +286,13 @@ const PokerTableComponent = () => {
     await turnStart();
   }
 
+  //Function for raising
   async function Raise() {
-    //Condense to final player variable which says whos turn it is
+    //Computer's turn
     if(turn == 0) {
+      //If this is the first turn after the deal
       if(first == 1){
+        //Default max raise is 15
         if(userMon >= 15 && oppMon >= 15){
           oppMon -= 15;
           pot += 15;
@@ -281,22 +301,24 @@ const PokerTableComponent = () => {
           console.log("Raise of 15 by computer");
           compLastMove = "Raise of 15";
           toCall = 10;
-        }else if(userMon > oppMon && oppMon > 0){
-          console.log("Raise of " + oppMon.toString() + " by computer");
-          compLastMove = "Raise of " + oppMon.toString();
-          toCall = oppMon;
-          oppMon -= oppMon;
+        }
+        //Bot does not have enough chips to raise 15
+        else if(userMon > oppMon && oppMon > 0){
+          console.log("Raise of " + (oppMon).toString() + " by computer");
+          compLastMove = "Raise of " + (oppMon).toString();
           pot += oppMon;
+          toCall = oppMon-5;
           hand.computerBetAmount += oppMon;
           hand.totalPotAmount += oppMon;
+          oppMon -= oppMon;
         }else{
-          console.log("Raise of " + userMon.toString() + " by computer");
-          compLastMove = "Raise of " + userMon.toString();
+          console.log("Raise of " + (userMon+5).toString() + " by computer");
+          compLastMove = "Raise of " + (userMon+5).toString();
           toCall = userMon;
-          oppMon -= userMon;
-          pot += userMon;
-          hand.computerBetAmount += userMon;
-          hand.totalPotAmount += userMon;
+          oppMon -= userMon+5;
+          pot += userMon+5;
+          hand.computerBetAmount += userMon+5;
+          hand.totalPotAmount += userMon+5;
         }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
         if(userMon >= 10 && oppMon >= 10){
@@ -334,6 +356,7 @@ const PokerTableComponent = () => {
           compLastMove = "Raise of 15";
           toCall = 5;
         }else if(oppMon > userMon){
+          toCall = userMon;
           oppMon -= userMon;
           pot += userMon;
           hand.computerBetAmount += userMon;
@@ -343,10 +366,11 @@ const PokerTableComponent = () => {
         }else{
           console.log("Raise of " + oppMon.toString() + " by computer " + round[roundNumber]);
           compLastMove = "Raise of " + oppMon.toString(); 
-          oppMon -= oppMon;
           pot += oppMon;
           hand.computerBetAmount += oppMon;
           hand.totalPotAmount += oppMon;
+          toCall = oppMon;
+          oppMon -= oppMon;
         }
       }
     }else{
@@ -359,19 +383,19 @@ const PokerTableComponent = () => {
           console.log("Raise of 15 by player");
           toCall = 10;
         }else if(oppMon > userMon && userMon > 0){
-          toCall = userMon;
-          console.log("Raise of " + userMon.toString() + " by player");
-          userMon -= userMon;
-          pot += userMon;
+          toCall = userMon-5;
+          console.log("Raise of " + (userMon).toString() + " by player");
+          pot += (userMon);
           hand.playerBetAmount += userMon;
           hand.totalPotAmount += userMon;
+          userMon -= (userMon);
         }else{
           toCall = oppMon;
-          console.log("Raise of " + oppMon.toString() + " by player");
-          userMon -= oppMon;
-          pot += oppMon;
-          hand.playerBetAmount += oppMon;
-          hand.totalPotAmount += oppMon;
+          console.log("Raise of " + (oppMon+5).toString() + " by player");
+          userMon -= oppMon+5;
+          pot += oppMon+5;
+          hand.playerBetAmount += oppMon+5;
+          hand.totalPotAmount += oppMon+5;
         }
       }else if((lastMove == "CA" && secondLastMove == "" && !postFlop) || (postFlop && lastMove == "")){
         if(oppMon >= 10 && userMon >= 10){
@@ -407,17 +431,17 @@ const PokerTableComponent = () => {
         }else if(userMon > oppMon){
           userMon -= oppMon;
           pot += oppMon;
+          toCall = oppMon-10;
           hand.playerBetAmount += oppMon;
           hand.totalPotAmount += oppMon;
           console.log("Raise of " + oppMon.toString() + " by player " + round[roundNumber]);
-          compLastMove = "Raise of " + oppMon.toString();
         }else{
-          userMon -= userMon;
-          pot += userMon;
+          toCall = userMon-10;
+          pot += userMon
           hand.playerBetAmount += userMon;
           hand.totalPotAmount += userMon;
           console.log("Raise of " + userMon.toString() + " by player " + round[roundNumber]);
-          compLastMove = "Raise of " + userMon.toString(); 
+          userMon -= userMon;
         }
       }
     }
@@ -494,8 +518,8 @@ const PokerTableComponent = () => {
   }
 
   function gameTie(){
-    userMon += (pot/2);
-    oppMon += (pot/2);
+    userMon += Math.floor(pot/2);
+    oppMon += Math.floor(pot/2);
     if((pot % 2) == 1){
       //Don't know what is right
       if(dealer){
@@ -714,7 +738,20 @@ async function turnStart() {
     let rawAva = [];
     let bin = comBinaryConvert();
     //Set actions avaiable
-    if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
+    if(first == 1 && oppMon > 5){
+        //rai = 1;
+      //ava[1] = null
+      ava.push([1, null]);
+      rawAva.push('raise');
+      //fo = 1;
+      ava.push([2, null]);
+      //ava[2] = null;
+      rawAva.push('fold');
+      //che = 1;
+      //ava[3] = null
+      ava.push([3, null]);
+      rawAva.push('check');
+    }else if((postFlop && lastMove == "") || (lastMove == "CH") || (lastMove == "CA" && secondLastMove == "" && !postFlop)){
       if(!((userMon == 0 && turn == 0) || (oppMon == 0 && turn == 1))){
           //rai = 1;
         //ava[1] = null
@@ -784,9 +821,9 @@ async function turnStart() {
       if(oppMon >= 15 && userMon >= 15){
         setDisplayLeftButton("Raise 15");
       }else if(userMon > oppMon && oppMon > 0){
-        setDisplayLeftButton("Raise " + oppMon.toString());
+        setDisplayLeftButton("Raise " + (oppMon+5).toString());
       }else if(oppMon >= userMon && userMon > 0){
-        setDisplayLeftButton("Raise " + userMon.toString());
+        setDisplayLeftButton("Raise " + (userMon).toString());
       }else{
         setShowButtonLeft(false);
       }
@@ -803,7 +840,7 @@ async function turnStart() {
       setDisplayMiddleButton("Check");
       setDisplayRightButton("Fold");
       button1 = true;
-    }else if(round[roundNumber] >= 4 || (userMon < 20 && turn == 1) || (oppMon <= 10 && turn == 0 && lastMove == "R")){
+    }else if(round[roundNumber] >= 4 || (userMon < 15 && turn == 1) || (oppMon <= 10 && turn == 0 && lastMove == "R")){
       //May need to be 3?
       console.log("Three raise rule")
       setShowButtonLeft(false);
@@ -2575,7 +2612,9 @@ function comBinaryConvert(){
     hideOpponent();
     lastMove = "";
     dealChange = false;
+    //REal
     turn = (dealer > 0) ? 1 : 0;
+    //turn = (dealer > 0) ? 0 : 1;
     first = 1;
     postFlop = false;
     flop = false;
