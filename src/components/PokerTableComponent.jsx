@@ -518,8 +518,8 @@ const PokerTableComponent = () => {
   }
 
   function gameTie(){
-    userMon += (pot/2);
-    oppMon += (pot/2);
+    userMon += Math.floor(pot/2);
+    oppMon += Math.floor(pot/2);
     if((pot % 2) == 1){
       //Don't know what is right
       if(dealer){
