@@ -32,7 +32,7 @@ const Game = ({historyData = []}) => {
             <h1 className='px-3'><span className='font-bold'># of Hands:</span> {reversedHistory[id]?.numOfHands}</h1> 
         </div>
         <h1 className='pt-[20px] font-bold text-3xl'>Hands</h1>
-        <div className='mt-[20px] w-1/2 h-auto'>
+        <div className='mt-[20px] pb-1 w-1/2 h-auto max-h-[50vh] md:max-h-[70vh] overflow-y-auto'>
           {reversedHistory[id]?.handHistory.map((round, ind) => {
             return(
               <Round key={ind} roundData={round} roundNum={ind} />
