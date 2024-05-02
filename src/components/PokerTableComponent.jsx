@@ -146,6 +146,7 @@ const PokerTableComponent = () => {
     oppMon = 200;
     dealer = 1;
     numHands = 0;
+    pot = 0;
     setDisplayOverButton("Next Hand");
     handStart()
   }
