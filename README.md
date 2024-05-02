@@ -1,11 +1,13 @@
 # NN Poker Frontend
 
+> [!IMPORTANT]  
+> Due to our limited budget, our Google Cloud Credits will run out May 12, 2024. This will prevent connection to our AI our project will no longer function as intended.
+
+
 ### Where to play?
 
 [The Bluff Buddy](https://bluff-buddy.web.app/)
 
-> [!IMPORTANT]  
-> Due to our limited budget, our Google Cloud Credits will run out May 12, 2024. This will prevent connection to our AI our project will no longer function as intended. 
 
 ### Prerequisites
 - Install latest version of Node and NPM
