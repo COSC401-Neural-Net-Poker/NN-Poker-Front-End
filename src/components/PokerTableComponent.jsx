@@ -11,8 +11,8 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Icon } from '@iconify/react';
 
 let pot = 0;                      //Chips in the pot currently
-let oppMon = 200;                 //Computer's chips
-let userMon = 200;                //User's chips
+let oppMon = 1000;                 //Computer's chips
+let userMon = 1000;                //User's chips
 let turn;                         //Who's turn it is 0 == computer 1 == user
 let dealer;                       //Who the dealer is. Switches per round. Dealer goes first
 let secondLastMove = "";          //Stores the second to last move
