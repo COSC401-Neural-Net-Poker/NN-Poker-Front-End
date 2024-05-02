@@ -15,7 +15,11 @@ const ListOfResults = ({history = []}) => {
   let historyLength = reversedHistory?.length <= 50 ? reversedHistory?.length : 50
 
   for (let i = 0; i < historyLength; ++i) {
-    if (i % 9 === 0 && i !== 0) {
+    if (i == 0){
+      pageButtons.push(counter)
+      counter++
+    }
+    if (i % 10 === 0 && i !== 0) {
       pageButtons.push(counter)
       counter++
     }
