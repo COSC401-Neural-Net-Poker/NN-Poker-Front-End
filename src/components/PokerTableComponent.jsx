@@ -142,8 +142,8 @@ const PokerTableComponent = () => {
   //Sets the starting chip amounts, other starting conditions then starts a new hand
   const gameStart = async (cond) => {
     setIsGameStarted(cond)
-    userMon = 200;
-    oppMon = 200;
+    userMon = 1000;
+    oppMon = 1000;
     dealer = 1;
     numHands = 0;
     pot = 0;
